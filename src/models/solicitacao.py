@@ -12,4 +12,5 @@ class Solicitacao(Base):
     assinatura = Column(LargeBinary, nullable=False)
     id_cliente = Column(Integer, ForeignKey('clientes.id'), nullable=False)
 
+    # nome da relação = relationship(Nome_classe, nome_)
     cliente = relationship('Cliente', back_populates='solicitacoes')

@@ -9,5 +9,5 @@ class ItemFrasco(Base):
     id_frasco = Column(Integer, ForeignKey('frascos.id'), nullable=False)
     id_solicitacao = Column(Integer, ForeignKey('solicitacoes.id'), nullable=False)
 
-    frasco = relationship('Frasco', back_populates='item_frasco')
+    # frasco = relationship('Frasco', back_populates='item_frasco')
 

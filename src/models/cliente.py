@@ -12,5 +12,7 @@ class Cliente(Base):
     email = Column(String(254), nullable=True)
 
     solicitacoes = relationship('Solicitacao', back_populates='cliente')
-
+    estoques = relationship('EstoqueCliente', back_populates='cliente')
+    
+    
     

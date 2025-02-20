@@ -5,7 +5,7 @@ engine = create_engine(r'sqlite:///data\banco_de_dados.db', echo=True)
 
 Base = declarative_base()
 
-def create_engine():
+def create_session():
     Session = sessionmaker(bind=engine)
     return Session()
 
