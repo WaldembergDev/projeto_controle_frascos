@@ -33,8 +33,8 @@ class ControllerCliente:
         return dataframe
     
     @classmethod
-    def atualizar_cliente_pelo_id(cls, id, novo_nome, nova_identificacao, novo_email, novo_telefone):
-        resultado = DaoCliente.atualizar_cliente_pelo_id(id, novo_nome, nova_identificacao, novo_email, novo_telefone)
+    def atualizar_cliente_pelo_id(cls, id, novo_nome, nova_identificacao, novo_email, novo_telefone, novo_status):
+        resultado = DaoCliente.atualizar_cliente_pelo_id(id, novo_nome, nova_identificacao, novo_email, novo_telefone, novo_status)
         if resultado:
             return True
         else:

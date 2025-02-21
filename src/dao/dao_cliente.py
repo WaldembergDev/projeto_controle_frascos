@@ -42,7 +42,7 @@ class DaoCliente:
       session.close()
   
   @classmethod
-  def atualizar_cliente_pelo_id(cls, id, novo_nome, nova_identificacao, novo_email, novo_telefone):
+  def atualizar_cliente_pelo_id(cls, id, novo_nome, nova_identificacao, novo_email, novo_telefone, novo_status):
     session = create_session()
     try:
       cliente = session.query(Cliente).filter(Cliente.id == id).first()
@@ -50,6 +50,7 @@ class DaoCliente:
       cliente.identificacao = nova_identificacao
       cliente.email = novo_email
       cliente.telefone = novo_telefone
+      cliente.status = novo_status
       session.commit()
       return True
     except Exception as e:

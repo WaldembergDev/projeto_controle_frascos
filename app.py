@@ -17,8 +17,8 @@ st.set_page_config(page_title="Controle de Frascos", layout="wide")
 view_dashboard = st.Page(r'src\views\dashboard\view_dashboard.py', title='Dashboard')
 
 # Clientes
-view_cadastro_cliente = st.Page(r'src\views\cliente\view_cadastro_cliente.py', title='Cadastro de Clientes')
-view_lista_clientes = st.Page(r'src\views\cliente\view_lista_clientes.py', title='Lista de Clientes')
+# view_cadastro_cliente = st.Page(r'src\views\cliente\view_cadastro_cliente.py', title='Cadastro de Clientes')
+view_clientes = st.Page(r'src\views\cliente\view_clientes.py', title='Lista de Clientes')
 
 # frascos
 view_frascos = st.Page(r'src\views\frasco\view_frascos.py', title='Frascos')
@@ -29,7 +29,7 @@ view_relatorios = st.Page(r'src\views\relatorio\view_relatorio.py', title='Relat
 
 pagina = st.navigation({
     'Menu Principal': [view_dashboard],
-    'Cliente': [view_cadastro_cliente, view_lista_clientes],
+    'Cliente': [view_clientes],
     'Frasco': [view_cadastrar_frasco, view_frascos, view_solicitacao_frascos, view_estoque_frascos],
     'Relatórios': [view_relatorios]
     
