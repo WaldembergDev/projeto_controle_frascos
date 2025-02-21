@@ -3,14 +3,28 @@ from src.models.frasco import Frasco
 
 class DaoFrasco:
   @classmethod
-  def adicionar_frasco(cls, frasco : Frasco):
+  def adicionar_frasco(cls, nome, capacidade, descricao):
     session = create_session()
     try:
+      frasco = Frasco(nome = nome, capacidade = capacidade, descricao = descricao)
       session.add(frasco)
       session.commit()
+      return True
     except Exception as e:
       session.rollback()
       print(f'Erro gerado: {e}')
+      return False
+    finally:
+      session.close()
+  
+  @classmethod
+  def obter_todos_frascos(cls):
+    session = create_session()
+    try:
+      frascos = session.query(Frasco).all()
+      return frascos
+    except Exception as e:
+      print(f'Erro: {e}')
     finally:
       session.close()
   

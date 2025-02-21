@@ -11,5 +11,5 @@ class HistoricoEstoque(Base):
   id_frasco = Column(Integer, ForeignKey("frascos.id"), nullable=False)
   id_tipo = Column(Integer, ForeignKey("tipos.id"), nullable=False)
   
-  id_cliente = relationship("clientes", back_populates="historico_estoque")
-  id_frasco = relationship("clientes", back_populates="historico_estoque")
+  # id_cliente = relationship("clientes", back_populates="historico_estoque")
+  # id_frasco = relationship("clientes", back_populates="historico_estoque")
