@@ -9,4 +9,4 @@ class EstoqueEmpresa(Base):
     id_frasco = Column(Integer, ForeignKey('frascos.id'), nullable=False)
     quantidade = Column(Integer, nullable=False)
 
-    # frascos = relationship('Frasco', back_populates='estoque_empresa')
+    # Frascos = relationship('Frasco', back_populates='EstoqueEmpresa')

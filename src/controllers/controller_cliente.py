@@ -39,3 +39,11 @@ class ControllerCliente:
             return True
         else:
             return False
+    
+    @classmethod
+    def excluir_cliente_pelo_id(cls, id):
+        resultado = DaoCliente.excluir_cliente(id)
+        if resultado is not None:
+            return True
+        else:
+            return False

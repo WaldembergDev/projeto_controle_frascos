@@ -3,7 +3,7 @@ from src.models.frasco import Frasco
 
 class DaoFrasco:
   @classmethod
-  def adicionar_frasco(cls, nome, capacidade, descricao):
+  def adicionar_frasco(cls, nome, capacidade, descricao): # (cls, frasco: Frasco)
     session = create_session()
     try:
       frasco = Frasco(nome = nome, capacidade = capacidade, descricao = descricao)

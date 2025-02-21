@@ -11,6 +11,6 @@ class Frasco(Base):
     descricao = Column(String(255), nullable=True)
 
     # item_frasco = relationship('ItemFrasco', back_populates='frasco')
-    # estoque_empresa = relationship('EstoqueEmpresa', back_populates='frascos')
+    # EstoqueEmpresa = relationship('EstoqueEmpresa', back_populates='Frascos')
     # estoque_cliente = relationship('EstoqueCliente', back_populates='frascos')
     # historico_estoque = relationship('HistoricoEstoque', back_populates='frasco')

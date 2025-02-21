@@ -29,7 +29,7 @@ dataframe = ControllerCliente.carregar_dataframe_clientes()
 col1, col2 = st.columns(2)
 
 with col1:
-    linhas = st.data_editor(dataframe, num_rows='dynamic')
+    linhas = st.data_editor(dataframe, num_rows='dynamic', use_container_width=True)
 
     # Obtendo o índices das linhas selecionadas
     linhas_selecionadas = linhas[linhas["Selecionado"] == True]

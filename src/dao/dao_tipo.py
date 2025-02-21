@@ -3,14 +3,25 @@ from src.models.tipo import Tipo
 
 class DaoTipo:
   @classmethod
-  def adicionar_tipo(cls, tipo : Tipo):
+  def adicionar_tipo(cls, tipo: Tipo):
     session = create_session()
-    try: 
+    try:
       session.add(tipo)
       session.commit()
     except Exception as e:
       session.rollback()
       print(f'Erro gerado: {e}')
+    finally:
+      session.close()
+  
+  @classmethod
+  def obter_tipo(cls):
+    session = create_session()
+    try:
+      tipos = session.query(Tipo).all()
+      return tipos
+    except Exception as e:
+      print(f"Erro: {e}")
     finally:
       session.close()
       

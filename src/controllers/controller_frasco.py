@@ -1,4 +1,5 @@
 from src.dao.dao_frasco import DaoFrasco
+from src.models.frasco import Frasco
 import pandas as pd
 
 class ControllerFrasco:
