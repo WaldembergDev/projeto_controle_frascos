@@ -1,13 +1,15 @@
 from src.database.db import create_session
 from src.models.frasco import Frasco
+from src.models.historico_estoque import HistoricoEstoque
 
 class DaoFrasco:
   @classmethod
-  def adicionar_frasco(cls, identificacao, capacidade, descricao): # (cls, frasco: Frasco)
+  def adicionar_frasco(cls, identificacao, capacidade, descricao, quantidade): # (cls, frasco: Frasco)
     session = create_session()
     try:
       frasco = Frasco(identificacao = identificacao, capacidade = capacidade, descricao = descricao)
       session.add(frasco)
+      session.flush()
       session.commit()
       return True
     except Exception as e:

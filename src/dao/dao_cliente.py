@@ -1,5 +1,6 @@
 from src.database.db import create_session
 from src.models.cliente import Cliente
+from src.models.solicitacao import Solicitacao
 
 class DaoCliente:
   
@@ -10,7 +11,7 @@ class DaoCliente:
       cliente = Cliente(identificacao = identificacao, nome = nome, telefone = telefone, email = email)
       session.add(cliente)
       session.commit()
-      return True
+      return cliente
     except Exception as e:
       session.rollback()
       print(f'Erro gerado: {e}')
@@ -71,5 +72,4 @@ class DaoCliente:
       print(f'Erro gerado: {e}')
     finally:
       session.close()
-      
   
