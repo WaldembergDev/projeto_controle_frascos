@@ -21,8 +21,7 @@ view_dashboard = st.Page(r'src\views\dashboard\view_dashboard.py', title='Dashbo
 view_clientes = st.Page(r'src\views\cliente\view_clientes.py', title='Lista de Clientes')
 
 # frascos
-view_frascos = st.Page(r'src\views\frasco\view_frascos.py', title='Frascos')
-view_cadastrar_frasco = st.Page(r'src\views\frasco\view_criar_frasco.py', title='Criar Frasco')
+view_frascos = st.Page(r'src\views\frasco\view_frascos.py', title='Lista de Frascos')
 view_solicitacao_frascos = st.Page(r'src\views\frasco\solicitacao_frasco.py', title='Solicitação de Frascos')
 view_estoque_frascos = st.Page(r'src\views\estoque\estoque_frascos.py', title='Estoque de Frascos')
 view_relatorios = st.Page(r'src\views\relatorio\view_relatorio.py', title='Relatório de Frascos')
@@ -30,7 +29,7 @@ view_relatorios = st.Page(r'src\views\relatorio\view_relatorio.py', title='Relat
 pagina = st.navigation({
     'Menu Principal': [view_dashboard],
     'Cliente': [view_clientes],
-    'Frasco': [view_cadastrar_frasco, view_frascos, view_solicitacao_frascos, view_estoque_frascos],
+    'Frasco': [view_frascos, view_solicitacao_frascos, view_estoque_frascos],
     'Relatórios': [view_relatorios]
     
 })

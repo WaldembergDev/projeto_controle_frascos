@@ -3,10 +3,10 @@ from src.models.frasco import Frasco
 
 class DaoFrasco:
   @classmethod
-  def adicionar_frasco(cls, nome, capacidade, descricao): # (cls, frasco: Frasco)
+  def adicionar_frasco(cls, identificacao, capacidade, descricao): # (cls, frasco: Frasco)
     session = create_session()
     try:
-      frasco = Frasco(nome = nome, capacidade = capacidade, descricao = descricao)
+      frasco = Frasco(identificacao = identificacao, capacidade = capacidade, descricao = descricao)
       session.add(frasco)
       session.commit()
       return True
@@ -45,7 +45,7 @@ class DaoFrasco:
     session = create_session()
     try:
       frasco = session.query(Frasco).filter(Frasco.id == id).first()
-      frasco.nome = novo_frasco
+      frasco.identificacao = novo_frasco
       session.commit()
     except Exception as e:
       session.rollback()
@@ -66,7 +66,7 @@ class DaoFrasco:
       session.close()
       
       
-# frasco = Frasco(nome = 'Ambar', capacidade = 500, descricao = 'Frasco de vidro')
+# frasco = Frasco(identificacao = 'Ambar', capacidade = 500, descricao = 'Frasco de vidro')
 # DaoFrasco.adicionar_frasco(frasco)
 
       

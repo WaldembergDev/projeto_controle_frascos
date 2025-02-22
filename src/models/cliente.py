@@ -25,7 +25,7 @@ class Cliente(Base):
             'email': self.email,
         }
 
-    # solicitacoes = relationship('Solicitacao', back_populates='cliente')
+    solicitacoes = relationship('Solicitacao', back_populates='cliente')
     # estoques = relationship('EstoqueCliente', back_populates='cliente')
     
     
