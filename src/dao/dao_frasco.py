@@ -4,71 +4,39 @@ from src.models.historico_estoque import HistoricoEstoque
 
 class DaoFrasco:
   @classmethod
-  def adicionar_frasco(cls, identificacao, capacidade, descricao, quantidade): # (cls, frasco: Frasco)
-    session = create_session()
-    try:
-      frasco = Frasco(identificacao = identificacao, capacidade = capacidade, descricao = descricao)
-      session.add(frasco)
-      session.flush()
-      session.commit()
-      return True
-    except Exception as e:
-      session.rollback()
-      print(f'Erro gerado: {e}')
-      return False
-    finally:
-      session.close()
+  def criar_frasco(cls, session, identificacao, capacidade, estoque, estoque_minimo, descricao): # (cls, frasco: Frasco)
+    frasco = Frasco(identificacao = identificacao, capacidade=capacidade, estoque = estoque, estoque_minimo=estoque_minimo, descricao = descricao)
+    session.add(frasco)
+    return frasco
   
   @classmethod
-  def obter_todos_frascos(cls):
-    session = create_session()
-    try:
-      frascos = session.query(Frasco).all()
-      return frascos
-    except Exception as e:
-      print(f'Erro: {e}')
-    finally:
-      session.close()
+  def obter_todos_frascos(cls, session):
+    frascos = session.query(Frasco).all()
+    return frascos
   
   @classmethod
-  def obter_frasco(cls, id):
-    session = create_session()
-    try:
-      frascos = session.query(Frasco).filter(Frasco.id == id).first()
-      return frascos
-    except Exception as e:
-      session.rollback()
-      print(f'Erro gerado: {e}')
-    finally:
-      session.close()
+  def obter_frasco(cls, session, id):
+    frasco = session.query(Frasco).filter(Frasco.id == id).first()
+    return frasco
       
   @classmethod
-  def atualizar_frasco(cls, id, novo_frasco):
-    session = create_session()
-    try:
-      frasco = session.query(Frasco).filter(Frasco.id == id).first()
-      frasco.identificacao = novo_frasco
-      session.commit()
-    except Exception as e:
-      session.rollback()
-      print(f'Erro gerado: {e}')
-    finally:
-      session.close()
+  def editar_frasco_pelo_id(cls, session, id_frasco, nova_identificacao, nova_capacidade, novo_estoque_minimo, nova_descricao, novo_status):
+    frasco = session.query(Frasco).filter(Frasco.id == id_frasco).first()
+    frasco.identificacao = nova_identificacao
+    frasco.capacidade = nova_capacidade
+    frasco.estoque_minimo = novo_estoque_minimo
+    frasco.descricao = nova_descricao
+    frasco.status = novo_status
+    return frasco
       
   @classmethod
-  def excluir_frasco(cls, id):
-    session = create_session()
-    try:
-      frasco = session.query(frasco).filter(Frasco.id == id). first()
-      session.delete(frasco)
-      session.commit()
-    except Exception as e:
-      print(f'Erro gerado: {e}')
-    finally:
-      session.close()
+  def excluir_frasco(cls, session, id):
+    frasco = session.query(frasco).filter(Frasco.id == id). first()
+    session.delete(frasco)
+
       
       
-# frasco = Frasco(identificacao = 'Ambar', capacidade = 500, descricao = 'Frasco de vidro')
+# frasco = Frasco(identificacao = 'Ambar', estoque = 500, descricao = 'Frasco de vidro')
 # DaoFrasco.adicionar_frasco(frasco)
 
       

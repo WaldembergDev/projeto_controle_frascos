@@ -1,27 +1,13 @@
 from src.database.db import create_session
 from src.models.solicitacao import Solicitacao
-from src.models.item_frasco import ItemFrasco
 from datetime import datetime
 
 class DaoSolicitacao:
   @classmethod
-  def criar_solicitacaoc_com_itens(cls, data_solicitacao: datetime, responsavel: str, assinatura: str, id_cliente: int, dados_frascos: list):
-    session = create_session()
-    try:
-      solicitacao = Solicitacao(data_solicitacao=data_solicitacao, responsavel=responsavel, assinatura=assinatura, id_cliente=id_cliente)
-      session.add(solicitacao)
-      session.flush()
-
-      for (frasco, quantidade) in dados_frascos:
-        item = ItemFrasco(quantidade=quantidade, id_frasco=frasco.id, id_solicitacao = solicitacao.id)
-        session.add(item)
-      
-      session.commit()
-    except Exception as e:
-      session.rollback()
-      print(f'Erro gerado: {e}')
-    finally:
-      session.close()
+  def criar_solicitacao(cls, session, data_solicitacao: datetime, responsavel: str, assinatura: str, id_cliente: int):
+    solicitacao = Solicitacao(data_solicitacao=data_solicitacao, responsavel=responsavel, assinatura=assinatura, id_cliente=id_cliente)
+    session.add(solicitacao)      
+  
       
   @classmethod
   def obter_solicitacao(cls, id):

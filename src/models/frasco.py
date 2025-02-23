@@ -13,6 +13,8 @@ class Frasco(Base):
     id = Column(Integer, primary_key=True)
     identificacao = Column(String(254), nullable=False, unique=True)
     capacidade = Column(Integer, nullable=False)
+    estoque = Column(Integer, nullable=False, default=0)
+    estoque_minimo = Column(Integer, nullable=False, default=0)
     descricao = Column(String(255), nullable=True)
     status = Column(Enum(StatusEnum), default=StatusEnum.ATIVO)
     

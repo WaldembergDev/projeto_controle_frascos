@@ -11,56 +11,29 @@ class DaoCliente:
     return cliente
   
   @classmethod
-  def obter_cliente_pelo_id(cls, id):
-    session = create_session()
-    try:
-      cliente = session.query(Cliente).filter(Cliente.id == id).first()
-      return cliente
-    except Exception as e:
-      print(f'Erro gerado: {e}')
-    finally:
-      session.close()
+  def obter_cliente_pelo_id(cls, session, id):
+    cliente = session.query(Cliente).filter(Cliente.id == id).first()
+    return cliente
 
   
   @classmethod
-  def obter_todos_clientes(cls):
-    session = create_session()
-    try:
-      clientes = session.query(Cliente).all()
-      return clientes
-    except Exception as e:
-      print(f'Erro gerado: {e}')
-    finally:
-      session.close()
+  def obter_todos_clientes(cls, session):
+    clientes = session.query(Cliente).all()
+    return clientes
   
   @classmethod
-  def atualizar_cliente_pelo_id(cls, id, novo_nome, nova_identificacao, novo_email, novo_telefone, novo_status):
-    session = create_session()
-    try:
-      cliente = session.query(Cliente).filter(Cliente.id == id).first()
-      cliente.nome = novo_nome
-      cliente.identificacao = nova_identificacao
-      cliente.email = novo_email
-      cliente.telefone = novo_telefone
-      cliente.status = novo_status
-      session.commit()
-      return True
-    except Exception as e:
-      session.rollback()
-      print(f'Erro gerado: {e}')
-      return False
-    finally:
-      session.close()
+  def atualizar_cliente_pelo_id(cls, session, id, novo_nome, nova_identificacao, novo_email, novo_telefone, novo_status):
+    cliente = session.query(Cliente).filter(Cliente.id == id).first()
+    cliente.nome = novo_nome
+    cliente.identificacao = nova_identificacao
+    cliente.email = novo_email
+    cliente.telefone = novo_telefone
+    cliente.status = novo_status
+    return cliente
   
   @classmethod
-  def excluir_cliente(cls, id):
-    session = create_session()
-    try:
+  def excluir_cliente(cls, session, id):
       cliente = session.query(Cliente).filter(Cliente.id == id).first()
       session.delete(cliente)
-      session.commit()
-    except Exception as e:
-      print(f'Erro gerado: {e}')
-    finally:
-      session.close()
+      return cliente
   

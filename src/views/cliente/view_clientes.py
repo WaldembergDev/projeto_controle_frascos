@@ -3,6 +3,11 @@ from src.controllers.controller_cliente import ControllerCliente
 import pandas as pd
 import time
 
+# carregando o dataframe no cache
+@st.cache_data
+def carregar_dataframe():
+    return ControllerCliente.carregar_dataframe_clientes()
+
 # --- caixas de diálogo ---
 # editar o cliente selecionado
 @st.dialog(title='Editar Cliente')
@@ -22,6 +27,7 @@ def editar_cliente(dados_cliente):
         cliente_atualizado = ControllerCliente.atualizar_cliente_pelo_id(int(dados_cliente['id']), nome_cliente, identificacao, email, telefone, status)
         if cliente_atualizado == True:
             st.success('Cliente atualizado com sucesso!')
+            carregar_dataframe.clear() # limpando os dados do cache para recarregar os dados
             time.sleep(3)
             st.rerun()
 
@@ -41,6 +47,7 @@ def criar_cliente():
                                                             email=email)
         if cliente_salvo == True:
             st.success('Cliente cadastrado com sucesso!')
+            carregar_dataframe.clear() # limpando os dados do cache para recarregar os dados
             time.sleep(3)
             st.rerun()
         else:
@@ -50,7 +57,7 @@ def criar_cliente():
 # --- Interface Principal ---
 st.header('Lista de Clientes', divider=True)
 
-dataframe = ControllerCliente.carregar_dataframe_clientes()
+dataframe = carregar_dataframe()
 
 col1, col2 = st.columns(2)
 
@@ -68,14 +75,7 @@ with col2:
     if len(linhas_selecionadas) == 1:
         botao_editar = st.button('Editar')
         if botao_editar:
-            dados_cliente = {
-                'id': linhas_selecionadas.iloc[0, 1],
-                'nome': linhas_selecionadas.iloc[0, 2],
-                'identificacao': linhas_selecionadas.iloc[0, 3],
-                'email': linhas_selecionadas.iloc[0,4],
-                'telefone': linhas_selecionadas.iloc[0,5],
-                'status': linhas_selecionadas.iloc[0,6].value
-            }
+            dados_cliente = ControllerCliente.transformar_linha_dicionario(linhas_selecionadas)
             editar_cliente(dados_cliente)
             
 

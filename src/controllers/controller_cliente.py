@@ -39,19 +39,36 @@ class ControllerCliente:
             return False
         finally:
             session.close()
+    
+    @classmethod
+    def obter_clientes(cls):
+        session = create_session()
+        try:
+            clientes = DaoCliente.obter_todos_clientes(session)
+            return clientes
+        except Exception as e:
+            return None
+        finally:
+            session.close()
 
     @classmethod
     def listar_clientes(cls):
-        clientes = DaoCliente.obter_todos_clientes()
+        clientes = cls.obter_clientes()
         lista_clientes = [(cliente.id, cliente.nome, cliente.identificacao, cliente.email, cliente.telefone, cliente.status) for cliente in clientes]
         return lista_clientes
     
     @classmethod
     def obter_cliente_pelo_id(cls, id):
-        cliente = DaoCliente.obter_cliente_pelo_id(id)
-        dados_cliente = [cliente.id, cliente.nome, cliente.identificacao, cliente.email]
-        return dados_cliente
-    
+        session = create_session()
+        try:
+            cliente = DaoCliente.obter_cliente_pelo_id(id)
+            dados_cliente = [cliente.id, cliente.nome, cliente.identificacao, cliente.email]
+            return dados_cliente
+        except Exception as e:
+            print(f'Erro gerado: {e}')
+            return None
+        finally:
+            session.close()
 
     @classmethod
     def carregar_dataframe_clientes(cls):
@@ -62,17 +79,40 @@ class ControllerCliente:
         return dataframe
     
     @classmethod
+    def transformar_linha_dicionario(cls, linha):
+        dados_cliente = {
+                'id': linha.loc[linha.index[0], 'Id'],
+                'nome': linha.loc[linha.index[0], 'Nome'],
+                'identificacao': linha.loc[linha.index[0], 'Identificação'],
+                'email': linha.loc[linha.index[0], 'Email'],
+                'telefone': linha.loc[linha.index[0], 'Telefone'],
+                'status': linha.loc[linha.index[0], 'Status'].value
+            }
+        return dados_cliente
+    
+    @classmethod
     def atualizar_cliente_pelo_id(cls, id, novo_nome, nova_identificacao, novo_email, novo_telefone, novo_status):
-        resultado = DaoCliente.atualizar_cliente_pelo_id(id, novo_nome, nova_identificacao, novo_email, novo_telefone, novo_status)
-        if resultado:
+        session = create_session()
+        try:
+            DaoCliente.atualizar_cliente_pelo_id(session, id, novo_nome, nova_identificacao, novo_email, novo_telefone, novo_status)
+            session.commit()
             return True
-        else:
-            return False
+        except Exception as e:
+            print(f'Erro gerado: {e}')
+            session.rollback()
+            return None
+        finally:
+            session.close()
     
     @classmethod
     def excluir_cliente_pelo_id(cls, id):
-        resultado = DaoCliente.excluir_cliente(id)
-        if resultado is not None:
+        session = create_session()
+        try:
+            DaoCliente.excluir_cliente(session, id)
+            session.commit()
             return True
-        else:
+        except Exception as e:
+            session.rollback()
             return False
+        finally:
+            session.close()

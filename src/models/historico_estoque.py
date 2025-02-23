@@ -17,9 +17,11 @@ class HistoricoEstoque(Base):
   id = Column(Integer, primary_key=True)
   data_movimentacao = Column(DateTime, default= func.now())
   id_frasco = Column(Integer, ForeignKey("frascos.id"), nullable=False)
-  cliente_id = Column(Integer, ForeignKey("clientes.id"), nullable=True)
+  id_cliente = Column(Integer, ForeignKey("clientes.id"), nullable=True)
+  id_solicitacao = Column(Integer, ForeignKey('solicitacoes.id'), nullable=True)
+  id_usuario = Column(Integer, ForeignKey('usuarios.id'), nullable=False)
   quantidade = Column(Integer, nullable=False)
-  tip_transacao = Column(Enum(TipoTransacao), nullable=False)
+  tipo_transacao = Column(Enum(TipoTransacao), nullable=False)
   descricao = Column(String, nullable=True)
 
 
