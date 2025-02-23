@@ -5,19 +5,10 @@ from src.models.solicitacao import Solicitacao
 class DaoCliente:
   
   @classmethod
-  def criar_cliente(cls, identificacao, nome, telefone, email):
-    session = create_session()
-    try:
-      cliente = Cliente(identificacao = identificacao, nome = nome, telefone = telefone, email = email)
-      session.add(cliente)
-      session.commit()
-      return cliente
-    except Exception as e:
-      session.rollback()
-      print(f'Erro gerado: {e}')
-      return False
-    finally:
-      session.close()   
+  def criar_cliente(cls, session, identificacao, nome, telefone, email):
+    cliente = Cliente(identificacao = identificacao, nome = nome, telefone = telefone, email = email)
+    session.add(cliente)
+    return cliente
   
   @classmethod
   def obter_cliente_pelo_id(cls, id):

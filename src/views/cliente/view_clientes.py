@@ -39,12 +39,12 @@ def criar_cliente():
                                                             identificacao=identificacao,
                                                             telefone=telefone,
                                                             email=email)
-        if cliente_salvo:
+        if cliente_salvo == True:
             st.success('Cliente cadastrado com sucesso!')
             time.sleep(3)
             st.rerun()
         else:
-            st.error('Erro ao cadastrar o cliente. Verifique os dados e tente novamente!')
+            st.error(f'Erro ao cadastrar o cliente. {cliente_salvo}')
 
 
 # --- Interface Principal ---

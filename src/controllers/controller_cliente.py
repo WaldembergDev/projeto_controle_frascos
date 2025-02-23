@@ -1,15 +1,44 @@
 from src.dao.dao_cliente import DaoCliente
 from src.models.cliente import Cliente
+from src.database.db import create_session
 import pandas as pd
 
 class ControllerCliente:
     @classmethod
+    def validar_campos_cliente(cls, nome, identificacao, telefone, email):
+        if not nome:
+            return 'Nome não pode estar vazio!'
+        if not identificacao:
+            return 'Identificação não pode estar vazia!'
+        if not telefone:
+            return 'Telefone não pode estar vazio!'
+        if not email:
+            return 'Email não pode estar vazio!'
+        return True
+
+    @classmethod
     def cadastrar_cliente(cls, nome, identificacao, telefone, email):
-        result = DaoCliente.criar_cliente(identificacao=identificacao,
-                                 nome=nome,
-                                 telefone=telefone,
-                                 email=email)
-        return result
+        # validando os campos
+        campos_validados = cls.validar_campos_cliente(nome, identificacao, telefone, email)
+        if campos_validados != True:
+            return campos_validados
+        
+        # criando a sessão se os campos forem validados
+        session = create_session()
+        try:
+            DaoCliente.criar_cliente(session=session,
+                                                identificacao=identificacao,
+                                                nome=nome,
+                                                telefone=telefone,
+                                                email=email)
+            session.commit()
+            return True
+        except Exception as e:
+            session.rollback()
+            print(f'Erro gerado: {e}')
+            return False
+        finally:
+            session.close()
 
     @classmethod
     def listar_clientes(cls):
