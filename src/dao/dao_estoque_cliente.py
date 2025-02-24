@@ -3,8 +3,36 @@ from src.models.estoque_cliente import EstoqueCliente
 
 class DaoEstoqueCliente:
     @classmethod
-    def adicionar_estoque_cliente(cls, id_frasco, id_cliente, quantidade):
-        pass
+    def criar_frasco_estoque_cliente(cls, session, id_frasco, id_cliente, quantidade):
+        estoque_cliente = EstoqueCliente(id_cliente=id_cliente, id_frasco=id_frasco, quantidade=quantidade)
+        session.add(estoque_cliente)
+        return estoque_cliente
+        
+    @classmethod
+    def movimentar_estoque_cliente(cls, session, id_frasco, id_cliente, quantidade, tipo_movimentacao):
+        estoque_cliente = session.query(EstoqueCliente).filter(EstoqueCliente.id_cliente==id_cliente).filter(EstoqueCliente.id_frasco==id_frasco).first()
+        if not estoque_cliente:
+            print('Estoque não encontrado')
+            return None
+        if tipo_movimentacao == 'Devolução':
+            estoque_cliente.quantidade -= quantidade
+        elif tipo_movimentacao == 'Saída':
+            estoque_cliente.quantidade += quantidade
+        else:
+            print('Movimentação inválida!')
+            return None
+        return estoque_cliente
+    
+    @classmethod
+    def obter_estoque_cliente_pelo_id(cls, session, id_cliente, id_frasco):
+        session = create_session()
+        estoque = session.query(EstoqueCliente).filter(EstoqueCliente.id_cliente == id_cliente).filter(EstoqueCliente.id_frasco == id_frasco).first()
+        return estoque
+    
+
+    
+
+        
 
 
 

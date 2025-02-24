@@ -4,6 +4,7 @@ from src.models.frasco import Frasco
 from src.models.historico_estoque import HistoricoEstoque
 from src.models.item_frasco import ItemFrasco
 from src.models.solicitacao import Solicitacao
+from src.models.usuario import Usuario
 from src.database.db import create_tables
 
 import streamlit as st

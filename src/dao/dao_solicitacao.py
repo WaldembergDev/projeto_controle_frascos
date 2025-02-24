@@ -4,9 +4,10 @@ from datetime import datetime
 
 class DaoSolicitacao:
   @classmethod
-  def criar_solicitacao(cls, session, data_solicitacao: datetime, responsavel: str, assinatura: str, id_cliente: int):
-    solicitacao = Solicitacao(data_solicitacao=data_solicitacao, responsavel=responsavel, assinatura=assinatura, id_cliente=id_cliente)
-    session.add(solicitacao)      
+  def criar_solicitacao(cls, session, responsavel: str, id_cliente: int, assinatura: str=None):
+    solicitacao = Solicitacao(responsavel=responsavel, assinatura=assinatura, id_cliente=id_cliente)
+    session.add(solicitacao)
+    return solicitacao      
   
       
   @classmethod

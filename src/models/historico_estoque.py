@@ -8,8 +8,10 @@ import enum
 class TipoTransacao(enum.Enum):
     ENTRADA = "Entrada"
     SAIDA = "Saída"
-    AJUSTE = "Ajuste"
+    AJUSTE_POSITIVO = "Ajuste Positivo"
+    AJUSTE_NEGATIVO = "Ajuste Negativo"
     DEVOLUCAO = "Devolução"
+    CANCELAMENTO = 'Cancelamento'
 
 class HistoricoEstoque(Base):
   __tablename__ = "historico_estoque"

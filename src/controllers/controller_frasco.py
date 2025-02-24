@@ -1,17 +1,44 @@
 from src.dao.dao_frasco import DaoFrasco
+from src.dao.dao_historico_estoque import DaoHistoricoEstoque
+from src.dao.dao_estoque_movimentacao import DaoEstoqueMovimentacao
+
 from src.models.frasco import Frasco
+from src.models.historico_estoque import TipoTransacao
 from src.database.db import create_session
 import pandas as pd
 
 class ControllerFrasco:
     @classmethod
     def criar_frasco(cls, identificacao, capacidade, estoque, estoque_minimo, descricao):
+        # 1 - Criar o frasco - Feito
+        # 2 - Gerar o histórico referente e a quantidade criada - Feito
+        # 3 - Gerar a movimentação do estoque 
         session = create_session()
         try:
-            DaoFrasco.criar_frasco(session, identificacao, capacidade, estoque, estoque_minimo, descricao)
+            frasco = DaoFrasco.criar_frasco(session, identificacao, capacidade, estoque, estoque_minimo, descricao)
+            # Persiste o frasco no banco de dados
+            session.flush() 
+            # cria um histórico da movimentação no banco de dados
+            historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session=session,
+                                                         id_frasco=frasco.id,
+                                                           id_cliente=None,
+                                                             id_usuario=1,
+                                                               quantidade=estoque,
+                                                                 tipo_transacao=TipoTransacao.ENTRADA.value,
+                                                                   descricao=None,
+                                                                     id_solicitacao=None)
+            session.flush()
+            # gera a movimentação no estoque
+            estoque_movimentacao = DaoEstoqueMovimentacao.criar_movimentacao_estoque(session=session,
+                                                                                     tipo_movimentacao=TipoTransacao.ENTRADA.value,
+                                                                                      id_historico_estoque=historico_estoque.id,
+                                                                                       estoque_antes_empresa=0,
+                                                                                         quantidade=estoque,
+                                                                                          estoque_antes_cliente=None)
             session.commit()
             return True
         except Exception as e:
+            print(f'Erro {e}')
             session.rollback()
             return False
         finally:
@@ -69,7 +96,6 @@ class ControllerFrasco:
             session.close()
 
         
-    
     @classmethod
     def listar_frascos(cls):
         frascos = cls.obter_todos_frascos()
@@ -83,7 +109,3 @@ class ControllerFrasco:
         dataframe['Selecionado'] = False
         dataframe = dataframe.reindex(['Selecionado', 'Id', 'identificacao', 'Capacidade', 'Estoque', 'Estoque Mínimo', 'Descrição', 'status'], axis=1)
         return dataframe
-    
-
-        
-    
