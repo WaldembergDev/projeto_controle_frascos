@@ -1,5 +1,5 @@
 from src.database.db import create_session
-from src.models.cliente import Cliente
+from src.models.cliente import Cliente, StatusEnum
 from src.models.solicitacao import Solicitacao
 
 class DaoCliente:
@@ -21,6 +21,11 @@ class DaoCliente:
     clientes = session.query(Cliente).all()
     return clientes
   
+  @classmethod
+  def obter_clientes_ativos(cls, session):
+    clientes_ativos = session.query(Cliente).filter(Cliente.status == StatusEnum.ATIVO.value).order_by(Cliente.nome).all()
+    return clientes_ativos
+
   @classmethod
   def atualizar_cliente_pelo_id(cls, session, id, novo_nome, nova_identificacao, novo_email, novo_telefone, novo_status):
     cliente = session.query(Cliente).filter(Cliente.id == id).first()

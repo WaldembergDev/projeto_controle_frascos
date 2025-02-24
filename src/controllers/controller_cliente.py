@@ -52,10 +52,29 @@ class ControllerCliente:
             session.close()
 
     @classmethod
+    def obter_clientes_ativos(cls):
+        session = create_session()
+        try:
+            clientes_ativos = DaoCliente.obter_clientes_ativos(session)
+            return clientes_ativos
+        except Exception as e:
+            print(f'Erro: {e}')
+            return None
+        finally:
+            session.close()
+
+    @classmethod
     def listar_clientes(cls):
         clientes = cls.obter_clientes()
         lista_clientes = [(cliente.id, cliente.nome, cliente.identificacao, cliente.email, cliente.telefone, cliente.status) for cliente in clientes]
         return lista_clientes
+    
+    @classmethod
+    def gerar_dicionario_clientes_ativos(cls):
+        clientes_ativos = cls.obter_clientes_ativos()
+        dicionario_clientes_ativos = {cliente.nome: cliente.id for cliente in clientes_ativos}
+        return dicionario_clientes_ativos
+        
     
     @classmethod
     def obter_cliente_pelo_id(cls, id):

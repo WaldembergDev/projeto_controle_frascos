@@ -12,7 +12,7 @@ class Cliente(Base):
 
     id = Column(Integer, primary_key=True)
     identificacao = Column(String(14), unique=True, nullable=False)
-    nome = Column(String(254), nullable=False)
+    nome = Column(String(254), nullable=False, unique=True)
     telefone = Column(String(11), nullable=True)
     email = Column(String(254), nullable=True)
     status = Column(Enum(StatusEnum), default=StatusEnum.ATIVO)

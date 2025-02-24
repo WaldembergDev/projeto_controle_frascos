@@ -69,6 +69,24 @@ class ControllerFrasco:
             session.close()
     
     @classmethod
+    def obter_frascos_ativos(cls):
+        session = create_session()
+        try:
+            frascos_ativos = DaoFrasco.obter_frascos_ativos(session)
+            return frascos_ativos
+        except Exception as e:
+            print(f'Erro gerado: {e}')
+            return None
+        finally:
+            session.close()
+    
+    @classmethod
+    def gerar_dicionario_frascos_ativos(cls):
+        frascos_ativos = cls.obter_frascos_ativos()
+        dicionario_frascos_ativos = {frasco.identificacao: frasco.id for frasco in frascos_ativos}
+        return dicionario_frascos_ativos
+    
+    @classmethod
     def editar_frasco_pelo_id(cls, id_frasco, nova_identificacao, nova_capacidade, novo_estoque_minimo, nova_descricao, novo_status):
         session = create_session()
         try:

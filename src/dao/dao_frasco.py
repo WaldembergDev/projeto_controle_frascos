@@ -1,5 +1,5 @@
 from src.database.db import create_session
-from src.models.frasco import Frasco
+from src.models.frasco import Frasco, StatusEnum
 from src.models.historico_estoque import HistoricoEstoque
 
 class DaoFrasco:
@@ -13,6 +13,11 @@ class DaoFrasco:
   def obter_todos_frascos(cls, session):
     frascos = session.query(Frasco).all()
     return frascos
+  
+  @classmethod
+  def obter_frascos_ativos(cls, session):
+    frascos_ativos = session.query(Frasco).filter(Frasco.status == StatusEnum.ATIVO.value).order_by(Frasco.identificacao).all()
+    return frascos_ativos
   
   @classmethod
   def obter_frasco(cls, session, id):
@@ -46,17 +51,4 @@ class DaoFrasco:
       return frasco
     else:
       print('Tipo de movimentação incorreta!')
-      return None
-
-# class TipoTransacao(enum.Enum):
-#     ENTRADA = "Entrada"
-#     SAIDA = "Saída"
-#     AJUSTE_POSITIVO = "Ajuste Positivo"
-#     AJUSTE_NEGATIVO = "Ajuste Negativo"
-#     DEVOLUCAO = "Devolução"
-      
-# frasco = Frasco(identificacao = 'Ambar', estoque = 500, descricao = 'Frasco de vidro')
-# DaoFrasco.adicionar_frasco(frasco)
-
-      
-      
+      return None 

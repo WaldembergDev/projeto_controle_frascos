@@ -3,7 +3,7 @@ from src.dao.dao_solicitacao import DaoSolicitacao
 from src.dao.dao_estoque_cliente import DaoEstoqueCliente
 from src.dao.dao_item_frasco import DaoItemFrasco
 from src.dao.dao_historico_estoque import DaoHistoricoEstoque
-from src.dao.dao_estoque_movimentacao import DaoEstoque
+from src.dao.dao_estoque_movimentacao import DaoEstoqueMovimentacao
 
 from src.database.db import create_session
 
@@ -31,10 +31,13 @@ class ControllerSolicitacaoEstoque:
                 estoque_empresa = DaoFrasco.obter_frasco(session, id_frasco)
                 estoque_antes_empresa = estoque_empresa.estoque
                 estoque_cliente = DaoEstoqueCliente.obter_estoque_cliente_pelo_id(session, id_cliente=id_cliente, id_frasco=id_frasco)
-                estoque_antes_cliente = estoque_cliente.quantidade
-                DaoEstoque.criar_movimentacao_estoque(session, tipo_movimentacao='Saída', id_historico_estoque=historico_estoque.id, estoque_antes_cliente=estoque_antes_empresa, quantidade=quantidade, estoque_antes_empresa = estoque_antes_cliente)
-            session.commit()             
-
+                if not estoque_cliente:
+                    estoque_antes_cliente = 0
+                else:
+                    estoque_antes_cliente = estoque_cliente.quantidade
+                DaoEstoqueMovimentacao.criar_movimentacao_estoque(session, tipo_movimentacao='Saída', id_historico_estoque=historico_estoque.id, estoque_antes_cliente=estoque_antes_empresa, quantidade=quantidade, estoque_antes_empresa = estoque_antes_cliente)
+            session.commit()    
+            return True
         except Exception as e:
             print(f'Erro: {e}')
             return False
