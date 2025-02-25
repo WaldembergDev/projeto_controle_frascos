@@ -11,7 +11,7 @@ clientes = ControllerCliente.gerar_dicionario_clientes_ativos()
 frascos = ControllerFrasco.gerar_dicionario_frascos_ativos()
 
 # -- Inicio da tela principal -- 
-st.header('Solicitação de Frascos', divider=True)
+st.header('Liberação de Frascos', divider=True)
 
 responsavel = st.text_input('Responsável')
 

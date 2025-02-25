@@ -9,7 +9,7 @@ import pandas as pd
 
 class ControllerFrasco:
     @classmethod
-    def criar_frasco(cls, identificacao, capacidade, estoque, estoque_minimo, descricao):
+    def criar_frasco(cls, id_usuario, identificacao, capacidade, estoque, estoque_minimo, descricao):
         # 1 - Criar o frasco - Feito
         # 2 - Gerar o histórico referente e a quantidade criada - Feito
         # 3 - Gerar a movimentação do estoque 
@@ -22,19 +22,19 @@ class ControllerFrasco:
             historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session=session,
                                                          id_frasco=frasco.id,
                                                            id_cliente=None,
-                                                             id_usuario=1,
+                                                             id_usuario=id_usuario,
                                                                quantidade=estoque,
-                                                                 tipo_transacao=TipoTransacao.ENTRADA.value,
-                                                                   descricao=None,
+                                                                 tipo_transacao=TipoTransacao.REPOSICAO.value,
+                                                                   descricao="Reposição de Frascos",
                                                                      id_solicitacao=None)
             session.flush()
             # gera a movimentação no estoque
-            estoque_movimentacao = DaoEstoqueMovimentacao.criar_movimentacao_estoque(session=session,
-                                                                                     tipo_movimentacao=TipoTransacao.ENTRADA.value,
-                                                                                      id_historico_estoque=historico_estoque.id,
-                                                                                       estoque_antes_empresa=0,
-                                                                                         quantidade=estoque,
-                                                                                          estoque_antes_cliente=None)
+            DaoEstoqueMovimentacao.criar_movimentacao_estoque(session=session,
+                                                              id_historico_estoque=historico_estoque.id,
+                                                              estoque_antes_empresa=0,
+                                                              estoque_depois_empresa=estoque,
+                                                              estoque_antes_cliente=None,
+                                                              estoque_depois_cliente=None)
             session.commit()
             return True
         except Exception as e:

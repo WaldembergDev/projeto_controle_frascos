@@ -9,7 +9,7 @@ class DaoEstoqueCliente:
         return estoque_cliente
         
     @classmethod
-    def movimentar_estoque_cliente(cls, session, id_frasco, id_cliente, quantidade, tipo_movimentacao):
+    def movimentar_estoque_cliente_apagar(cls, session, id_frasco, id_cliente, quantidade, tipo_movimentacao):
         estoque_cliente = session.query(EstoqueCliente).filter(EstoqueCliente.id_cliente==id_cliente).filter(EstoqueCliente.id_frasco==id_frasco).first()
         if not estoque_cliente:
             print('Estoque não encontrado')
@@ -21,6 +21,12 @@ class DaoEstoqueCliente:
         else:
             print('Movimentação inválida!')
             return None
+        return estoque_cliente
+    
+    @classmethod
+    def atualizar_estoque_cliente(cls, session, id_frasco, id_cliente, valor):
+        estoque_cliente = session.query(EstoqueCliente).filter(EstoqueCliente.id_frasco == id_frasco).filter(EstoqueCliente.id_cliente == id_cliente).first()
+        estoque_cliente.quantidade += valor
         return estoque_cliente
     
     @classmethod

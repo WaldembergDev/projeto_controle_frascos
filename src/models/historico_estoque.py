@@ -6,12 +6,15 @@ import enum
 
 # Definição dos tipos de transação
 class TipoTransacao(enum.Enum):
-    ENTRADA = "Entrada"
-    SAIDA = "Saída"
-    AJUSTE_POSITIVO = "Ajuste Positivo"
-    AJUSTE_NEGATIVO = "Ajuste Negativo"
-    DEVOLUCAO = "Devolução"
+    # Transações para o cliente
+    EMPRESTIMO = 'Empréstimo'
+    DEVOLUÇÃO = 'Devolução'
     CANCELAMENTO = 'Cancelamento'
+
+    # Transações para a QualyLab
+    REPOSICAO = "Reposição"
+    AJUSTE_POSITIVO = 'Ajuste Positivo'
+    AJUSTE_NEGATIVO = "Ajuste Negativo"
 
 class HistoricoEstoque(Base):
   __tablename__ = "historico_estoque"

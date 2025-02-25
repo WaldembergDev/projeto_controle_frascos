@@ -5,6 +5,8 @@ from src.dao.dao_item_frasco import DaoItemFrasco
 from src.dao.dao_historico_estoque import DaoHistoricoEstoque
 from src.dao.dao_estoque_movimentacao import DaoEstoqueMovimentacao
 
+from src.models.historico_estoque import TipoTransacao
+
 from src.database.db import create_session
 
 class ControllerSolicitacaoEstoque:
@@ -14,9 +16,10 @@ class ControllerSolicitacaoEstoque:
         # 2 - Percorrer por cada um dos frascos
         # 3 - Criar um itemFrasco associado à solicitação
         # 4 - Para cada frasco da solicitação deve-se:
-        #   3.1 - reduzir a quantidade de frascos do estoque da empresa referente ao frasco
-        #   3.2 - reduzir a quantidade de frascos do estoque do cliente referente ao frasco
-        #   3.3 - Gerar um histórico da movimentação 
+        #   3.1 - Gerar um histórico da movimentação 
+        #   3.2 - reduzir a quantidade de frascos do estoque da empresa referente ao frasco
+        #   3.3 - aumentar a quantidade de frascos do estoque do cliente referente ao frasco
+        
         session = create_session()
         try:
             # 1 - criando a solicitação
@@ -24,18 +27,44 @@ class ControllerSolicitacaoEstoque:
             session.flush() # gerando o id da solicitação
             # percorrendo pela lista de frascos
             for (id_frasco, quantidade) in dados_frascos:
-                item_frasco = DaoItemFrasco.criar_item_frasco(session, quantidade=quantidade, id_frasco=id_frasco, id_solicitacao=solicitacao.id)
-                DaoFrasco.ajustar_quantidade_frascos(session, id_frasco=id_frasco, quantidade=quantidade, tipo_movimentacao='Saída')
-                historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session, id_frasco, id_cliente, id_usuario, quantidade, tipo_transacao='Saída', descricao=None, id_solicitacao=solicitacao.id)
+                # criando item frasco associado à solicitação
+                DaoItemFrasco.criar_item_frasco(session, quantidade=quantidade, id_frasco=id_frasco, id_solicitacao=solicitacao.id)
+                # gerar histórico da movimentação
+                historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session,
+                                                                                 id_frasco,
+                                                                                   id_cliente,
+                                                                                     id_usuario,
+                                                                                       quantidade,
+                                                                                         TipoTransacao.EMPRESTIMO.value,
+                                                                                           None,
+                                                                                            solicitacao.id)
                 session.flush()
+                # descobrir quantidade de frascos que a empresa tem
                 estoque_empresa = DaoFrasco.obter_frasco(session, id_frasco)
-                estoque_antes_empresa = estoque_empresa.estoque
+                estoque_antes_empresa = estoque_empresa.estoque 
+                estoque_depois_empresa = estoque_antes_empresa - quantidade
+                # obter o estoque do frasco do cliente
                 estoque_cliente = DaoEstoqueCliente.obter_estoque_cliente_pelo_id(session, id_cliente=id_cliente, id_frasco=id_frasco)
                 if not estoque_cliente:
                     estoque_antes_cliente = 0
                 else:
                     estoque_antes_cliente = estoque_cliente.quantidade
-                DaoEstoqueMovimentacao.criar_movimentacao_estoque(session, tipo_movimentacao='Saída', id_historico_estoque=historico_estoque.id, estoque_antes_cliente=estoque_antes_empresa, quantidade=quantidade, estoque_antes_empresa = estoque_antes_cliente)
+                estoque_depois_cliente = estoque_antes_cliente + quantidade
+                # criando a movimentação
+                DaoEstoqueMovimentacao.criar_movimentacao_estoque(session,
+                                                                   id_historico_estoque=historico_estoque.id,
+                                                                   estoque_antes_empresa = estoque_antes_empresa,
+                                                                     estoque_depois_empresa=estoque_depois_empresa,
+                                                                     estoque_antes_cliente=estoque_antes_cliente,
+                                                                      estoque_depois_cliente=estoque_depois_cliente)
+                # atualizar a quantidade de frascos que a empresa tem
+                DaoFrasco.atualizar_quantidade_frascos(session, id_frasco=id_frasco, quantidade=quantidade*(-1))
+                # atualizar a quantidade de frascos que estão em posse do cliente
+                estoque_cliente = DaoEstoqueCliente.obter_estoque_cliente_pelo_id(session, id_cliente, id_frasco)
+                if not estoque_cliente:
+                    DaoEstoqueCliente.criar_frasco_estoque_cliente(session, id_frasco, id_cliente, quantidade)
+                else:
+                    DaoEstoqueCliente.atualizar_estoque_cliente(session, id_frasco, id_cliente, quantidade)          
             session.commit()    
             return True
         except Exception as e:

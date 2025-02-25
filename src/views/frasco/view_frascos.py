@@ -15,7 +15,7 @@ def cadastrar_frasco():
     botao_cadastrar = st.button('Cadastrar frasco')
     
     if botao_cadastrar:
-        frasco_cadastrado = ControllerFrasco.criar_frasco(identificacao, capacidade, estoque, estoque_minimo, descricao)
+        frasco_cadastrado = ControllerFrasco.criar_frasco(1, identificacao, capacidade, estoque, estoque_minimo, descricao)
         if frasco_cadastrado:
             st.success('Frasco cadastrado com sucesso!')
             time.sleep(3)

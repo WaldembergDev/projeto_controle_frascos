@@ -40,15 +40,21 @@ class DaoFrasco:
     session.delete(frasco)
   
   @classmethod
-  def ajustar_quantidade_frascos(cls, session, id_frasco, quantidade, tipo_movimentacao):
-    session = create_session()
+  def atualizar_quantidade_frascos(cls, session, id_frasco, quantidade):
     frasco = session.query(Frasco).filter(Frasco.id == id_frasco).first()
-    if tipo_movimentacao == 'Entrada' or tipo_movimentacao == 'Ajuste Positivo':
-      frasco.estoque += quantidade
-      return frasco
-    elif tipo_movimentacao == 'Saída' or tipo_movimentacao == 'Ajuste Negativo':
-      frasco.estoque -= quantidade
-      return frasco
-    else:
-      print('Tipo de movimentação incorreta!')
-      return None 
+    frasco.estoque += quantidade
+    return frasco
+  
+  # @classmethod
+  # def ajustar_quantidade_frascos_apagar(cls, session, id_frasco, quantidade, tipo_movimentacao):
+  #   session = create_session()
+  #   frasco = session.query(Frasco).filter(Frasco.id == id_frasco).first()
+  #   if tipo_movimentacao == 'Entrada' or tipo_movimentacao == 'Ajuste Positivo':
+  #     frasco.estoque += quantidade
+  #     return frasco
+  #   elif tipo_movimentacao == 'Saída' or tipo_movimentacao == 'Ajuste Negativo':
+  #     frasco.estoque -= quantidade
+  #     return frasco
+  #   else:
+  #     print('Tipo de movimentação incorreta!')
+  #     return None

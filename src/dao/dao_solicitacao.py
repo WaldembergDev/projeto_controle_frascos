@@ -11,39 +11,18 @@ class DaoSolicitacao:
   
       
   @classmethod
-  def obter_solicitacao(cls, id):
-    session = create_session()
-    try:
-      Solicitacoes = session.query(Solicitacao).filter(Solicitacao.id == id).first()
-      return Solicitacoes
-    except Exception as e:
-      print(f'Erro gerado: {e}')
-    finally:
-      session.close()
+  def obter_solicitacao(cls, session, id):
+    solicitacao = session.query(Solicitacao).filter(Solicitacao.id == id).first()
+    return solicitacao
     
   @classmethod
-  def atualizar_solicitacao(cls, id, nova_solicitacao):
-    session = create_session()
-    try:
-      solicitacao = session.query(Solicitacao).filter(Solicitacao.id == id).first()
-      solicitacao.responsavel = nova_solicitacao
-      session.commit()
-    except Exception as e:
-      session.rollback()
-      print(f'Erro gerado: {e}')
-    finally:
-      session.close()
+  def atualizar_status_solicitacao(cls, session, id_solicitacao, novo_status):
+    solicitacao = session.query(Solicitacao).filter(Solicitacao.id == id_solicitacao).first()
+    solicitacao.status = novo_status
   
   @classmethod
-  def excluir_solicitacao(cls, id):
-    session = create_session()
-    try:
-      solicitacao = session.query(Solicitacao).filter(Solicitacao.id == id). first()
-      session.delete(solicitacao)
-      session.commit()
-    except Exception as e:
-      print(f'Erro gerado: {e}')
-    finally:
-      session.close()
+  def excluir_solicitacao(cls, session, id_solicitacao):
+    solicitacao = session.query(Solicitacao).filter(Solicitacao.id == id_solicitacao). first()
+    session.delete(solicitacao)    
   
       
