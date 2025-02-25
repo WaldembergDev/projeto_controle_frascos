@@ -58,7 +58,7 @@ class ControllerSolicitacaoEstoque:
                                                                      estoque_antes_cliente=estoque_antes_cliente,
                                                                       estoque_depois_cliente=estoque_depois_cliente)
                 # atualizar a quantidade de frascos que a empresa tem
-                DaoFrasco.atualizar_quantidade_frascos(session, id_frasco=id_frasco, quantidade=quantidade*(-1))
+                DaoFrasco.subtrair_quantidade_frascos(session, id_frasco=id_frasco, quantidade=quantidade)
                 # atualizar a quantidade de frascos que estão em posse do cliente
                 estoque_cliente = DaoEstoqueCliente.obter_estoque_cliente_pelo_id(session, id_cliente, id_frasco)
                 if not estoque_cliente:

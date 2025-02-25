@@ -40,9 +40,21 @@ class DaoFrasco:
     session.delete(frasco)
   
   @classmethod
-  def atualizar_quantidade_frascos(cls, session, id_frasco, quantidade):
+  def atualizar_quantidade_frascos(cls, session, id_frasco, nova_quantidade):
+    frasco = session.query(Frasco).filter(Frasco.id == id_frasco).first()
+    frasco.estoque = nova_quantidade
+    return frasco
+  
+  @classmethod
+  def adicionar_quantidade_frascos(cls, session, id_frasco, quantidade):
     frasco = session.query(Frasco).filter(Frasco.id == id_frasco).first()
     frasco.estoque += quantidade
+    return frasco
+  
+  @classmethod
+  def subtrair_quantidade_frascos(cls, session, id_frasco, quantidade):
+    frasco = session.query(Frasco).filter(Frasco.id == id_frasco).first()
+    frasco.estoque -= quantidade
     return frasco
   
   # @classmethod

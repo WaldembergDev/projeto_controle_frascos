@@ -13,8 +13,7 @@ class TipoTransacao(enum.Enum):
 
     # Transações para a QualyLab
     REPOSICAO = "Reposição"
-    AJUSTE_POSITIVO = 'Ajuste Positivo'
-    AJUSTE_NEGATIVO = "Ajuste Negativo"
+    AJUSTE = 'Ajuste'
 
 class HistoricoEstoque(Base):
   __tablename__ = "historico_estoque"

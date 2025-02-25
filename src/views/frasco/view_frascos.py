@@ -28,7 +28,7 @@ def cadastrar_frasco():
 def editar_frasco(dados_frasco):
     id = int(dados_frasco['id']) 
     st.text(f'Id: {id}')
-    estoque = st.text(f'Estoque real do frasco {dados_frasco['estoque']}')
+    estoque = st.text(f'Estoque real do frasco: {dados_frasco['estoque']}')
     identificacao = st.text_input('Identificação do Frasco', value=dados_frasco['identificacao'])
     capacidade = st.number_input('Capacidade do frasco em mL', step=1, min_value=1, value=dados_frasco['capacidade'])
     estoque_minimo = st.number_input('Estoque mínimo do frasco', step=1, min_value=0, value=dados_frasco['estoque_minimo'])
