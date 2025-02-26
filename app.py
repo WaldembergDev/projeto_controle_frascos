@@ -23,7 +23,7 @@ view_clientes = st.Page(r'src\views\cliente\view_clientes.py', title='Lista de C
 view_frascos = st.Page(r'src\views\frasco\view_frascos.py', title='Lista de Frascos')
 view_liberacao_frascos = st.Page(r'src\views\frasco\view_liberacao_frasco.py', title='Liberação de Frascos')
 view_devolucao = st.Page(r'src\views\frasco\view_devolucao.py', title='Devolução de Frascos')
-view_estoque_frascos = st.Page(r'src\views\estoque\estoque_frascos.py', title='Estoque de Frascos')
+view_estoque_frascos = st.Page(r'src\views\estoque\view_historico.py', title='Histórico')
 view_relatorios = st.Page(r'src\views\relatorio\view_relatorio.py', title='Relatório de Frascos')
 
 pagina = st.navigation({

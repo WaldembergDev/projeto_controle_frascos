@@ -13,7 +13,8 @@ clientes = ControllerCliente.gerar_dicionario_clientes_ativos()
 cliente = st.selectbox('Selecione o cliente', options=clientes)
 
 # carregando os frascos com o cliente
-frascos = ControllerCliente.gerar_dicionario_frascos_pelo_id_cliente(clientes[cliente])
+if clientes:
+    frascos = ControllerCliente.gerar_dicionario_frascos_pelo_id_cliente(clientes[cliente])
 
 # selecionando os frascos
 if not 'tipo_frascos' in st.session_state:
@@ -40,7 +41,7 @@ if botao_remover_tipo_frasco:
 for i in range(st.session_state.tipo_frascos):
     # seleção de frascos que estão com o cliente
     with col1:
-        frasco = st.selectbox('Selecione o frasco', options=frascos, key=f'frasco_{i}')
+            frasco = st.selectbox('Selecione o frasco', options=frascos, key=f'frasco_{i}')
     with col2:
         quantidade = st.number_input('Selecione a quantidade', key=f'quantidade_{i}', step=1, min_value=1)
 

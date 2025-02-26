@@ -96,12 +96,26 @@ class ControllerSolicitacaoEstoque:
                                                                                                 estoque_antes_cliente,
                                                                                                   estoque_depois_cliente)
                 # registrando a mudança no estoque da empresa
-                frasco_empresa.estoque += quantidade
+                DaoFrasco.adicionar_quantidade_frascos(session, id_frasco, quantidade)
+                # registrando a mudança no estoque do cliente
+                DaoEstoqueCliente.reduzir_estoque_cliente(session, id_frasco, id_cliente, quantidade)
             session.commit()
             return True
         except Exception as e:
             session.rollback()
             print(f'Erro {e}')
             return False
+        finally:
+            session.close()
+    
+    @classmethod
+    def obter_todo_historico(cls):
+        session = create_session()
+        try:
+            historico = DaoHistoricoEstoque.obter_todo_historico(session)
+            return historico
+        except Exception as e:
+            print(f'Erro: {e}')
+            return None
         finally:
             session.close()

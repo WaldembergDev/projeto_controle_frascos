@@ -33,3 +33,7 @@ from src.controllers.controller_solicitacao_estoque import ControllerSolicitacao
 # histórico dos frascos
 # exportar histórico para excel - usuário deve escolher cliente, data e frascos
 # botão para enviar email
+
+
+historico = ControllerSolicitacaoEstoque.obter_todo_historico()
+print(historico)

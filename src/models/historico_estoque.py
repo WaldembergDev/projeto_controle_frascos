@@ -29,5 +29,4 @@ class HistoricoEstoque(Base):
   descricao = Column(String, nullable=True)
 
 
-  # id_cliente = relationship("clientes", back_populates="historico_estoque")
-  # id_frasco = relationship("clientes", back_populates="historico_estoque")
+  movimentacao_estoque = relationship('EstoqueMovimentacao', back_populates='historico_estoque')

@@ -13,3 +13,8 @@ class DaoHistoricoEstoque:
                                                         id_solicitacao=id_solicitacao)
         session.add(historico_estoque)
         return historico_estoque
+    
+    @classmethod
+    def obter_todo_historico(cls, session):
+        historico = session.query(HistoricoEstoque).all()
+        return historico

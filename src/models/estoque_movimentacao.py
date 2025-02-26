@@ -13,3 +13,4 @@ class EstoqueMovimentacao(Base):
     estoque_antes_cliente = Column(Integer, nullable=True)
     estoque_depois_cliente = Column(Integer, nullable=True)
     
+    historico_estoque = relationship('HistoricoEstoque', back_populates='movimentacao_estoque')
