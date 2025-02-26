@@ -10,5 +10,5 @@ class EstoqueCliente(Base):
     id_frasco = Column(Integer, ForeignKey('frascos.id'), nullable=False)
     quantidade = Column(Integer, nullable=False)
 
-    # cliente = relationship('Cliente', back_populates='estoques')
+    cliente = relationship('Cliente', back_populates='estoque_cliente')
     # frasco = relationship('Frasco', back_populates='estoque')

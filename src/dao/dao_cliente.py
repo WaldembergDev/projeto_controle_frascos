@@ -42,3 +42,10 @@ class DaoCliente:
       session.delete(cliente)
       return cliente
   
+  @classmethod
+  def obter_frascos_do_cliente_pelo_id(cls, session, id_cliente):
+    cliente = session.query(Cliente).filter(Cliente.id == id_cliente).first()
+    estoque_cliente = cliente.estoque_cliente
+    return estoque_cliente
+    
+  

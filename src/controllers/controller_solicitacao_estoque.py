@@ -72,3 +72,36 @@ class ControllerSolicitacaoEstoque:
             return False
         finally:
             session.close()
+    
+    @classmethod
+    def devolver_frascos(cls, id_usuario: int, id_cliente: int, frascos: list):
+        session = create_session()
+        try:
+            for (id_frasco, quantidade) in frascos:
+                historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session, id_frasco, id_cliente, id_usuario, quantidade, TipoTransacao.DEVOLUÇÃO.value, None, None)
+                session.flush() # gerando o id do historico estoque
+                # obtendo os dados do estoque da empresa
+                frasco_empresa = DaoFrasco.obter_frasco(session, id_frasco)
+                estoque_antes_empresa = frasco_empresa.estoque
+                estoque_depois_empresa = estoque_antes_empresa + quantidade
+                # obtendo os dados do estoque do cliente
+                frasco_cliente = DaoEstoqueCliente.obter_estoque_cliente_pelo_id(session, id_cliente, id_frasco)
+                estoque_antes_cliente = frasco_cliente.quantidade
+                estoque_depois_cliente = estoque_antes_cliente - quantidade
+                # registrando a movimentação
+                estoque_movimentacao = DaoEstoqueMovimentacao.criar_movimentacao_estoque(session,
+                                                                                          historico_estoque.id,
+                                                                                            estoque_antes_empresa,
+                                                                                              estoque_depois_empresa,
+                                                                                                estoque_antes_cliente,
+                                                                                                  estoque_depois_cliente)
+                # registrando a mudança no estoque da empresa
+                frasco_empresa.estoque += quantidade
+            session.commit()
+            return True
+        except Exception as e:
+            session.rollback()
+            print(f'Erro {e}')
+            return False
+        finally:
+            session.close()
