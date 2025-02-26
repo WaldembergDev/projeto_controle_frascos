@@ -3,7 +3,7 @@ from datetime import datetime
 from src.models.cliente import Cliente
 from src.models.estoque_cliente import EstoqueCliente
 from src.models.frasco import Frasco
-from src.models.historico_estoque import HistoricoEstoque
+from src.models.historico_estoque import HistoricoEstoque, TipoTransacao
 from src.models.item_frasco import ItemFrasco
 from src.models.solicitacao import Solicitacao
 from src.models.usuario import Usuario
@@ -35,5 +35,7 @@ from src.controllers.controller_solicitacao_estoque import ControllerSolicitacao
 # botão para enviar email
 
 
-historico = ControllerSolicitacaoEstoque.obter_todo_historico()
-print(historico)
+session = create_session()
+historico = DaoHistoricoEstoque.obter_todo_historico(session)
+print(len(historico))
+session.close()

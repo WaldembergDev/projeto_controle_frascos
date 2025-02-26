@@ -16,15 +16,14 @@ class ControllerFrasco:
         session = create_session()
         try:
             frasco = DaoFrasco.criar_frasco(session, identificacao, capacidade, estoque, estoque_minimo, descricao)
-            # Persiste o frasco no banco de dados
-            session.flush() 
+            session.flush()
             # cria um histórico da movimentação no banco de dados
             historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session=session,
                                                          id_frasco=frasco.id,
                                                            id_cliente=None,
                                                              id_usuario=id_usuario,
                                                                quantidade=estoque,
-                                                                 tipo_transacao=TipoTransacao.REPOSICAO.value,
+                                                                 tipo_transacao=TipoTransacao.REPOSICAO,
                                                                    descricao="Reposição de Frascos",
                                                                      id_solicitacao=None)
             session.flush()
@@ -64,7 +63,7 @@ class ControllerFrasco:
             return frascos
         except Exception as e:
             print(f'Erro: {e}')
-            return None
+            return []
         finally:
             session.close()
     

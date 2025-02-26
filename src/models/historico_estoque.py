@@ -8,11 +8,9 @@ import enum
 class TipoTransacao(enum.Enum):
     # Transações para o cliente
     EMPRESTIMO = 'Empréstimo'
-    DEVOLUÇÃO = 'Devolução'
+    DEVOLUCAO = 'Devolução'
     CANCELAMENTO = 'Cancelamento'
-
-    # Transações para a QualyLab
-    REPOSICAO = "Reposição"
+    REPOSICAO = 'Reposição'
     AJUSTE = 'Ajuste'
 
 class HistoricoEstoque(Base):
@@ -29,4 +27,4 @@ class HistoricoEstoque(Base):
   descricao = Column(String, nullable=True)
 
 
-  movimentacao_estoque = relationship('EstoqueMovimentacao', back_populates='historico_estoque')
+  # movimentacao_estoque = relationship('EstoqueMovimentacao', back_populates='historico_estoque')

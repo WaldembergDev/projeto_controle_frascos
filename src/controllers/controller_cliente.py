@@ -47,7 +47,7 @@ class ControllerCliente:
             clientes = DaoCliente.obter_todos_clientes(session)
             return clientes
         except Exception as e:
-            return None
+            return []
         finally:
             session.close()
 
@@ -59,7 +59,7 @@ class ControllerCliente:
             return clientes_ativos
         except Exception as e:
             print(f'Erro: {e}')
-            return None
+            return []
         finally:
             session.close()
     

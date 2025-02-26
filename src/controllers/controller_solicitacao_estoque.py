@@ -35,7 +35,7 @@ class ControllerSolicitacaoEstoque:
                                                                                    id_cliente,
                                                                                      id_usuario,
                                                                                        quantidade,
-                                                                                         TipoTransacao.EMPRESTIMO.value,
+                                                                                         TipoTransacao.EMPRESTIMO,
                                                                                            None,
                                                                                             solicitacao.id)
                 session.flush()
@@ -78,7 +78,7 @@ class ControllerSolicitacaoEstoque:
         session = create_session()
         try:
             for (id_frasco, quantidade) in frascos:
-                historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session, id_frasco, id_cliente, id_usuario, quantidade, TipoTransacao.DEVOLUÇÃO.value, None, None)
+                historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session, id_frasco, id_cliente, id_usuario, quantidade, TipoTransacao.DEVOLUCAO, None, None)
                 session.flush() # gerando o id do historico estoque
                 # obtendo os dados do estoque da empresa
                 frasco_empresa = DaoFrasco.obter_frasco(session, id_frasco)
@@ -116,6 +116,6 @@ class ControllerSolicitacaoEstoque:
             return historico
         except Exception as e:
             print(f'Erro: {e}')
-            return None
+            return []
         finally:
             session.close()
