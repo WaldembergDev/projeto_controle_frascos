@@ -4,6 +4,8 @@ from src.controllers.controller_cliente import ControllerCliente
 from src.controllers.controller_frasco import ControllerFrasco
 from src.controllers.controller_solicitacao_estoque import ControllerSolicitacaoEstoque
 
+import time
+
 # carregando os dados de clientes ativos
 clientes = ControllerCliente.gerar_dicionario_clientes_ativos()
 
@@ -60,7 +62,12 @@ if botao_salvar_dados:
     dados_frascos = []
     for i in range(st.session_state.botoes):
         dados_frascos.append((frascos[st.session_state[f'frasco_{i}']], int(st.session_state[f'quantidade_frasco_{i}'])))
-    ControllerSolicitacaoEstoque.criar_solicitacao_com_itens(id_usuario=1,
+    solicitacao_salva = ControllerSolicitacaoEstoque.criar_solicitacao_com_itens(id_usuario=1,
                                                              responsavel=responsavel,
                                                                id_cliente=id_cliente,
                                                                  dados_frascos=dados_frascos)
+    if solicitacao_salva == True:
+        st.success('Solicitação realizada com sucesso!')
+        time.sleep(3)
+        st.rerun()
+        

@@ -21,5 +21,5 @@ class Frasco(Base):
 
     # item_frasco = relationship('ItemFrasco', back_populates='frasco')
     # EstoqueEmpresa = relationship('EstoqueEmpresa', back_populates='Frascos')
-    # estoque_cliente = relationship('EstoqueCliente', back_populates='frascos')
+    estoque_cliente = relationship('EstoqueCliente', back_populates='frasco')
     # historico_estoque = relationship('HistoricoEstoque', back_populates='frasco')

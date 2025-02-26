@@ -10,7 +10,7 @@ def carregar_dataframe():
 
 # --- caixas de diálogo ---
 # editar o cliente selecionado
-@st.dialog(title='Editar Cliente')
+@st.dialog(title='Editar Cliente / Visualizar Cliente')
 def editar_cliente(dados_cliente):
     st.text(f'Id: {dados_cliente['id']}')
     nome_cliente = st.text_input('Nome do Cliente', value=dados_cliente['nome'])
@@ -53,6 +53,17 @@ def criar_cliente():
         else:
             st.error(f'Erro ao cadastrar o cliente. {cliente_salvo}')
 
+# visualizar frascos do cliente
+@st.dialog(title='Frascos do Cliente')
+def consultar_frascos(id_cliente):
+    detalhes_frascos = ControllerCliente.obter_detalhes_frascos_pelo_id_cliente(int(id_cliente))
+    if detalhes_frascos:
+        for (id, identificacao, quantidade) in detalhes_frascos:
+            st.text(f'{identificacao} => {quantidade}')
+    if not detalhes_frascos:
+        st.text('Não existes frascos emprestados a esse cliente!')
+    if st.button('Fechar visualização'):
+        st.rerun()
 
 # --- Interface Principal ---
 st.header('Lista de Clientes', divider=True)
@@ -73,10 +84,14 @@ with col2:
     if cadastrar_cliente:
         criar_cliente()
     if len(linhas_selecionadas) == 1:
-        botao_editar = st.button('Editar')
+        botao_editar = st.button('Editar / Visualizar dados')
+        botao_visualizar_frascos = st.button('Consultar frascos')
         if botao_editar:
             dados_cliente = ControllerCliente.transformar_linha_dicionario(linhas_selecionadas)
-            editar_cliente(dados_cliente)
+            editar_cliente(dados_cliente) 
+        if botao_visualizar_frascos:
+            dados_cliente = ControllerCliente.transformar_linha_dicionario(linhas_selecionadas)
+            consultar_frascos(dados_cliente['id'])
             
 
 

@@ -12,7 +12,7 @@ class ControllerFrasco:
     def criar_frasco(cls, id_usuario, identificacao, capacidade, estoque, estoque_minimo, descricao):
         # 1 - Criar o frasco - Feito
         # 2 - Gerar o histórico referente e a quantidade criada - Feito
-        # 3 - Gerar a movimentação do estoque 
+        # 3 - Gerar a movimentação do estoque - Feito 
         session = create_session()
         try:
             frasco = DaoFrasco.criar_frasco(session, identificacao, capacidade, estoque, estoque_minimo, descricao)
@@ -43,33 +43,6 @@ class ControllerFrasco:
             return False
         finally:
             session.close()
-    
-    # @classmethod
-    # def atualizar_estoque_pelo_id(cls, id_usuario, id_frasco, nova_quantidade, descricao):
-    #     session = create_session()
-    #     try:
-    #         # atualizando a quantidade de frascos
-    #         DaoFrasco.atualizar_quantidade_frascos(session, id_frasco, nova_quantidade)
-    #         # gerando um historico referente ao histórico
-    #         historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session=session,
-    #                                                                          id_frasco=id_frasco,
-    #                                                                            id_cliente=None,
-    #                                                                              id_usuario=id_usuario,
-    #                                                                                quantidade=nova_quantidade,
-    #                                                                                  tipo_transacao=TipoTransacao.AJUSTE.value,
-    #                                                                                    descricao=descricao,
-    #                                                                                      id_solicitacao=None)
-    #         session.flush() # gerando o id do historico_estoque
-    #         # obtendo os dados do frasco para gerar a movimentação
-    #         frasco = DaoFrasco.obter_frasco(session, id_frasco)
-    #         estoque_antes_empresa = frasco.estoque
-    #         # if nova_quantidade > estoque_antes_empresa:
-    #         #     estoque_depois_empresa = 
-    #         # gerando a movimentação no estoque
-            
-            
-    #         # DaoEstoqueMovimentacao.criar_movimentacao_estoque(session, id_historico_estoque=historico_estoque.id, )
-
             
     @classmethod
     def obter_frasco_pelo_id(cls, id):
