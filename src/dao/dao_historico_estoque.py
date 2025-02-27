@@ -1,5 +1,5 @@
 from src.database.db import create_session
-from src.models.historico_estoque import HistoricoEstoque
+from src.models.historico_estoque import HistoricoEstoque, TipoTransacao
 from src.models.frasco import Frasco
 from src.models.cliente import Cliente
 from src.models.usuario import Usuario
@@ -54,5 +54,5 @@ class DaoHistoricoEstoque:
     
     @classmethod
     def obter_devolucao_mais_recente_id_cliente(cls, session, id_cliente):
-      devolucao_mais_recente = session.query(HistoricoEstoque).filter(HistoricoEstoque.id_cliente == id_cliente).order_by(HistoricoEstoque.data_movimentacao.desc()).first()
+      devolucao_mais_recente = session.query(HistoricoEstoque).filter(HistoricoEstoque.id_cliente == id_cliente).filter(HistoricoEstoque.tipo_transacao==TipoTransacao.DEVOLUCAO).order_by(HistoricoEstoque.data_movimentacao.desc()).first()
       return devolucao_mais_recente

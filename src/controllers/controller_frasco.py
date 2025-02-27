@@ -127,5 +127,16 @@ class ControllerFrasco:
         dataframe = dataframe.reindex(['Selecionado', 'Id', 'identificacao', 'Capacidade', 'Estoque', 'Estoque Mínimo', 'Descrição', 'status'], axis=1)
         return dataframe
     
-    # @classmethod
-    # def atualizar_quantidade_estoque_id_frasco(cls, id_frasco, nova_quantidade):
+    # # @classmethod
+    # def atualizar_estoque_id_frasco(cls, id_usuario: int, id_frasco: int, nova_quantidade: int, justificativa: int):
+    #     session = create_session()
+    #     try:
+    #         historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session=session,
+    #                                                                         id_frasco=id_frasco,
+    #                                                                         id_cliente=None,
+    #                                                                         id_usuario=id_usuario,
+    #                                                                         quantidade=nova_quantidade,
+    #                                                                         )
+    #         frasco = DaoFrasco.atualizar_quantidade_frascos(session, id_frasco, nova_quantidade)
+            
+            
