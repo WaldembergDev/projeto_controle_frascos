@@ -23,6 +23,7 @@ from src.dao.dao_estoque_movimentacao import DaoEstoqueMovimentacao
 from src.controllers.controller_frasco import ControllerFrasco
 from src.controllers.controller_cliente import ControllerCliente
 from src.controllers.controller_solicitacao_estoque import ControllerSolicitacaoEstoque
+from src.controllers.controller_estoque_cliente import ControllerEstoqueCliente
 
 
 # falta fazer:
@@ -34,3 +35,6 @@ from src.controllers.controller_solicitacao_estoque import ControllerSolicitacao
 # histórico dos frascos
 # exportar histórico para excel - usuário deve escolher cliente, data e frascos
 # botão para enviar email
+
+quantidade = ControllerEstoqueCliente.obter_estoque_do_cliente_pelo_id(1, 2)
+print(quantidade)

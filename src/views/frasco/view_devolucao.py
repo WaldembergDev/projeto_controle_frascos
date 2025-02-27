@@ -1,6 +1,7 @@
 import streamlit as st
 from src.controllers.controller_cliente import ControllerCliente
 from src.controllers.controller_solicitacao_estoque import ControllerSolicitacaoEstoque
+from src.controllers.controller_estoque_cliente import ControllerEstoqueCliente
 
 import time
 
@@ -41,17 +42,17 @@ if botao_remover_tipo_frasco:
 for i in range(st.session_state.tipo_frascos):
     # seleção de frascos que estão com o cliente
     with col1:
-            frasco = st.selectbox('Selecione o frasco', options=frascos, key=f'frasco_{i}')
+        frasco = st.selectbox('Selecione o frasco', options=frascos, key=f'frasco_{i}')
     with col2:
-        quantidade = st.number_input('Selecione a quantidade', key=f'quantidade_{i}', step=1, min_value=1)
+        if cliente and frasco:
+            valor_maximo = ControllerEstoqueCliente.obter_estoque_do_cliente_pelo_id(clientes[cliente], frascos[frasco])
+        quantidade = st.number_input('Selecione a quantidade', key=f'quantidade_{i}', step=1, min_value=1, max_value=valor_maximo if cliente and frasco else None)
 
 botao_registrar_devolucao = st.button('Registrar devolução')
 
-if botao_registrar_devolucao:
+if botao_registrar_devolucao and cliente and frasco:
     # criando uma lista de tuplas com os dados dos frascos a serem devolvidos
     dados_frascos = [(frascos[st.session_state[f'frasco_{i}']], st.session_state[f'quantidade_{i}']) for i in range(st.session_state.tipo_frascos)]
-    st.text(type(clientes[cliente]))
-    st.text(dados_frascos)
     registro_salvo = ControllerSolicitacaoEstoque.devolver_frascos(1, clientes[cliente], dados_frascos)
     if registro_salvo == True:
         st.success('Registro salvo com sucesso!')
@@ -59,5 +60,8 @@ if botao_registrar_devolucao:
         st.rerun()
     else:
         st.error('Erro ao registrar os dados')
+
+elif botao_registrar_devolucao and (not cliente or not frasco):
+    st.error('Preencha todos os campos!')
 
 
