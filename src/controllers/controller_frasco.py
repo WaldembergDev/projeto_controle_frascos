@@ -126,3 +126,6 @@ class ControllerFrasco:
         dataframe['Selecionado'] = False
         dataframe = dataframe.reindex(['Selecionado', 'Id', 'identificacao', 'Capacidade', 'Estoque', 'Estoque Mínimo', 'Descrição', 'status'], axis=1)
         return dataframe
+    
+    # @classmethod
+    # def atualizar_quantidade_estoque_id_frasco(cls, id_frasco, nova_quantidade):
