@@ -51,7 +51,8 @@ for i in range(st.session_state.botoes):
         frasco = st.selectbox('Selecione um frasco', options=frascos, key=f'frasco_{i}')
 
     with col2:
-        quantidade_frasco = st.number_input('Selecione a quantidade', min_value=1, step=1, key=f'quantidade_frasco_{i}')
+        valor_maximo = ControllerFrasco.obter_frasco_pelo_id(int(frascos[frasco])).estoque
+        quantidade_frasco = st.number_input('Selecione a quantidade', min_value=1, step=1, key=f'quantidade_frasco_{i}', max_value=valor_maximo)
 
 
 assinatura = st.text_input('Assinatura')

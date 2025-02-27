@@ -46,6 +46,20 @@ def editar_frasco(dados_frasco):
             st.rerun()
         elif frasco_editado == False:
             st.error('Erro ao editar o frasco. Revise os dados digitados!')
+
+# editar quantidade de frasco
+@st.dialog(title='Editar quantidade de frasco')
+def editar_quantidade(dados_frasco):
+    id = int(dados_frasco['id'])
+    quantidade = st.number_input('Digite o valor real da quantidade de frascos: ', step=1, value=dados_frasco['estoque'])
+    justificativa = st.text_input('Justifique a mudança da alteração: ')
+    bota_atualizar = st.button('Atualizar quantidade')
+    if not justificativa and bota_atualizar:
+        st.error('Preencha a justificativa')
+    if bota_atualizar and justificativa:
+        st.success('Frascos atualizados com sucesso!')
+        time.sleep(3)
+        st.rerun()
             
 
 
@@ -79,3 +93,16 @@ with col2:
                 'status': linhas_selecionadas.iloc[0,7],
             }
             editar_frasco(dados_frasco)
+        botao_atualizar_quantidade = st.button('Atualizar estoque')
+        if botao_atualizar_quantidade:
+            dados_frasco = {
+                'id': linhas_selecionadas.iloc[0, 1],
+                'identificacao': linhas_selecionadas.iloc[0, 2],
+                'capacidade': linhas_selecionadas.iloc[0, 3],
+                'estoque': linhas_selecionadas.iloc[0,4],
+                'estoque_minimo': linhas_selecionadas.iloc[0,5],
+                'descricao': linhas_selecionadas.iloc[0,6],
+                'status': linhas_selecionadas.iloc[0,7],
+            }
+            editar_quantidade(dados_frasco)
+            
