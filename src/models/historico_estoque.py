@@ -3,6 +3,8 @@ from sqlalchemy.orm import relationship
 from src.database.db import Base
 from sqlalchemy.sql import func
 import enum
+import pytz
+from datetime import datetime
 
 # Definição dos tipos de transação
 class TipoTransacao(enum.Enum):
@@ -12,6 +14,11 @@ class TipoTransacao(enum.Enum):
     CANCELAMENTO = 'Cancelamento'
     REPOSICAO = 'Reposição'
     AJUSTE = 'Ajuste'
+
+def get_current_utc_time():
+    local_tz = pytz.timezone('America/Sao_Paulo')  # Ajuste para seu fuso horário local
+    local_time = datetime.now(local_tz)
+    return local_time.astimezone(pytz.utc)
 
 class HistoricoEstoque(Base):
   __tablename__ = "historico_estoque"

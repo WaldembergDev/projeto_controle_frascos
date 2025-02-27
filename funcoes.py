@@ -24,6 +24,7 @@ from src.controllers.controller_frasco import ControllerFrasco
 from src.controllers.controller_cliente import ControllerCliente
 from src.controllers.controller_solicitacao_estoque import ControllerSolicitacaoEstoque
 
+
 # falta fazer:
 # ----------------------------------------
 # validação para impedir que um estoque fique negativo
@@ -33,9 +34,3 @@ from src.controllers.controller_solicitacao_estoque import ControllerSolicitacao
 # histórico dos frascos
 # exportar histórico para excel - usuário deve escolher cliente, data e frascos
 # botão para enviar email
-
-
-session = create_session()
-historico = DaoHistoricoEstoque.obter_todo_historico(session)
-print(len(historico))
-session.close()
