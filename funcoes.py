@@ -36,5 +36,7 @@ from src.controllers.controller_estoque_cliente import ControllerEstoqueCliente
 # exportar histórico para excel - usuário deve escolher cliente, data e frascos
 # botão para enviar email
 
-quantidade = ControllerEstoqueCliente.obter_estoque_do_cliente_pelo_id(1, 2)
-print(quantidade)
+# session = create_session()
+# frasco_cliente = DaoEstoqueCliente.obter_estoque_cliente_pelo_id(session, 1, 3)
+# print(frasco_cliente.quantidade)
+# session.close()

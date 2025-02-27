@@ -16,4 +16,3 @@ class ControllerEstoqueCliente:
             return None
         finally:
             session.close()
-    

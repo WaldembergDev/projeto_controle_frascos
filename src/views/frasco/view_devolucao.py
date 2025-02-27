@@ -46,7 +46,7 @@ for i in range(st.session_state.tipo_frascos):
     with col2:
         if cliente and frasco:
             valor_maximo = ControllerEstoqueCliente.obter_estoque_do_cliente_pelo_id(clientes[cliente], frascos[frasco])
-        quantidade = st.number_input('Selecione a quantidade', key=f'quantidade_{i}', step=1, min_value=1, max_value=valor_maximo if cliente and frasco else None)
+        quantidade = st.number_input('Selecione a quantidade', key=f'quantidade_{i}', step=1, min_value=1)
 
 botao_registrar_devolucao = st.button('Registrar devolução')
 

@@ -172,7 +172,3 @@ class ControllerSolicitacaoEstoque:
             return None
         finally:
             session.close()
-    
-    @classmethod
-    def teste():
-        pass

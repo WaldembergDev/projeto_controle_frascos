@@ -69,7 +69,7 @@ class ControllerCliente:
         try:
             cliente = session.query(Cliente).filter(Cliente.id == id_cliente).first()
             estoque_frascos = cliente.estoque_cliente
-            dicionario_estoque = {estoque_frasco.frasco.identificacao: estoque_frasco.id for estoque_frasco in estoque_frascos}
+            dicionario_estoque = {estoque_frasco.frasco.identificacao: estoque_frasco.id_frasco for estoque_frasco in estoque_frascos}
             return dicionario_estoque
         except Exception as e:
             print(f'Erro: {e}')
