@@ -62,13 +62,11 @@ def consultar_frascos(id_cliente):
     # Obtendo a solicitação mais recente
     solicitacao_mais_recente = ControllerSolicitacaoEstoque.obter_solicitacao_mais_recente_id_cliente(int(id_cliente))
     # verificando se o cliente já solicitou frasco
-    if solicitacao_mais_recente:
-        st.text(f'Solicitação mais recente: {solicitacao_mais_recente}')
+    st.text(f'Solicitação mais recente: {solicitacao_mais_recente if solicitacao_mais_recente else 'Não existem solicitações para este cliente'}')
     # Obtendo a devolução mais recente
     devolucao_mais_recente = ControllerSolicitacaoEstoque.obter_devolucao_mais_recente_id_cliente(int(id_cliente))
     # verificando se o cliente já devolveu frasco
-    if devolucao_mais_recente:
-        st.text(f'Devolução mais recente: {devolucao_mais_recente}')
+    st.text(f'Devolução mais recente: {devolucao_mais_recente if devolucao_mais_recente else 'Não existem devoluções para este cliente'}')
     
     st.divider()
     st.text('Frascos em posse do cliente:')    

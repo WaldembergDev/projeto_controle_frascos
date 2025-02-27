@@ -17,7 +17,7 @@ class DaoSolicitacao:
   
   @classmethod
   def obter_solicitacao_mais_recente_id_cliente(cls, session, id_cliente):
-    solicitacao_mais_recente = session.query(Solicitacao).filter(Solicitacao.id_cliente).order_by(Solicitacao.data_solicitacao.desc()).first()
+    solicitacao_mais_recente = session.query(Solicitacao).filter(Solicitacao.id_cliente == id_cliente).order_by(Solicitacao.data_solicitacao.desc()).first()
     return solicitacao_mais_recente
 
 
