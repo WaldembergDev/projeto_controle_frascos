@@ -90,6 +90,13 @@ class ControllerCliente:
             return False
         finally:
             session.close()
+    
+    @classmethod
+    def criar_dataframe_frascos_cliente(cls, id_cliente: int):
+        detalhes_frascos = cls.obter_detalhes_frascos_pelo_id_cliente(id_cliente)
+        dataframe = pd.DataFrame(detalhes_frascos, columns=['Id Frasco', 'Identifição do Frasco', 'Quantidade'])
+        dataframe = dataframe.drop(columns=['Id Frasco'])
+        return dataframe
 
 
     @classmethod

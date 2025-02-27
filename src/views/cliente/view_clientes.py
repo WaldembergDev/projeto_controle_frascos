@@ -74,8 +74,7 @@ def consultar_frascos(id_cliente):
     st.text('Frascos em posse do cliente:')    
     detalhes_frascos = ControllerCliente.obter_detalhes_frascos_pelo_id_cliente(int(id_cliente))
     if detalhes_frascos:
-        for (id, identificacao, quantidade) in detalhes_frascos:
-            st.text(f'{identificacao} => {quantidade}')
+        st.dataframe(ControllerCliente.criar_dataframe_frascos_cliente(int(id_cliente)))
     if not detalhes_frascos:
         st.text('Não existes frascos emprestados a esse cliente!')
     if st.button('Fechar visualização'):
