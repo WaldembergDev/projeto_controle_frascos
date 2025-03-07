@@ -54,8 +54,15 @@ for i in range(st.session_state.botoes):
         frasco = st.selectbox('Selecione um frasco', options=frascos, key=f'frasco_{i}')
 
     with col2:
-        valor_maximo = ControllerFrasco.obter_frasco_pelo_id(int(frascos[frasco])).estoque
-        quantidade_frasco = st.number_input('Selecione a quantidade', min_value=1, step=1, key=f'quantidade_frasco_{i}', max_value=valor_maximo)
+        if frasco:
+            # definindo a quantidade mínima e máxima de frascos se houver frasco para o cliente
+            valor_maximo = ControllerFrasco.obter_quantidade_frascos_pelo_id((frascos[frasco]))
+            valor_minimo = 1
+        else:
+            # definindo a quantidade mínima e máxima de frascos se não houver frascos para o cliente
+            valor_maximo = 0
+            valor_minimo = 0
+        quantidade_frasco = st.number_input('Selecione a quantidade', min_value=0, step=1, key=f'quantidade_frasco_{i}', max_value=valor_maximo)
 
 # Configurações do Canvas para assinatura
 canvas_result = st_canvas(

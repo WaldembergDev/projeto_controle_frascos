@@ -56,6 +56,13 @@ class ControllerFrasco:
             session.close()
     
     @classmethod
+    def obter_quantidade_frascos_pelo_id(cls, id):
+        frasco = cls.obter_frasco_pelo_id(cls, id)
+        quantidade_frasco = frasco.estoque
+        return quantidade_frasco
+        
+    
+    @classmethod
     def obter_todos_frascos(cls):
         session = create_session()
         try:
