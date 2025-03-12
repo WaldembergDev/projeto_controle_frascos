@@ -1,5 +1,5 @@
 from src.database.db import create_session
-from src.models.solicitacao import Solicitacao
+from models.movimentacao import Solicitacao
 from datetime import datetime
 
 class DaoSolicitacao:

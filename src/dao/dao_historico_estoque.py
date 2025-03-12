@@ -3,7 +3,7 @@ from src.models.historico_estoque import HistoricoEstoque, TipoTransacao
 from src.models.frasco import Frasco
 from src.models.cliente import Cliente
 from src.models.usuario import Usuario
-from src.models.solicitacao import Solicitacao
+from models.movimentacao import Solicitacao
 from models.historico_estoque import EstoqueMovimentacao
 from sqlalchemy.sql import func
 

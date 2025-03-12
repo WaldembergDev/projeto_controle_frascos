@@ -33,7 +33,7 @@ class Movimentacao(Base):
     assinatura = Column(LargeBinary, nullable=True)
     id_usuario = Column(Integer, ForeignKey('usuarios.id'), nullable=False)
     id_cliente = Column(Integer, ForeignKey('clientes.id'), nullable=True)
-    tipo_movimentacao = Column(Enum(TipoMovimentacaoEnum), default=TipoMovimentacaoEnum.EXTERNO, nullable=False)
+    tipo = Column(Enum(TipoMovimentacaoEnum), default=TipoMovimentacaoEnum.EXTERNO, nullable=False)
     detalhe_movimentacao = Column(Enum(DetalheMovimentacaoEnum), nullable=False)
     descricao = Column(String(255), nullable=True)
     status = Column(Enum(StatusEnum), default=StatusEnum.PENDENTE, nullable=False)

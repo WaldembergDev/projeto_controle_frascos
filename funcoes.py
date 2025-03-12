@@ -5,7 +5,7 @@ from src.models.estoque_cliente import EstoqueCliente
 from src.models.frasco import Frasco
 from src.models.historico_estoque import HistoricoEstoque, TipoTransacao
 from src.models.item_frasco import ItemFrasco
-from src.models.solicitacao import Solicitacao
+from models.movimentacao import Solicitacao
 from src.models.usuario import Usuario
 from models.historico_estoque import EstoqueMovimentacao
 
