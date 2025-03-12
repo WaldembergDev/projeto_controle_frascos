@@ -4,7 +4,7 @@ from src.models.frasco import Frasco
 from src.models.cliente import Cliente
 from src.models.usuario import Usuario
 from src.models.solicitacao import Solicitacao
-from src.models.estoque_movimentacao import EstoqueMovimentacao
+from models.historico_estoque import EstoqueMovimentacao
 from sqlalchemy.sql import func
 
 class DaoHistoricoEstoque:

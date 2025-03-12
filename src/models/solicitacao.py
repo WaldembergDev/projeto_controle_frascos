@@ -10,20 +10,32 @@ class StatusEnum(str, enum.Enum):
     CONCLUIDO = 'concluido'
     CANCELADO = 'cancelado'
 
-class TipoSolicitacaoEnum(str, enum.Enum):
+class TipoMovimentacaoEnum(str, enum.Enum):
     EXTERNO = 'Externa'
-    INTERNO = 'Interna'    
+    INTERNO = 'Interna'
+
+class DetalheMovimentacaoEnum(str, enum.Enum):
+    # tipo externo
+    EMPRESTIMO = 'Empréstimo'
+    DEVOLUCAO = 'Devolução'
+    # tipo interno
+    CANCELAMENTO = 'Cancelamento'
+    REPOSICAO = 'Reposição'
+    AJUSTE = 'Ajuste'
 
 
-class Solicitacao(Base):
-    __tablename__ = 'solicitacoes'
+class Movimentacao(Base):
+    __tablename__ = 'movimentacoes'
 
     id = Column(Integer, primary_key=True)
-    data_solicitacao = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    data = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     responsavel = Column(String(254), nullable=True)
     assinatura = Column(LargeBinary, nullable=True)
+    id_usuario = Column(Integer, ForeignKey('usuarios.id'), nullable=False)
     id_cliente = Column(Integer, ForeignKey('clientes.id'), nullable=True)
-    status = Column(Enum(StatusEnum), default=StatusEnum.CONCLUIDO, nullable=False)
-    tipo_solicitacao = Column(Enum(TipoSolicitacaoEnum), default=TipoSolicitacaoEnum.EXTERNO, nullable=False)
+    tipo_movimentacao = Column(Enum(TipoMovimentacaoEnum), default=TipoMovimentacaoEnum.EXTERNO, nullable=False)
+    detalhe_movimentacao = Column(Enum(DetalheMovimentacaoEnum), nullable=False)
+    descricao = Column(String(255), nullable=True)
+    status = Column(Enum(StatusEnum), default=StatusEnum.PENDENTE, nullable=False)
 
-    cliente = relationship('Cliente', back_populates='solicitacoes')
+    cliente = relationship('Cliente', back_populates='movimentacoes')

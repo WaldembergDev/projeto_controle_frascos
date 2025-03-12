@@ -7,7 +7,7 @@ from src.models.historico_estoque import HistoricoEstoque, TipoTransacao
 from src.models.item_frasco import ItemFrasco
 from src.models.solicitacao import Solicitacao
 from src.models.usuario import Usuario
-from src.models.estoque_movimentacao import EstoqueMovimentacao
+from models.historico_estoque import EstoqueMovimentacao
 
 from src.database.db import create_tables, drop_tables, create_session
 

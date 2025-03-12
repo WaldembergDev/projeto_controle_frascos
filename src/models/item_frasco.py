@@ -7,7 +7,7 @@ class ItemFrasco(Base):
     id = Column(Integer, primary_key=True)
     quantidade = Column(Integer, nullable=False)
     id_frasco = Column(Integer, ForeignKey('frascos.id'), nullable=False)
-    id_solicitacao = Column(Integer, ForeignKey('solicitacoes.id'), nullable=False)
+    id_movimentacao = Column(Integer, ForeignKey('movimentacoes.id'), nullable=False)
 
     # frasco = relationship('Frasco', back_populates='item_frasco')
 

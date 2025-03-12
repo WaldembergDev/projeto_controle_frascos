@@ -1,4 +1,4 @@
-from src.models.estoque_movimentacao import EstoqueMovimentacao
+from models.historico_estoque import EstoqueMovimentacao
 from src.database.db import create_session
 
 class DaoEstoqueMovimentacao:
