@@ -1,6 +1,6 @@
 from src.database.db import create_session
 from src.models.cliente import Cliente, StatusEnum
-from models.movimentacao import Solicitacao
+from src.models.movimentacao import Movimentacao
 
 class DaoCliente:
   
