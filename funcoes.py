@@ -12,6 +12,7 @@ from src.database.db import create_tables, drop_tables, create_session
 
 from src.dao.dao_cliente import DaoCliente
 from src.dao.dao_frasco import DaoFrasco
+from src.dao.dao_lembrete import DaoLembrete
 # from dao.dao_movimentacao import DaoSolicitacao
 # from src.dao.dao_frasco import DaoFrasco
 # from src.dao.dao_estoque_cliente import DaoEstoqueCliente
