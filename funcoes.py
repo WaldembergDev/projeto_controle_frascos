@@ -14,7 +14,8 @@ from src.dao.dao_cliente import DaoCliente
 from src.dao.dao_frasco import DaoFrasco
 from src.dao.dao_lembrete import DaoLembrete
 from src.dao.dao_usuario import DaoUsuario
-from src.dao.dao_movimentacao import Daomovimentacao
+from src.dao.dao_movimentacao import DaoMovimentacao
+from src.dao.dao_historico_estoque import DaoHistoricoEstoque
 # from dao.dao_movimentacao import DaoSolicitacao
 # from src.dao.dao_frasco import DaoFrasco
 # from src.dao.dao_estoque_cliente import DaoEstoqueCliente

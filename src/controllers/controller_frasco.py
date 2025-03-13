@@ -30,17 +30,20 @@ class ControllerFrasco:
                                     assinatura=None)
             session.flush()
             # gerando o item_frasco
-            DaoItemFrasco.criar_item_frasco(session,
+            item_frasco = DaoItemFrasco.criar_item_frasco(session,
                                             quantidade=estoque_real,
                                             id_frasco=frasco.id,
                                             id_movimentacao=movimentacao.id)
+            session.flush()
             # gera a movimentação no estoque
-            DaoEstoqueMovimentacao.criar_movimentacao_estoque(session=session,
-                                                              id_historico_estoque=historico_estoque.id,
-                                                              estoque_antes_empresa=0,
-                                                              estoque_depois_empresa=estoque,
-                                                              estoque_antes_cliente=None,
-                                                              estoque_depois_cliente=None)
+            DaoHistoricoEstoque.criar_historico_estoque(session=session,
+                                                        id_historico_estoque=item_frasco.id,
+                                                        estoque_antes_empresa=0,
+                                                        estoque_depois_empresa=estoque_real,
+                                                        estoque_antes_cliente=None,
+                                                        estoque_depois_cliente=None)
+            # Gerando os dados referente ao estoque do frasco
+            
             session.commit()
             return True
         except Exception as e:
