@@ -3,7 +3,7 @@ from src.models.estoque_cliente import EstoqueCliente
 from src.models.frasco import Frasco
 from src.models.historico_estoque import HistoricoEstoque
 from src.models.item_frasco import ItemFrasco
-from models.movimentacao import Solicitacao
+from src.models.movimentacao import Movimentacao
 from src.models.usuario import Usuario
 from src.database.db import create_tables
 

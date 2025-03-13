@@ -6,7 +6,7 @@ import io
 
 from src.controllers.controller_cliente import ControllerCliente
 from src.controllers.controller_frasco import ControllerFrasco
-from src.controllers.controller_solicitacao_estoque import ControllerSolicitacaoEstoque
+from src.controllers.controller_movimentacao_estoque import ControllerSolicitacaoEstoque
 
 import time
 # carregando os dados de clientes ativos

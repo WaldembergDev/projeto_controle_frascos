@@ -2,7 +2,7 @@ from src.database.db import create_session
 from src.models.movimentacao import Movimentacao, TipoMovimentacaoEnum, DetalheMovimentacaoEnum
 from datetime import datetime
 
-class Daomovimentacao:
+class DaoMovimentacao:
   @classmethod
   def criar_movimentacao(cls, session,
                          responsavel: str,
@@ -20,9 +20,9 @@ class Daomovimentacao:
                                 detalhe_movimentacao=detalhe_movimentacao,
                                 descricao=descricao)  
     session.add(movimentacao)
-    return movimentacao      
+    return movimentacao
   
-      
+    
   @classmethod
   def obter_movimentacao(cls, session, id):
     movimentacao = session.query(movimentacao).filter(movimentacao.id == id).first()
