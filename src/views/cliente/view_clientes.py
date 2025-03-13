@@ -105,11 +105,3 @@ with col2:
         if botao_visualizar_frascos:
             dados_cliente = ControllerCliente.transformar_linha_dicionario(linhas_selecionadas)
             consultar_frascos(dados_cliente['id'])
-            
-
-
-
-
-
-
-    
