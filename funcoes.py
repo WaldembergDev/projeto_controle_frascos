@@ -16,13 +16,14 @@ from src.dao.dao_lembrete import DaoLembrete
 from src.dao.dao_usuario import DaoUsuario
 from src.dao.dao_movimentacao import DaoMovimentacao
 from src.dao.dao_historico_estoque import DaoHistoricoEstoque
+from src.dao.dao_estoque_empresa import DaoEstoqueEmpresa
 # from dao.dao_movimentacao import DaoSolicitacao
 # from src.dao.dao_frasco import DaoFrasco
 # from src.dao.dao_estoque_cliente import DaoEstoqueCliente
 # from src.dao.dao_historico_estoque import DaoHistoricoEstoque
 # from src.dao.dao_estoque_movimentacao import DaoEstoqueMovimentacao
 
-# from src.controllers.controller_frasco import ControllerFrasco
+from src.controllers.controller_frasco import ControllerFrasco
 # from src.controllers.controller_cliente import ControllerCliente
 # from src.controllers.controller_solicitacao_estoque import ControllerSolicitacaoEstoque
 # from src.controllers.controller_estoque_cliente import ControllerEstoqueCliente

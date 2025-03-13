@@ -4,6 +4,7 @@ from src.dao.dao_frasco import DaoFrasco
 from src.dao.dao_item_frasco import DaoItemFrasco
 from src.dao.dao_movimentacao import DaoMovimentacao
 from src.dao.dao_historico_estoque import DaoHistoricoEstoque
+from src.dao.dao_estoque_empresa import DaoEstoqueEmpresa
 from src.models.frasco import Frasco
 from src.database.db import create_session
 import pandas as pd
@@ -16,6 +17,7 @@ class ControllerFrasco:
         # 3 - Gerar a movimentação do estoque - Feito 
         session = create_session()
         try:
+            # criando o frasco
             frasco = DaoFrasco.criar_frasco(session, identificacao, capacidade, descricao)
             session.flush()
             # cria um histórico da movimentação no banco de dados
@@ -37,13 +39,16 @@ class ControllerFrasco:
             session.flush()
             # gera a movimentação no estoque
             DaoHistoricoEstoque.criar_historico_estoque(session=session,
-                                                        id_historico_estoque=item_frasco.id,
+                                                        id_item_frasco=item_frasco.id,
                                                         estoque_antes_empresa=0,
                                                         estoque_depois_empresa=estoque_real,
                                                         estoque_antes_cliente=None,
                                                         estoque_depois_cliente=None)
             # Gerando os dados referente ao estoque do frasco
-            
+            DaoEstoqueEmpresa.criar_estoque_empresa(session,
+                                                    frasco.id,
+                                                    estoque_real=estoque_real,
+                                                    estoque_minimo=estoque_minimo)
             session.commit()
             return True
         except Exception as e:
