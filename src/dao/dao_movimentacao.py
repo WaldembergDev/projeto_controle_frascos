@@ -1,34 +1,45 @@
-# from src.database.db import create_session
-# from src.models.movimentacao import Movimentacao
-# from datetime import datetime
+from src.database.db import create_session
+from src.models.movimentacao import Movimentacao, TipoMovimentacaoEnum, DetalheMovimentacaoEnum
+from datetime import datetime
 
-# class DaoSolicitacao:
-#   @classmethod
-#   def criar_solicitacao(cls, session, responsavel: str, id_cliente: int, assinatura: str=None):
-#     solicitacao = Solicitacao(responsavel=responsavel, assinatura=assinatura, id_cliente=id_cliente)
-#     session.add(solicitacao)
-#     return solicitacao      
+class Daomovimentacao:
+  @classmethod
+  def criar_movimentacao(cls, session,
+                         responsavel: str,
+                         id_usuario: int,
+                         tipo: TipoMovimentacaoEnum,
+                         detalhe_movimentacao: DetalheMovimentacaoEnum,
+                         id_cliente: int=None,
+                         descricao=None,
+                         assinatura: str=None):
+    movimentacao = Movimentacao(responsavel=responsavel,
+                                assinatura=assinatura,
+                                id_usuario=id_usuario,
+                                id_cliente=id_cliente,
+                                tipo=tipo,
+                                detalhe_movimentacao=detalhe_movimentacao,
+                                descricao=descricao)  
+    session.add(movimentacao)
+    return movimentacao      
   
       
-#   @classmethod
-#   def obter_solicitacao(cls, session, id):
-#     solicitacao = session.query(Solicitacao).filter(Solicitacao.id == id).first()
-#     return solicitacao
+  @classmethod
+  def obter_movimentacao(cls, session, id):
+    movimentacao = session.query(movimentacao).filter(movimentacao.id == id).first()
+    return movimentacao
   
-#   @classmethod
-#   def obter_solicitacao_mais_recente_id_cliente(cls, session, id_cliente):
-#     solicitacao_mais_recente = session.query(Solicitacao).filter(Solicitacao.id_cliente == id_cliente).order_by(Solicitacao.data_solicitacao.desc()).first()
-#     return solicitacao_mais_recente
+  @classmethod
+  def obter_movimentacao_mais_recente_id_cliente(cls, session, id_cliente):
+    movimentacao_mais_recente = session.query(Movimentacao).filter(Movimentacao.id_cliente == id_cliente).order_by(Movimentacao.data.desc()).first()
+    return movimentacao_mais_recente
 
 
-#   @classmethod
-#   def atualizar_status_solicitacao(cls, session, id_solicitacao, novo_status):
-#     solicitacao = session.query(Solicitacao).filter(Solicitacao.id == id_solicitacao).first()
-#     solicitacao.status = novo_status
+  @classmethod
+  def atualizar_status_movimentacao(cls, session, id_movimentacao, novo_status):
+    movimentacao = session.query(movimentacao).filter(movimentacao.id == id_movimentacao).first()
+    movimentacao.status = novo_status
   
-#   @classmethod
-#   def excluir_solicitacao(cls, session, id_solicitacao):
-#     solicitacao = session.query(Solicitacao).filter(Solicitacao.id == id_solicitacao).first()
-#     session.delete(solicitacao)
-  
-      
+  @classmethod
+  def excluir_movimentacao(cls, session, id_movimentacao):
+    movimentacao = session.query(movimentacao).filter(movimentacao.id == id_movimentacao).first()
+    session.delete(movimentacao)
