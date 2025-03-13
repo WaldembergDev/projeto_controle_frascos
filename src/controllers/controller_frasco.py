@@ -1,32 +1,39 @@
-from src.dao.dao_frasco import DaoFrasco
-from src.dao.dao_historico_estoque import DaoHistoricoEstoque
-from src.dao.dao_estoque_movimentacao import DaoEstoqueMovimentacao
+from src.models.movimentacao import Movimentacao, TipoMovimentacaoEnum, DetalheMovimentacaoEnum
 
+from src.dao.dao_frasco import DaoFrasco
+from src.dao.dao_item_frasco import DaoItemFrasco
+from src.dao.dao_movimentacao import DaoMovimentacao
+from src.dao.dao_historico_estoque import DaoHistoricoEstoque
 from src.models.frasco import Frasco
-from src.models.historico_estoque import TipoTransacao
 from src.database.db import create_session
 import pandas as pd
 
 class ControllerFrasco:
     @classmethod
-    def criar_frasco(cls, id_usuario, identificacao, capacidade, estoque, estoque_minimo, descricao):
+    def criar_frasco(cls, id_usuario, identificacao, capacidade, estoque_real, estoque_minimo, descricao):
         # 1 - Criar o frasco - Feito
         # 2 - Gerar o histórico referente e a quantidade criada - Feito
         # 3 - Gerar a movimentação do estoque - Feito 
         session = create_session()
         try:
-            frasco = DaoFrasco.criar_frasco(session, identificacao, capacidade, estoque, estoque_minimo, descricao)
+            frasco = DaoFrasco.criar_frasco(session, identificacao, capacidade, descricao)
             session.flush()
             # cria um histórico da movimentação no banco de dados
-            historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session=session,
-                                                         id_frasco=frasco.id,
-                                                           id_cliente=None,
-                                                             id_usuario=id_usuario,
-                                                               quantidade=estoque,
-                                                                 tipo_transacao=TipoTransacao.REPOSICAO,
-                                                                   descricao="Reposição de Frascos",
-                                                                     id_solicitacao=None)
+            movimentacao = DaoMovimentacao\
+                .criar_movimentacao(session = session,
+                                    responsavel=None,
+                                    id_usuario=id_usuario,
+                                    tipo=TipoMovimentacaoEnum.INTERNO.value,
+                                    detalhe_movimentacao=DetalheMovimentacaoEnum.COMPRA.value,
+                                    id_cliente=None,
+                                    descricao='Compra de novos frascos',
+                                    assinatura=None)
             session.flush()
+            # gerando o item_frasco
+            DaoItemFrasco.criar_item_frasco(session,
+                                            quantidade=estoque_real,
+                                            id_frasco=frasco.id,
+                                            id_movimentacao=movimentacao.id)
             # gera a movimentação no estoque
             DaoEstoqueMovimentacao.criar_movimentacao_estoque(session=session,
                                                               id_historico_estoque=historico_estoque.id,

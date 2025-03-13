@@ -19,9 +19,10 @@ class DetalheMovimentacaoEnum(str, enum.Enum):
     EMPRESTIMO = 'Empréstimo'
     DEVOLUCAO = 'Devolução'
     # tipo interno
-    CANCELAMENTO = 'Cancelamento'
-    REPOSICAO = 'Reposição'
     AJUSTE = 'Ajuste'
+    CANCELAMENTO = 'Cancelamento'
+    COMPRA = 'Compra'
+    REPOSICAO = 'Reposição'
 
 
 class Movimentacao(Base):
