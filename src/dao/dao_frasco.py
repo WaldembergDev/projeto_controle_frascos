@@ -1,6 +1,6 @@
 from src.database.db import create_session
 from src.models.frasco import Frasco, StatusEnum
-from src.models.historico_estoque import HistoricoEstoque
+from src.models.estoque_empresa import EstoqueEmpresa
 
 class DaoFrasco:
   @classmethod
@@ -36,3 +36,15 @@ class DaoFrasco:
   def excluir_frasco(cls, session, id):
     frasco = session.query(frasco).filter(Frasco.id == id). first()
     session.delete(frasco)
+    
+  @classmethod
+  def obter_frasco_com_estoque(cls, session):
+    frasco_estoque = session.query(Frasco.identificacao,
+                                   Frasco.capacidade,
+                                   Frasco.descricao,
+                                   Frasco.status,
+                                   EstoqueEmpresa.estoque_real,
+                                   EstoqueEmpresa.estoque_minimo)\
+                                     .join(Frasco, Frasco.id == EstoqueEmpresa.id_frasco)\
+                                       .all()
+    return frasco_estoque
