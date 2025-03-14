@@ -25,10 +25,11 @@ class DaoFrasco:
     return frasco
       
   @classmethod
-  def editar_frasco_pelo_id(cls, session, id_frasco, nova_identificacao, nova_capacidade, novo_status):
+  def editar_frasco_pelo_id(cls, session, id_frasco, nova_identificacao, nova_capacidade, nova_descricao, novo_status):
     frasco = session.query(Frasco).filter(Frasco.id == id_frasco).first()
     frasco.identificacao = nova_identificacao
     frasco.capacidade = nova_capacidade
+    frasco.descricao = nova_descricao
     frasco.status = novo_status
     return frasco
       

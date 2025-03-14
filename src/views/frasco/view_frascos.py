@@ -33,7 +33,7 @@ def cadastrar_frasco():
 def editar_frasco(dados_frasco):
     id = int(dados_frasco['id']) 
     st.text(f'Id: {id}')
-    estoque = st.text(f'Estoque real do frasco: {dados_frasco['estoque_real']}')
+    st.text(f'Estoque real do frasco: {dados_frasco['estoque_real']}')
     identificacao = st.text_input('Identificação do Frasco', value=dados_frasco['identificacao'])
     capacidade = st.number_input('Capacidade do frasco em mL', step=1, min_value=1, value=dados_frasco['capacidade'])
     estoque_minimo = st.number_input('Estoque mínimo do frasco', step=1, min_value=0, value=dados_frasco['estoque_minimo'])
@@ -44,7 +44,7 @@ def editar_frasco(dados_frasco):
     botao_alterar = st.button('Salvar alterações')
 
     if botao_alterar:
-        frasco_editado = ControllerFrasco.editar_frasco_pelo_id(id, identificacao, capacidade, estoque_minimo, descricao, status)
+        frasco_editado = ControllerFrasco.editar_frasco_estoque_pelo_id(id, identificacao, capacidade, estoque_minimo, descricao, status)
         if frasco_editado == True:
             st.success('Frasco editado com sucesso!')
             time.sleep(3)
@@ -67,11 +67,10 @@ def editar_quantidade(dados_frasco):
         st.rerun()
             
 
-
 # -- Tela principal -- 
 st.header('Lista de Frascos', divider=True)
 ### nova tela
-dataframe = ControllerFrasco.carregar_dataframe_frascos_2()
+dataframe = ControllerFrasco.carregar_dataframe_frascos()
 
 col1, col2 = st.columns(2)
 

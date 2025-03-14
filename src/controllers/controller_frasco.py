@@ -121,10 +121,18 @@ class ControllerFrasco:
         return dicionario_frascos_ativos
     
     @classmethod
-    def editar_frasco_pelo_id(cls, id_frasco, nova_identificacao, nova_capacidade, novo_estoque_minimo, nova_descricao, novo_status):
+    def editar_frasco_estoque_pelo_id(cls, id_frasco, nova_identificacao, nova_capacidade, novo_estoque_minimo, nova_descricao, novo_status):
         session = create_session()
         try:
-            DaoFrasco.editar_frasco_pelo_id(session, id_frasco, nova_identificacao, nova_capacidade, novo_estoque_minimo, nova_descricao, novo_status)
+            DaoFrasco.editar_frasco_pelo_id(session,
+                                            id_frasco,
+                                            nova_identificacao,
+                                            nova_capacidade,
+                                            nova_descricao,
+                                            novo_status)
+            DaoEstoqueEmpresa.editar_estoque_minimo(session,
+                                                    id_frasco,
+                                                    novo_estoque_minimo)
             session.commit()
             return True
         except Exception as e:
@@ -156,14 +164,6 @@ class ControllerFrasco:
     
     @classmethod
     def carregar_dataframe_frascos(cls):
-        frascos = cls.listar_frascos()
-        dataframe = pd.DataFrame(frascos, columns=['Id', 'identificacao', 'Capacidade', 'Estoque', 'Estoque Mínimo', 'Descrição', 'status'])
-        dataframe['Selecionado'] = False
-        dataframe = dataframe.reindex(['Selecionado', 'Id', 'identificacao', 'Capacidade', 'Estoque', 'Estoque Mínimo', 'Descrição', 'status'], axis=1)
-        return dataframe
-    
-    @classmethod
-    def carregar_dataframe_frascos_2(cls):
         # obtendo todos os frascos com seus respectivos estoques
         frascos = cls.obter_frascos_com_estoque()
         # gerando o dataframe e nomeando as colunas
@@ -187,4 +187,4 @@ class ControllerFrasco:
                                        'Status'],
                                       axis=1)
         return dataframe
-        
+    
