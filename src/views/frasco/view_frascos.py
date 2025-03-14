@@ -9,13 +9,18 @@ def cadastrar_frasco():
     identificacao = st.text_input('Identificação do Frasco')
     capacidade = st.number_input('Capacidade do frasco em mL', step=1, min_value=1)
     descricao = st.text_input('Descrição do frasco')
-    estoque = st.number_input('Estoque real do frasco', step=1, min_value=0)
+    estoque_real = st.number_input('Estoque real do frasco', step=1, min_value=0)
     estoque_minimo = st.number_input('Estoque mínimo do frasco', step=1, min_value=0)
 
     botao_cadastrar = st.button('Cadastrar frasco')
     
     if botao_cadastrar:
-        frasco_cadastrado = ControllerFrasco.criar_frasco(1, identificacao, capacidade, estoque, estoque_minimo, descricao)
+        frasco_cadastrado = ControllerFrasco.criar_frasco(1,
+                                                          identificacao,
+                                                          capacidade,
+                                                          estoque_real,
+                                                          estoque_minimo,
+                                                          descricao)
         if frasco_cadastrado:
             st.success('Frasco cadastrado com sucesso!')
             time.sleep(3)
@@ -28,7 +33,7 @@ def cadastrar_frasco():
 def editar_frasco(dados_frasco):
     id = int(dados_frasco['id']) 
     st.text(f'Id: {id}')
-    estoque = st.text(f'Estoque real do frasco: {dados_frasco['estoque']}')
+    estoque = st.text(f'Estoque real do frasco: {dados_frasco['estoque_real']}')
     identificacao = st.text_input('Identificação do Frasco', value=dados_frasco['identificacao'])
     capacidade = st.number_input('Capacidade do frasco em mL', step=1, min_value=1, value=dados_frasco['capacidade'])
     estoque_minimo = st.number_input('Estoque mínimo do frasco', step=1, min_value=0, value=dados_frasco['estoque_minimo'])
@@ -65,44 +70,76 @@ def editar_quantidade(dados_frasco):
 
 # -- Tela principal -- 
 st.header('Lista de Frascos', divider=True)
-
-dataframe = ControllerFrasco.carregar_dataframe_frascos()
+### nova tela
+dataframe = ControllerFrasco.carregar_dataframe_frascos_2()
 
 col1, col2 = st.columns(2)
 
 with col1:
+    # Exibindo o dataframe
     linhas = st.data_editor(dataframe)
-
-    # Obtendo o índices das linhas selecionadas
-    linhas_selecionadas = linhas[linhas["Selecionado"] == True]
+    
+    # Obtendo os indíces das linhas selecionadas
+    linhas_selecionadas = linhas[linhas['Seleção'] == True]
 
 with col2:
-    cadastro_frasco = st.button('Criar frasco')
-    if cadastro_frasco:
-        cadastrar_frasco()
-    if len(linhas_selecionadas) == 1:
-        botao_editar = st.button('Editar')
-        if botao_editar:
-            dados_frasco = {
-                'id': linhas_selecionadas.iloc[0, 1],
-                'identificacao': linhas_selecionadas.iloc[0, 2],
-                'capacidade': linhas_selecionadas.iloc[0, 3],
-                'estoque': linhas_selecionadas.iloc[0,4],
-                'estoque_minimo': linhas_selecionadas.iloc[0,5],
-                'descricao': linhas_selecionadas.iloc[0,6],
-                'status': linhas_selecionadas.iloc[0,7],
-            }
+    # Botão para criar um novo frasco
+    btn_novo_frasco = st.button('Novo Frasco', on_click=cadastrar_frasco)
+    # verificando se uma linha foi selecionada
+    if len(linhas_selecionadas)==1:
+        btn_editar_frasco = st.button('Editar Frasco')
+        dados_frasco = {
+            'id': linhas_selecionadas.iloc[0,1],
+            'identificacao': linhas_selecionadas.iloc[0,2],
+            'capacidade': linhas_selecionadas.iloc[0,3],
+            'descricao': linhas_selecionadas.iloc[0,4],
+            'estoque_real': linhas_selecionadas.iloc[0,5],
+            'estoque_minimo': linhas_selecionadas.iloc[0,5],
+            'status': linhas_selecionadas.iloc[0,6]
+        }
+        if btn_editar_frasco:
             editar_frasco(dados_frasco)
-        botao_atualizar_quantidade = st.button('Atualizar estoque')
-        if botao_atualizar_quantidade:
-            dados_frasco = {
-                'id': linhas_selecionadas.iloc[0, 1],
-                'identificacao': linhas_selecionadas.iloc[0, 2],
-                'capacidade': linhas_selecionadas.iloc[0, 3],
-                'estoque': linhas_selecionadas.iloc[0,4],
-                'estoque_minimo': linhas_selecionadas.iloc[0,5],
-                'descricao': linhas_selecionadas.iloc[0,6],
-                'status': linhas_selecionadas.iloc[0,7],
-            }
-            editar_quantidade(dados_frasco)
+    
+
+
+### antiga tela
+# dataframe = ControllerFrasco.carregar_dataframe_frascos()
+
+# col1, col2 = st.columns(2)
+
+# with col1:
+#     linhas = st.data_editor(dataframe)
+
+#     # Obtendo o índices das linhas selecionadas
+#     linhas_selecionadas = linhas[linhas["Selecionado"] == True]
+
+# with col2:
+#     cadastro_frasco = st.button('Criar frasco')
+#     if cadastro_frasco:
+#         cadastrar_frasco()
+#     if len(linhas_selecionadas) == 1:
+#         botao_editar = st.button('Editar')
+#         if botao_editar:
+#             dados_frasco = {
+#                 'id': linhas_selecionadas.iloc[0, 1],
+#                 'identificacao': linhas_selecionadas.iloc[0, 2],
+#                 'capacidade': linhas_selecionadas.iloc[0, 3],
+#                 'estoque': linhas_selecionadas.iloc[0,4],
+#                 'estoque_minimo': linhas_selecionadas.iloc[0,5],
+#                 'descricao': linhas_selecionadas.iloc[0,6],
+#                 'status': linhas_selecionadas.iloc[0,7],
+#             }
+#             editar_frasco(dados_frasco)
+#         botao_atualizar_quantidade = st.button('Atualizar estoque')
+#         if botao_atualizar_quantidade:
+#             dados_frasco = {
+#                 'id': linhas_selecionadas.iloc[0, 1],
+#                 'identificacao': linhas_selecionadas.iloc[0, 2],
+#                 'capacidade': linhas_selecionadas.iloc[0, 3],
+#                 'estoque': linhas_selecionadas.iloc[0,4],
+#                 'estoque_minimo': linhas_selecionadas.iloc[0,5],
+#                 'descricao': linhas_selecionadas.iloc[0,6],
+#                 'status': linhas_selecionadas.iloc[0,7],
+#             }
+#             editar_quantidade(dados_frasco)
             

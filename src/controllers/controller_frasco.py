@@ -90,6 +90,19 @@ class ControllerFrasco:
             session.close()
     
     @classmethod
+    def obter_frascos_com_estoque(cls):
+        session = create_session()
+        try:
+            resultados = DaoFrasco.obter_frasco_com_estoque(session)
+            return resultados
+        except Exception as e:
+            print(f'Erro: {e}')
+            return []
+        finally:
+            session.close()
+        
+    
+    @classmethod
     def obter_frascos_ativos(cls):
         session = create_session()
         try:
@@ -149,16 +162,29 @@ class ControllerFrasco:
         dataframe = dataframe.reindex(['Selecionado', 'Id', 'identificacao', 'Capacidade', 'Estoque', 'Estoque Mínimo', 'Descrição', 'status'], axis=1)
         return dataframe
     
-    # # @classmethod
-    # def atualizar_estoque_id_frasco(cls, id_usuario: int, id_frasco: int, nova_quantidade: int, justificativa: int):
-    #     session = create_session()
-    #     try:
-    #         historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session=session,
-    #                                                                         id_frasco=id_frasco,
-    #                                                                         id_cliente=None,
-    #                                                                         id_usuario=id_usuario,
-    #                                                                         quantidade=nova_quantidade,
-    #                                                                         )
-    #         frasco = DaoFrasco.atualizar_quantidade_frascos(session, id_frasco, nova_quantidade)
-            
-            
+    @classmethod
+    def carregar_dataframe_frascos_2(cls):
+        # obtendo todos os frascos com seus respectivos estoques
+        frascos = cls.obter_frascos_com_estoque()
+        # gerando o dataframe e nomeando as colunas
+        dataframe = pd.DataFrame(frascos, columns=['Id',
+                                                   'Identificação',
+                                                   'Capacidade',
+                                                   'Descrição',
+                                                   'Estoque real',
+                                                   'Estoque mínimo',
+                                                   'Status'])
+        # criando uma coluna chamada seleção
+        dataframe['Seleção'] = False
+        # reorganizando as colunas do dataframe
+        dataframe = dataframe.reindex(['Seleção',
+                                       'Id',
+                                       'Identificação',
+                                       'Capacidade',
+                                       'Descrição',
+                                       'Estoque real',
+                                       'Estoque mínimo',
+                                       'Status'],
+                                      axis=1)
+        return dataframe
+        

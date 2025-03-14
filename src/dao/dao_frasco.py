@@ -39,12 +39,13 @@ class DaoFrasco:
     
   @classmethod
   def obter_frasco_com_estoque(cls, session):
-    frasco_estoque = session.query(Frasco.identificacao,
+    frasco_estoque = session.query(Frasco.id,
+                                   Frasco.identificacao,
                                    Frasco.capacidade,
                                    Frasco.descricao,
-                                   Frasco.status,
                                    EstoqueEmpresa.estoque_real,
-                                   EstoqueEmpresa.estoque_minimo)\
+                                   EstoqueEmpresa.estoque_minimo,
+                                   Frasco.status)\
                                      .join(Frasco, Frasco.id == EstoqueEmpresa.id_frasco)\
                                        .all()
     return frasco_estoque
