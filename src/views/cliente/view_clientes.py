@@ -1,6 +1,6 @@
 import streamlit as st
 from src.controllers.controller_cliente import ControllerCliente
-#  from src.controllers.controller_movimentacao_estoque import ControllerSolicitacaoEstoque
+from src.controllers.controller_movimentacao_estoque import ControllerMovimentacaoEstoque
 import pandas as pd
 import time
 
@@ -59,12 +59,12 @@ def criar_cliente():
 def consultar_frascos(id_cliente):
     st.divider()
     st.text('Datas importantes:')
-    # Obtendo a solicitação mais recente
-    solicitacao_mais_recente = ControllerSolicitacaoEstoque.obter_solicitacao_mais_recente_id_cliente(int(id_cliente))
+    # Obtendo o empréstimo mais recente
+    emprestimo_mais_recente = ControllerMovimentacaoEstoque.obter_emprestimo_mais_recente_id_cliente(int(id_cliente))
     # verificando se o cliente já solicitou frasco
-    st.text(f'Solicitação mais recente: {solicitacao_mais_recente if solicitacao_mais_recente else 'Não existem solicitações para este cliente'}')
+    st.text(f'Empréstimo mais recente: {emprestimo_mais_recente if emprestimo_mais_recente else 'Não existem solicitações para este cliente'}')
     # Obtendo a devolução mais recente
-    devolucao_mais_recente = ControllerSolicitacaoEstoque.obter_devolucao_mais_recente_id_cliente(int(id_cliente))
+    devolucao_mais_recente = ControllerMovimentacaoEstoque.obter_devolucao_mais_recente_id_cliente(int(id_cliente))
     # verificando se o cliente já devolveu frasco
     st.text(f'Devolução mais recente: {devolucao_mais_recente if devolucao_mais_recente else 'Não existem devoluções para este cliente'}')
     

@@ -39,6 +39,16 @@ class DaoMovimentacao:
             .order_by(Movimentacao.data.desc())\
               .first()
     return movimentacao_mais_recente
+  
+  @classmethod
+  def obter_devolucao_mais_recente_id_cliente(cls, session, id_cliente):
+    movimentacao_mais_recente = session\
+      .query(Movimentacao)\
+        .filter(Movimentacao.id_cliente == id_cliente)\
+          .filter(Movimentacao.detalhe_movimentacao == DetalheMovimentacaoEnum.DEVOLUCAO)\
+            .order_by(Movimentacao.data.desc())\
+              .first()
+    return movimentacao_mais_recente
 
 
   @classmethod
