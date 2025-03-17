@@ -1,5 +1,5 @@
 from src.database.db import create_session
-from src.models.movimentacao import Movimentacao, TipoMovimentacaoEnum, DetalheMovimentacaoEnum
+from src.models.movimentacao import Movimentacao, TipoMovimentacaoEnum, DetalheMovimentacaoEnum, StatusEnum
 from datetime import datetime
 
 class DaoMovimentacao:
@@ -11,14 +11,16 @@ class DaoMovimentacao:
                          detalhe_movimentacao: DetalheMovimentacaoEnum,
                          id_cliente: int=None,
                          descricao=None,
-                         assinatura: str=None):
+                         assinatura: str=None,
+                         status: StatusEnum=None):
     movimentacao = Movimentacao(responsavel=responsavel,
                                 assinatura=assinatura,
                                 id_usuario=id_usuario,
                                 id_cliente=id_cliente,
                                 tipo=tipo,
                                 detalhe_movimentacao=detalhe_movimentacao,
-                                descricao=descricao)  
+                                descricao=descricao,
+                                status=status)  
     session.add(movimentacao)
     return movimentacao
   

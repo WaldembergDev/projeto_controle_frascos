@@ -17,6 +17,7 @@ from src.dao.dao_usuario import DaoUsuario
 from src.dao.dao_movimentacao import DaoMovimentacao
 from src.dao.dao_historico_estoque import DaoHistoricoEstoque
 from src.dao.dao_estoque_empresa import DaoEstoqueEmpresa
+from src.dao.dao_estoque_cliente import DaoEstoqueCliente
 # from dao.dao_movimentacao import DaoSolicitacao
 # from src.dao.dao_frasco import DaoFrasco
 # from src.dao.dao_estoque_cliente import DaoEstoqueCliente
@@ -24,6 +25,21 @@ from src.dao.dao_estoque_empresa import DaoEstoqueEmpresa
 # from src.dao.dao_estoque_movimentacao import DaoEstoqueMovimentacao
 
 from src.controllers.controller_frasco import ControllerFrasco
+from src.controllers.controller_movimentacao_estoque import ControllerMovimentacaoEstoque
 # from src.controllers.controller_cliente import ControllerCliente
-# from src.controllers.controller_solicitacao_estoque import ControllerSolicitacaoEstoque
 # from src.controllers.controller_estoque_cliente import ControllerEstoqueCliente
+
+# responsavel = 'Waldemberg Pereira da Costa'
+# id_usuario = 1
+# tipo = TipoMovimentacaoEnum.EXTERNO
+# detalhe_movimentacao = DetalheMovimentacaoEnum.EMPRESTIMO
+# dados_frasco = [(1, 20)]
+# id_cliente = 1
+
+# ControllerMovimentacaoEstoque.criar_movimentacao_com_itens(responsavel=responsavel,
+#                                                            id_usuario=id_usuario,
+#                                                            tipo=tipo,
+#                                                            detalhe_movimentacao=detalhe_movimentacao,
+#                                                            dados_frascos=dados_frasco,
+#                                                            id_cliente = 1)
+

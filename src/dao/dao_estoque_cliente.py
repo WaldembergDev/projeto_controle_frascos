@@ -24,9 +24,9 @@ class DaoEstoqueCliente:
         return estoque_cliente
     
     @classmethod
-    def atualizar_estoque_cliente(cls, session, id_frasco, id_cliente, valor):
+    def atualizar_estoque_cliente(cls, session, id_frasco, id_cliente, nova_quantidade):
         estoque_cliente = session.query(EstoqueCliente).filter(EstoqueCliente.id_frasco == id_frasco).filter(EstoqueCliente.id_cliente == id_cliente).first()
-        estoque_cliente.quantidade += valor
+        estoque_cliente.quantidade = nova_quantidade
         return estoque_cliente
 
     @classmethod

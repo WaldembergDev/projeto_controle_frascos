@@ -1,4 +1,5 @@
 from src.models.estoque_empresa import EstoqueEmpresa
+from src.database.db import create_session
 
 class DaoEstoqueEmpresa:
   @classmethod
@@ -16,4 +17,15 @@ class DaoEstoqueEmpresa:
         .filter(EstoqueEmpresa.id_frasco == id_frasco)\
           .first()
     estoque_empresa.estoque_minimo = novo_estoque_minimo
+    return estoque_empresa
+  
+  @classmethod
+  def editar_estoque_real(cls, session, id_frasco, novo_estoque_real):
+    estoque_empresa = session.query(EstoqueEmpresa).filter(EstoqueEmpresa.id_frasco == id_frasco).first()
+    estoque_empresa.estoque_real = novo_estoque_real
+    return estoque_empresa
+  
+  @classmethod
+  def obter_estoque_empresa_pelo_id_frasco(cls, session, id_frasco):
+    estoque_empresa = session.query(EstoqueEmpresa).filter(EstoqueEmpresa.id_frasco == id_frasco).first()
     return estoque_empresa
