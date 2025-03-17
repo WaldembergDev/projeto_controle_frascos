@@ -28,18 +28,3 @@ from src.controllers.controller_frasco import ControllerFrasco
 from src.controllers.controller_movimentacao_estoque import ControllerMovimentacaoEstoque
 # from src.controllers.controller_cliente import ControllerCliente
 # from src.controllers.controller_estoque_cliente import ControllerEstoqueCliente
-
-# responsavel = 'Waldemberg Pereira da Costa'
-# id_usuario = 1
-# tipo = TipoMovimentacaoEnum.EXTERNO
-# detalhe_movimentacao = DetalheMovimentacaoEnum.EMPRESTIMO
-# dados_frasco = [(1, 20)]
-# id_cliente = 1
-
-# ControllerMovimentacaoEstoque.criar_movimentacao_com_itens(responsavel=responsavel,
-#                                                            id_usuario=id_usuario,
-#                                                            tipo=tipo,
-#                                                            detalhe_movimentacao=detalhe_movimentacao,
-#                                                            dados_frascos=dados_frasco,
-#                                                            id_cliente = 1)
-

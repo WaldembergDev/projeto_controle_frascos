@@ -98,5 +98,4 @@ if botao_salvar_dados:
         time.sleep(3)
         st.rerun()
     elif movimentacao_salva == False:
-        st.error('Erro ao salvar movimentação')
-        
+        st.error('Erro ao salvar movimentação')  

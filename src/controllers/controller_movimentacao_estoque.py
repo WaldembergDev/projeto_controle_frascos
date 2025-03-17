@@ -158,14 +158,14 @@ class ControllerMovimentacaoEstoque:
         return dataframe
     
     @classmethod
-    def obter_solicitacao_mais_recente_id_cliente(cls, id_cliente):
+    def obter_emprestimo_mais_recente_id_cliente(cls, id_cliente):
         session = create_session()
         try:
-            solicitacao_mais_recente = DaoSolicitacao.obter_solicitacao_mais_recente_id_cliente(session, id_cliente)
+            emprestimo_mais_recente = DaoMovimentacao.obter_emprestimo_mais_recente_id_cliente(session, id_cliente)
             # verificando se existe uma solicitação mais recente do cliente
-            if not solicitacao_mais_recente:
+            if not emprestimo_mais_recente:
                 return None
-            return solicitacao_mais_recente.data_solicitacao.strftime('%d/%m/%Y')
+            return emprestimo_mais_recente.data.strftime('%d/%m/%Y')
         except Exception as e:
             print(f'Erro: {e}')
             return None
