@@ -19,7 +19,7 @@ class ControllerMovimentacaoEstoque:
         estoque_real_empresa = estoque_empresa.estoque_real
         if tipo_movimentacao == TipoMovimentacaoEnum.EXTERNO:
             if detalhe_movimentacao == DetalheMovimentacaoEnum.EMPRESTIMO:
-                estoque_cliente = DaoEstoqueCliente.obter_estoque_cliente_pelo_id(session, id_cliente, id_frasco)
+                estoque_cliente = DaoEstoqueCliente.obter_estoque_cliente_frasco_pelo_id(session, id_cliente, id_frasco)
                 # verificando se existe estoque do cliente
                 if not estoque_cliente:
                     DaoEstoqueCliente.criar_frasco_estoque_cliente(session, id_frasco, id_cliente, 0)
@@ -27,6 +27,7 @@ class ControllerMovimentacaoEstoque:
                 else:
                     etq_antes_cliente = estoque_cliente.quantidade
                 estoque_real_cliente = quantidade + etq_antes_cliente
+        
             elif detalhe_movimentacao == DetalheMovimentacaoEnum.DEVOLUCAO:
                 estoque_real_cliente -= quantidade
         else:
@@ -36,14 +37,12 @@ class ControllerMovimentacaoEstoque:
         
         return estoque_empresa.estoque_real, estoque_real_empresa, etq_antes_cliente, estoque_real_cliente
         
-            
-
+    
     @classmethod
     def criar_movimentacao_com_itens(cls, responsavel: str, id_usuario: int, tipo:TipoMovimentacaoEnum, detalhe_movimentacao:DetalheMovimentacaoEnum, dados_frascos: list, assinatura: str=None, id_cliente: int=None, descricao: str=None, status=None):        
         session = create_session()
         try:
             # 1 - criando a solicitação
-            
             movimentacao = DaoMovimentacao.criar_movimentacao(session,
                                                                responsavel=responsavel,
                                                                  id_usuario=id_usuario,
@@ -59,11 +58,9 @@ class ControllerMovimentacaoEstoque:
                 # criando item frasco associado à solicitação
                 item_frasco = DaoItemFrasco.criar_item_frasco(session, quantidade=quantidade, id_frasco=id_frasco, id_movimentacao=movimentacao.id)
                 session.flush() # gerando o id do item_frasco
-                
 
                 # configurando os valores do histórico
                 etq_antes_emp, etq_depois_emp, etq_antes_cliente, etq_depois_cliente = cls.configurar_historico_estoque(session, id_cliente, id_frasco, tipo, detalhe_movimentacao, quantidade)                        
-                
                 
                 # gerar histórico da movimentação
                 historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session, item_frasco.id, etq_antes_emp, etq_depois_emp, etq_antes_cliente, etq_depois_cliente)
@@ -75,8 +72,7 @@ class ControllerMovimentacaoEstoque:
                 
                 print(etq_depois_cliente)
                 # ajustando os novos valores do estoque_cliente
-                DaoEstoqueCliente.atualizar_estoque_cliente(session, id_frasco, id_cliente, etq_depois_cliente)
-                
+                DaoEstoqueCliente.atualizar_estoque_cliente(session, id_frasco, id_cliente, etq_depois_cliente)                
 
                 # efetivando as atualizações
                 session.flush()
