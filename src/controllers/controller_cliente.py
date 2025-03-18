@@ -171,4 +171,17 @@ class ControllerCliente:
             return False
         finally:
             session.close()
-        
+    
+    @classmethod
+    def obter_email_cliente_pelo_id(cls, id):
+        session = create_session()
+        try:
+            cliente = DaoCliente.obter_cliente_pelo_id(session, id)
+            if not cliente:
+                return False
+            return cliente.email
+        except Exception as e:
+            print(f'Erro: {e}')
+        finally:
+            session.close()
+                

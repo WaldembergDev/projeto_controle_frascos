@@ -79,9 +79,11 @@ class ControllerMovimentacaoEstoque:
 
                 # efetivando as atualizações
                 session.flush()
-                       
+            # obtendo o id da movimentacao inserida
+            id_movimentacao = movimentacao.id
+            # commitando as operações
             session.commit()    
-            return True
+            return id_movimentacao
         except Exception as e:
             print(f'Erro: {e}')
             return False

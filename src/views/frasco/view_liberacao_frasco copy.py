@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
+from src.services.enviar_email import send_email
 
 from PIL import Image
 import io
@@ -84,18 +85,25 @@ botao_salvar_dados = st.button('Salvar dados')
 
 if botao_salvar_dados:
     dados_frascos = []
+    detalhes_frascos = []
     for i in range(st.session_state.botoes):
         dados_frascos.append((frascos[st.session_state[f'frasco_{i}']], int(st.session_state[f'quantidade_frasco_{i}'])))
-    movimentacao_salva = ControllerMovimentacaoEstoque.criar_movimentacao_com_itens(id_usuario=1,
+        detalhes_frascos.append((st.session_state[f'frasco_{i}'], int(st.session_state[f'quantidade_frasco_{i}'])))
+    movimentacao = ControllerMovimentacaoEstoque.criar_movimentacao_com_itens(id_usuario=1,
                                                              responsavel=responsavel,
                                                              tipo=TipoMovimentacaoEnum.EXTERNO,
                                                              detalhe_movimentacao=DetalheMovimentacaoEnum.EMPRESTIMO,
                                                                id_cliente=id_cliente,
                                                                  dados_frascos=dados_frascos,
                                                                  assinatura=converter_imagem(canvas_result.image_data))
-    if movimentacao_salva == True:
-        st.success('Solicitação realizada com sucesso!')
+    if movimentacao:
+        # Obtendo o email do destinatário
+        email = ControllerCliente.obter_email_cliente_pelo_id(id_cliente)
+        # enviando comprovante para o cliente
+        send_email(cliente, email, movimentacao, detalhes_frascos)
+        # exibindo a mensagem ao usuário
+        st.success('Solicitação realizada com sucesso!') 
         time.sleep(3)
-        st.rerun()
-    elif movimentacao_salva == False:
-        st.error('Erro ao salvar movimentação')  
+        st.rerun()# recarregando a página
+    elif movimentacao == False:
+        st.error('Erro ao salvar movimentação')

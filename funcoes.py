@@ -26,5 +26,5 @@ from src.dao.dao_estoque_cliente import DaoEstoqueCliente
 
 from src.controllers.controller_frasco import ControllerFrasco
 from src.controllers.controller_movimentacao_estoque import ControllerMovimentacaoEstoque
-# from src.controllers.controller_cliente import ControllerCliente
+from src.controllers.controller_cliente import ControllerCliente
 # from src.controllers.controller_estoque_cliente import ControllerEstoqueCliente
