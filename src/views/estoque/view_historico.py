@@ -1,5 +1,5 @@
 import streamlit as st
-from src.controllers.controller_movimentacao_estoque import ControllerSolicitacaoEstoque
+from src.controllers.controller_movimentacao_estoque import ControllerMovimentacaoEstoque
 from src.controllers.controller_frasco import ControllerFrasco
 from src.controllers.controller_cliente import ControllerCliente
 from src.controllers.controller_historico_estoque import ControllerHistoricoEstoque
@@ -8,13 +8,13 @@ import pandas as pd
 @st.dialog('Detalhes')
 def visualizar_detalhes(dados):
     id_solicitacao = dados['id_solicitacao']
-    ControllerSolicitacaoEstoque.obter_historico_com_movimentacao()
+    ControllerMovimentacaoEstoque.obter_historico_com_movimentacao()
 
 # carregamento dos dados
-dataframe = ControllerSolicitacaoEstoque.carregar_dataframe_historico_movimentacao()
+dataframe = ControllerHistoricoEstoque.carregar_dataframe_historico_movimentacao()
 frascos_ativos = ControllerFrasco.gerar_dicionario_frascos_ativos()
 clientes_ativos = ControllerCliente.gerar_dicionario_clientes_ativos()
-tipos_transacoes = ControllerHistoricoEstoque.obter_tipos_transacoes()
+tipos_transacoes = ControllerMovimentacaoEstoque.obter_detalhes_movimentacao()
 
 st.header('Histórico', divider=True)
 
@@ -38,5 +38,7 @@ dataframe_filtrado = dataframe[(dataframe['Data']>=data_inicial) \
                                 & (dataframe['Frasco'].isin(frascos_selecionados)) \
                                     & dataframe['Cliente'].isin(clientes_selecionados) \
                                         & dataframe['Tipo de Transação'].isin(tipos_transacoes_selecionadas)].copy()
-
+# Ajustando a visualização da coluna de data
+dataframe_filtrado['Data'] = dataframe_filtrado['Data'].dt.strftime('%d/%m/%Y %H:%M:%S')
+# Visualização do dataframe
 st.data_editor(dataframe_filtrado)

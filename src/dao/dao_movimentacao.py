@@ -60,3 +60,10 @@ class DaoMovimentacao:
   def excluir_movimentacao(cls, session, id_movimentacao):
     movimentacao = session.query(movimentacao).filter(movimentacao.id == id_movimentacao).first()
     session.delete(movimentacao)
+  
+  @classmethod
+  def obter_detalhes_movimentacao(cls, session):    
+    tipos = session.query(Movimentacao.detalhe_movimentacao).distinct().all()
+    return tipos
+  
+  

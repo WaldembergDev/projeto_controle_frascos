@@ -152,10 +152,11 @@ class ControllerMovimentacaoEstoque:
     
     @classmethod
     def carregar_dataframe_historico_movimentacao(cls):
-        historico_movimentacao = cls.obter_historico_com_movimentacao()
-        dataframe = pd.DataFrame(historico_movimentacao, columns=['Id', 'Data', 'Frasco', 'Cliente', 'Usuario', 'Quantidade movimentada', 'Tipo de Transação', 'Descrição', 'Id Solicitação', 'Estoque antes empresa', 'Estoque depois empresa', 'Estoque antes cliente', 'Estoque depois cliente'])
-        dataframe['Selecionado'] = False
-        dataframe = dataframe.reindex(['Selecionado', 'Id', 'Data', 'Frasco', 'Cliente', 'Usuario', 'Quantidade movimentada', 'Tipo de Transação', 'Descrição', 'Id Solicitação', 'Estoque antes empresa', 'Estoque depois empresa', 'Estoque antes cliente', 'Estoque depois cliente'], axis=1)
+        historico_movimentacao = cls.obter_detalhes_movimentacao()
+        dataframe = pd.DataFrame(historico_movimentacao)
+        # dataframe = pd.DataFrame(historico_movimentacao, columns=['Id', 'Data', 'Frasco', 'Cliente', 'Usuario', 'Quantidade movimentada', 'Tipo de Transação', 'Descrição', 'Id Solicitação', 'Estoque antes empresa', 'Estoque depois empresa', 'Estoque antes cliente', 'Estoque depois cliente'])
+        # dataframe['Selecionado'] = False
+        # dataframe = dataframe.reindex(['Selecionado', 'Id', 'Data', 'Frasco', 'Cliente', 'Usuario', 'Quantidade movimentada', 'Tipo de Transação', 'Descrição', 'Id Solicitação', 'Estoque antes empresa', 'Estoque depois empresa', 'Estoque antes cliente', 'Estoque depois cliente'], axis=1)
         return dataframe
     
     @classmethod
@@ -185,5 +186,19 @@ class ControllerMovimentacaoEstoque:
         except Exception as e:
             print(f'Erro: {e}')
             return None
+        finally:
+            session.close()
+
+    @classmethod
+    def obter_detalhes_movimentacao(cls):
+        session = create_session()
+        try:
+            detalhes = DaoMovimentacao.obter_detalhes_movimentacao(session)
+            if not detalhes:
+                return []
+            detalhes_valores = [valor[0].value for valor in detalhes]
+            return detalhes_valores
+        except Exception as e:
+            print(f'Erro: {e}')
         finally:
             session.close()

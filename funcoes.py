@@ -18,6 +18,7 @@ from src.dao.dao_movimentacao import DaoMovimentacao
 from src.dao.dao_historico_estoque import DaoHistoricoEstoque
 from src.dao.dao_estoque_empresa import DaoEstoqueEmpresa
 from src.dao.dao_estoque_cliente import DaoEstoqueCliente
+from src.dao.dao_historico_estoque import HistoricoEstoque
 # from dao.dao_movimentacao import DaoSolicitacao
 # from src.dao.dao_frasco import DaoFrasco
 # from src.dao.dao_estoque_cliente import DaoEstoqueCliente
