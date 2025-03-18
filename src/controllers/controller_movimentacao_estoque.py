@@ -177,11 +177,11 @@ class ControllerMovimentacaoEstoque:
     def obter_devolucao_mais_recente_id_cliente(cls, id_cliente):
         session = create_session()
         try:
-            devolucao_mais_recente = DaoHistoricoEstoque.obter_devolucao_mais_recente_id_cliente(session, id_cliente)
+            devolucao_mais_recente = DaoMovimentacao.obter_devolucao_mais_recente_id_cliente(session, id_cliente)
             # verificando se existe uma solicitação mais recente do cliente
             if not devolucao_mais_recente:
                 return None
-            return devolucao_mais_recente.data_movimentacao.strftime('%d/%m/%Y')
+            return devolucao_mais_recente.data.strftime('%d/%m/%Y')
         except Exception as e:
             print(f'Erro: {e}')
             return None

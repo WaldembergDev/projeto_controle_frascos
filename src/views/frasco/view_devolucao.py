@@ -1,7 +1,9 @@
 import streamlit as st
 from src.controllers.controller_cliente import ControllerCliente
-from src.controllers.controller_movimentacao_estoque import ControllerSolicitacaoEstoque
 from src.controllers.controller_estoque_cliente import ControllerEstoqueCliente
+from src.controllers.controller_movimentacao_estoque import ControllerMovimentacaoEstoque
+
+from src.models.movimentacao import DetalheMovimentacaoEnum, TipoMovimentacaoEnum
 
 import time
 
@@ -44,8 +46,6 @@ for i in range(st.session_state.tipo_frascos):
     with col1:
         frasco = st.selectbox('Selecione o frasco', options=frascos, key=f'frasco_{i}')
     with col2:
-        if cliente and frasco:
-            valor_maximo = ControllerEstoqueCliente.obter_estoque_do_cliente_pelo_id(clientes[cliente], frascos[frasco])
         quantidade = st.number_input('Selecione a quantidade', key=f'quantidade_{i}', step=1, min_value=1)
 
 botao_registrar_devolucao = st.button('Registrar devolução')
@@ -53,8 +53,8 @@ botao_registrar_devolucao = st.button('Registrar devolução')
 if botao_registrar_devolucao and cliente and frasco:
     # criando uma lista de tuplas com os dados dos frascos a serem devolvidos
     dados_frascos = [(frascos[st.session_state[f'frasco_{i}']], st.session_state[f'quantidade_{i}']) for i in range(st.session_state.tipo_frascos)]
-    registro_salvo = ControllerSolicitacaoEstoque.devolver_frascos(1, clientes[cliente], dados_frascos)
-    if registro_salvo == True:
+    registro_salvo = ControllerMovimentacaoEstoque.criar_movimentacao_com_itens(None, 1, TipoMovimentacaoEnum.EXTERNO, DetalheMovimentacaoEnum.DEVOLUCAO, dados_frascos, None, clientes[cliente])
+    if registro_salvo:
         st.success('Registro salvo com sucesso!')
         time.sleep(2)
         st.rerun()
