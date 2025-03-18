@@ -98,9 +98,9 @@ if botao_salvar_dados:
                                                                  assinatura=converter_imagem(canvas_result.image_data))
     if movimentacao:
         # Obtendo o email do destinatário
-        email = ControllerCliente.obter_email_cliente_pelo_id(id_cliente)
+        destinatario = ControllerCliente.obter_email_cliente_pelo_id(id_cliente)
         # enviando comprovante para o cliente
-        send_email(cliente, email, movimentacao, detalhes_frascos)
+        send_email(cliente, destinatario, DetalheMovimentacaoEnum.EMPRESTIMO, movimentacao, detalhes_frascos)
         # exibindo a mensagem ao usuário
         st.success('Solicitação realizada com sucesso!') 
         time.sleep(3)
