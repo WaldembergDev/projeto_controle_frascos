@@ -46,6 +46,7 @@ class DaoEstoqueCliente:
     def obter_estoque_cliente_frasco_pelo_id(cls, session, id_cliente, id_frasco):
         estoque = session.query(EstoqueCliente)\
             .filter(EstoqueCliente.id_cliente == id_cliente)\
+                .filter(EstoqueCliente.id_frasco == id_frasco)\
                 .first()
         return estoque
     
