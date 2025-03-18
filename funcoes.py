@@ -28,4 +28,7 @@ from src.dao.dao_historico_estoque import HistoricoEstoque
 from src.controllers.controller_frasco import ControllerFrasco
 from src.controllers.controller_movimentacao_estoque import ControllerMovimentacaoEstoque
 from src.controllers.controller_cliente import ControllerCliente
+from src.controllers.controller_historico_estoque import ControllerHistoricoEstoque
 # from src.controllers.controller_estoque_cliente import ControllerEstoqueCliente
+
+resultado = ControllerHistoricoEstoque.obter_lista_historico_estoque()
