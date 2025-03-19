@@ -1,6 +1,7 @@
 from src.database.db import create_session
 from src.models.cliente import Cliente, StatusEnum
 from src.models.movimentacao import Movimentacao
+from datetime import datetime, timedelta
 
 class DaoCliente:
   
@@ -47,5 +48,16 @@ class DaoCliente:
     cliente = session.query(Cliente).filter(Cliente.id == id_cliente).first()
     estoque_cliente = cliente.estoque_cliente
     return estoque_cliente
+  
+  @classmethod
+  def verificar_inatividade_cliente(cls, session):
+    # obtendo a data atual
+    data_atual = datetime.now()
+    # obtendo a data 60 dias atrás
+    data_antiga = data_atual - timedelta(seconds=60)
+    clientes = session.query(Cliente).outerjoin(Movimentacao, Cliente.id == Movimentacao.id_cliente).filter(Movimentacao.data < data_antiga).all()
+    return clientes
+    
+  
     
   

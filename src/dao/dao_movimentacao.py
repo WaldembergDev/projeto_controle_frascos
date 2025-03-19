@@ -66,4 +66,3 @@ class DaoMovimentacao:
     tipos = session.query(Movimentacao.detalhe_movimentacao).distinct().all()
     return tipos
   
-  

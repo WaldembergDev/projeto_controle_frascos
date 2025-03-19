@@ -31,4 +31,7 @@ from src.controllers.controller_cliente import ControllerCliente
 from src.controllers.controller_historico_estoque import ControllerHistoricoEstoque
 # from src.controllers.controller_estoque_cliente import ControllerEstoqueCliente
 
-resultado = ControllerHistoricoEstoque.obter_lista_historico_estoque()
+session = create_session()
+clientes = DaoCliente.verificar_inatividade_cliente(session)
+print(len(clientes))
+session.close()
