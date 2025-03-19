@@ -31,3 +31,6 @@ from src.controllers.controller_cliente import ControllerCliente
 from src.controllers.controller_historico_estoque import ControllerHistoricoEstoque
 # from src.controllers.controller_estoque_cliente import ControllerEstoqueCliente
 
+# Pendências
+# Gerar relatório com todos os clintes que possuem frascos
+# Gerar visualização da movimentaão
