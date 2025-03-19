@@ -50,6 +50,18 @@ class ControllerCliente:
             return []
         finally:
             session.close()
+    
+    @classmethod
+    def obter_clientes_sem_movimentacao(cls, verificar_pendencia: bool):
+        session = create_session()
+        try:
+            clientes = DaoCliente.obter_clientes_sem_movimentacao(session, verificar_pendencia)
+            return clientes
+        except Exception as e:
+            return []
+        finally:
+            session.close()
+        
 
     @classmethod
     def obter_clientes_ativos(cls):
@@ -106,6 +118,12 @@ class ControllerCliente:
         return lista_clientes
     
     @classmethod
+    def listar_clientes_sem_movimentacao(cls, verificar_pendencia: bool):
+        clientes = cls.obter_clientes_sem_movimentacao(verificar_pendencia)
+        lista_clientes = [(cliente.id, cliente.nome, cliente.identificacao, cliente.email, cliente.telefone, cliente.status) for cliente in clientes]
+        return lista_clientes
+    
+    @classmethod
     def gerar_dicionario_clientes_ativos(cls):
         clientes_ativos = cls.obter_clientes_ativos()
         dicionario_clientes_ativos = {cliente.nome: cliente.id for cliente in clientes_ativos}
@@ -128,6 +146,14 @@ class ControllerCliente:
     @classmethod
     def carregar_dataframe_clientes(cls):
         clientes = cls.listar_clientes()
+        dataframe = pd.DataFrame(clientes, columns=['Id', 'Nome', 'Identificação', 'Email', 'Telefone', 'Status'])
+        dataframe['Selecionado'] = False
+        dataframe = dataframe.reindex(['Selecionado', 'Id', 'Nome', 'Identificação', 'Email', 'Telefone', 'Status'], axis=1)
+        return dataframe
+    
+    @classmethod
+    def carregar_dataframe_clientes_sem_movimentacao(cls, verificar_pendencia: bool):
+        clientes = cls.listar_clientes_sem_movimentacao(verificar_pendencia)
         dataframe = pd.DataFrame(clientes, columns=['Id', 'Nome', 'Identificação', 'Email', 'Telefone', 'Status'])
         dataframe['Selecionado'] = False
         dataframe = dataframe.reindex(['Selecionado', 'Id', 'Nome', 'Identificação', 'Email', 'Telefone', 'Status'], axis=1)

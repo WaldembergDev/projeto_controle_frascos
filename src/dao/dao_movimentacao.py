@@ -66,3 +66,10 @@ class DaoMovimentacao:
     tipos = session.query(Movimentacao.detalhe_movimentacao).distinct().all()
     return tipos
   
+  # @classmethod
+  # def atualizar_movimentacao(cls, id_movimentacao, nova_data):
+  #   session = create_session()
+  #   movimentacao = session.query(Movimentacao).filter(Movimentacao.id == id_movimentacao).first()
+  #   movimentacao.data = nova_data
+  #   session.commit()
+  #   session.close()

@@ -52,7 +52,7 @@ class DaoCliente:
     return estoque_cliente
   
   @classmethod
-  def verificar_inatividade_cliente(cls, session, verificar_estoque_cliente: bool):
+  def obter_clientes_sem_movimentacao(cls, session, verificar_estoque_cliente: bool):
       # obtendo a data atual
       data_atual = datetime.now()
       # obtendo a data 60 dias atrás
@@ -62,7 +62,8 @@ class DaoCliente:
       conditions = [
             EstoqueCliente.id_cliente == Cliente.id,
             Movimentacao.detalhe_movimentacao == DetalheMovimentacaoEnum.EMPRESTIMO,
-            Movimentacao.data < data_antiga
+            Movimentacao.data < data_antiga,
+            Cliente.status == StatusEnum.ATIVO
         ]
         
       # Adiciona a condição EstoqueCliente.quantidade > 0 somente se estoque_cliente for True
@@ -85,15 +86,14 @@ class DaoCliente:
             .where(
                 and_(
                     Movimentacao.detalhe_movimentacao == DetalheMovimentacaoEnum.DEVOLUCAO,
-                    Movimentacao.data >= data_antiga,
-                    Cliente.status == StatusEnum.ATIVO
+                    Movimentacao.data >= data_antiga
                 )
             )
         )
         
       # Consulta final: clientes que possuem frascos, mas NÃO fizeram devoluções recentes
       stmt = (
-            select(Cliente.nome)
+            select(Cliente)
             .where(
                 Cliente.id.in_(subquery_clientes_frasco),  # Cliente tem frascos
                 not_(exists(subquery_devolucoes.where(Movimentacao.id_cliente == Cliente.id)))  # Cliente não fez devolução recente
@@ -103,7 +103,3 @@ class DaoCliente:
       clientes_inativos = session.execute(stmt).scalars().all()
     
       return clientes_inativos
-    
-  
-    
-  

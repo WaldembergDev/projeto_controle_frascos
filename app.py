@@ -35,8 +35,6 @@ pagina = st.navigation({
     
 })
 
-# pagina = st.navigation([view_dashboard, view_cadastro_cliente, view_solicitacao_frascos, view_estoque_frascos, view_relatorios])
-
 pagina.run()
 
 
