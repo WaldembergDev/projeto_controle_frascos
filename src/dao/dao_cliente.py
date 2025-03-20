@@ -115,4 +115,3 @@ class DaoCliente:
             .order_by(Cliente.nome)\
               .all()
     return clientes_frascos
-     
