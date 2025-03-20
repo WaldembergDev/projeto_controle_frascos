@@ -2,6 +2,7 @@ from src.database.db import create_session
 from src.models.cliente import Cliente, StatusEnum
 from src.models.movimentacao import Movimentacao, DetalheMovimentacaoEnum
 from src.models.estoque_cliente import EstoqueCliente
+from src.models.frasco import Frasco
 from sqlalchemy import select, and_, not_, exists, distinct
 from datetime import datetime, timedelta
 
@@ -103,3 +104,15 @@ class DaoCliente:
       clientes_inativos = session.execute(stmt).scalars().all()
     
       return clientes_inativos
+  
+  @classmethod
+  def obter_clientes_ativos_com_frascos(cls, session): 
+    session = create_session()
+    clientes_frascos = session.query(Cliente.nome, Frasco.identificacao, EstoqueCliente.quantidade)\
+      .join(EstoqueCliente, EstoqueCliente.id_cliente == Cliente.id)\
+        .join(Frasco, Frasco.id == EstoqueCliente.id_frasco)\
+          .filter(EstoqueCliente.quantidade > 0)\
+            .order_by(Cliente.nome)\
+              .all()
+    return clientes_frascos
+     

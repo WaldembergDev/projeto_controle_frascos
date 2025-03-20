@@ -210,4 +210,24 @@ class ControllerCliente:
             print(f'Erro: {e}')
         finally:
             session.close()
+    
+    @classmethod
+    def obter_clientes_ativos_com_frasco(cls):
+        session = create_session()
+        try:
+            resultados = DaoCliente.obter_clientes_ativos_com_frascos(session)
+            if not resultados:
+                return []
+            return resultados
+        except Exception as e:
+            print(f'Erro: {e}')
+        finally:
+            session.close()
+    
+    @classmethod
+    def gerar_dataframe_clientes_ativos_com_frascos(cls):
+        resultados = cls.obter_clientes_ativos_com_frasco()
+        dataframe = pd.DataFrame(resultados, columns=['Nome', 'Frasco', 'Quantidade'])
+        return dataframe
+                
                 
