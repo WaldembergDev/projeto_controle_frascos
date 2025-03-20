@@ -1,4 +1,5 @@
 from src.models.estoque_empresa import EstoqueEmpresa
+from src.models.frasco import Frasco, StatusEnum
 from src.database.db import create_session
 
 class DaoEstoqueEmpresa:
@@ -29,3 +30,12 @@ class DaoEstoqueEmpresa:
   def obter_estoque_empresa_pelo_id_frasco(cls, session, id_frasco):
     estoque_empresa = session.query(EstoqueEmpresa).filter(EstoqueEmpresa.id_frasco == id_frasco).first()
     return estoque_empresa
+  
+  @classmethod
+  def obter_estoque_baixo_frascos(cls, session):
+    estoque_real = session.query(Frasco.identificacao, EstoqueEmpresa.estoque_real)\
+      .join(EstoqueEmpresa, EstoqueEmpresa.id_frasco == Frasco.id)\
+        .filter(EstoqueEmpresa.estoque_real <= EstoqueEmpresa.estoque_minimo)\
+          .filter(Frasco.status == StatusEnum.ATIVO)\
+            .all()
+    return estoque_real

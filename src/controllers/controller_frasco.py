@@ -188,3 +188,22 @@ class ControllerFrasco:
                                       axis=1)
         return dataframe
     
+    @classmethod
+    def obter_estoque_baixo_empresa(cls):
+        session = create_session()
+        try:
+            frasco_estoque = DaoEstoqueEmpresa.obter_estoque_baixo_frascos(session)
+            if not frasco_estoque:
+                return []
+            return frasco_estoque
+        except Exception as e:
+            print(f'Erro: {e}')
+        finally:
+            session.close()
+    
+    @classmethod
+    def gerar_dataframe_estoque_baixo_empresa(cls):
+        frascos = cls.obter_estoque_baixo_empresa()
+        dataframe = pd.DataFrame(frascos)
+        return dataframe
+    
