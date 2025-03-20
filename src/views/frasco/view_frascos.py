@@ -1,5 +1,6 @@
 import streamlit as st
 from src.controllers.controller_frasco import ControllerFrasco
+from src.models.frasco import StatusEnum
 import time
 
 # caixas de diálogo
@@ -40,6 +41,7 @@ def editar_frasco(dados_frasco):
     descricao = st.text_input('Descrição do frasco', value=dados_frasco['descricao'])
     valor_status = 0 if dados_frasco['status'] == 'ativo' else 1
     status = st.selectbox('Status', options=['ativo', 'inativo'], index=valor_status)
+    status = StatusEnum.ATIVO if status=='ativo' else StatusEnum.INATIVO
     
     botao_alterar = st.button('Salvar alterações')
 
@@ -93,8 +95,8 @@ with col2:
             'capacidade': linhas_selecionadas.iloc[0,3],
             'descricao': linhas_selecionadas.iloc[0,4],
             'estoque_real': linhas_selecionadas.iloc[0,5],
-            'estoque_minimo': linhas_selecionadas.iloc[0,5],
-            'status': linhas_selecionadas.iloc[0,6]
+            'estoque_minimo': linhas_selecionadas.iloc[0,6],
+            'status': linhas_selecionadas.iloc[0,7]
         }
         if btn_editar_frasco:
             editar_frasco(dados_frasco)
