@@ -9,7 +9,7 @@ import os
 load_dotenv(r'.venv\.env')
 
 # corpo dos emails
-def obter_corpo_email(detalhe_movimentacao: DetalheMovimentacaoEnum, cliente: str, solicitacao: str):
+def obter_corpo_email(detalhe_movimentacao: DetalheMovimentacaoEnum, cliente: str, solicitacao: str, lista_frascos: str, saldo_frascos: str):
     if detalhe_movimentacao == DetalheMovimentacaoEnum.EMPRESTIMO:
         corpo = f'''Prezado(a) {cliente},
 
@@ -17,7 +17,10 @@ Confirmamos a retirada dos frascos conforme solicitado. Seguem os detalhes:
 
 Data e hora da retirada: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
 Número do Registro: {solicitacao}
-Frascaria:
+Frascaria retirada:
+    {lista_frascos}
+Saldo atualizado:
+    {saldo_frascos}
 '''
         
     elif detalhe_movimentacao == DetalheMovimentacaoEnum.DEVOLUCAO:
@@ -27,7 +30,10 @@ Confirmamos a devolução dos frascos. Seguem os detalhes:
 
 Data e hora da devolução: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
 Número do Registro: {solicitacao}
-Frascaria:
+Frascaria devolvida:
+    {lista_frascos}
+Saldo atualizado:
+    {saldo_frascos}
 '''
     return corpo
 
@@ -40,16 +46,18 @@ def obter_assunto_email(detalhe_movimentacao: DetalheMovimentacaoEnum, cliente: 
     return assunto
 
 # criando uma função que envia um e-mail
-def send_email(cliente: str, destinatario: str, detalhe_movimentacao: DetalheMovimentacaoEnum, solicitacao: int, lista_frasco: list):
+def send_email(cliente: str, destinatario: str, detalhe_movimentacao: DetalheMovimentacaoEnum, solicitacao: int, lista_frasco: list, lista_saldo_frascaria: list):
     # carregando os dados de autenticação
     remetente = os.getenv('SENDER')
     senha = os.getenv('PASSWORD')
     # Assunto da mensagem
     assunto = obter_assunto_email(detalhe_movimentacao, cliente)
     # Corpo da mensagem
-    corpo = obter_corpo_email(detalhe_movimentacao, cliente, solicitacao)
-    
-    corpo += "\n".join(f" - {frasco}: {quantidade} unidade(s)" for frasco, quantidade in lista_frasco)
+    # frascaria movimentada
+    frascaria = "\n".join(f" - {frasco}: {quantidade} unidade(s)" for frasco, quantidade in lista_frasco)
+    saldo_frascaria = '\n'.join(f' - {frasco}: {quantidade} unidade(s)' for frasco, quantidade in lista_saldo_frascaria)
+    # saldo da frascaria
+    corpo = obter_corpo_email(detalhe_movimentacao, cliente, solicitacao, frascaria, saldo_frascaria)
 
     msg = MIMEText(corpo)
     msg['Subject'] = assunto

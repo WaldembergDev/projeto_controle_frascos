@@ -229,5 +229,19 @@ class ControllerCliente:
         resultados = cls.obter_clientes_ativos_com_frasco()
         dataframe = pd.DataFrame(resultados, columns=['Nome', 'Frasco', 'Quantidade'])
         return dataframe
-                
-                
+    
+    @classmethod
+    def obter_frascos_cliente(cls, id_cliente):
+        session = create_session()
+        try:
+            cliente = session.query(Cliente).filter(Cliente.id == id_cliente).first()
+            estoque_frascos = cliente.estoque_cliente
+            if not estoque_frascos:
+                return []
+            detalhes_frascos = [(estoque_frasco.frasco.identificacao, estoque_frasco.quantidade) for estoque_frasco in estoque_frascos]
+            return detalhes_frascos
+        except Exception as e:
+            print(f'Erro: {e}')
+            return False
+        finally:
+            session.close()

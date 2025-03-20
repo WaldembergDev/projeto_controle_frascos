@@ -60,7 +60,9 @@ if botao_registrar_devolucao and cliente and frasco:
     if registro_salvo:
         # obtendo o email do cliente
         destinatario = ControllerCliente.obter_email_cliente_pelo_id(clientes[cliente])
-        send_email(cliente, destinatario, DetalheMovimentacaoEnum.DEVOLUCAO, registro_salvo, detalhes_frascos)
+        # obtendo o saldo dos frascos em posso do cliente
+        lista_saldo = ControllerCliente.obter_frascos_cliente(clientes[cliente])
+        send_email(cliente, destinatario, DetalheMovimentacaoEnum.DEVOLUCAO, registro_salvo, detalhes_frascos, lista_saldo)
         st.success('Registro salvo com sucesso!')
         time.sleep(2)
         st.rerun()
