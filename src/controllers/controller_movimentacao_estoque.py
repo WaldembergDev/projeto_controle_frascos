@@ -49,8 +49,7 @@ class ControllerMovimentacaoEstoque:
                     etq_antes_cliente = estoque_cliente.quantidade
                 else:
                     etq_antes_cliente = None
-                    etq_depois_cliente = None
-                
+                    etq_depois_cliente = None                
                 
                 # Definindo se será somado ou diminuido
                 # tipo empréstimo
@@ -64,6 +63,7 @@ class ControllerMovimentacaoEstoque:
                 # tipo devolução
                 elif detalhe_movimentacao == DetalheMovimentacaoEnum.DEVOLUCAO:
                     if not estoque_cliente:
+                        DaoEstoqueCliente.criar_frasco_estoque_cliente(session, id_frasco, id_cliente, quantidade)
                         etq_antes_cliente = 0
                     etq_depois_cliente = etq_antes_cliente - quantidade
                     if etq_depois_cliente < 0:
@@ -84,9 +84,10 @@ class ControllerMovimentacaoEstoque:
                 # ajustando os novos valores do estoque_empresa
                 DaoEstoqueEmpresa.editar_estoque_real(session, id_frasco, etq_depois_emp)
                 
+                
                 if etq_depois_cliente or etq_depois_cliente == 0:
                     # ajustando os novos valores do estoque_cliente
-                    DaoEstoqueCliente.atualizar_estoque_cliente(session, id_frasco, id_cliente, etq_depois_cliente)                
+                    DaoEstoqueCliente.atualizar_estoque_cliente(session, id_frasco, id_cliente, etq_depois_cliente)         
 
                 # efetivando as atualizações
                 session.flush()
