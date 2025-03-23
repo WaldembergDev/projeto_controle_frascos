@@ -102,7 +102,7 @@ if botao_salvar_dados:
         # Obtendo a lista com o saldo do cliente
         lista_frascaria = ControllerCliente.obter_frascos_cliente(id_cliente)
         # enviando comprovante para o cliente
-        send_email(cliente, destinatario, DetalheMovimentacaoEnum.EMPRESTIMO, movimentacao, detalhes_frascos, lista_frascaria)
+        send_email(cliente, destinatario, DetalheMovimentacaoEnum.EMPRESTIMO, responsavel, detalhes_frascos, lista_frascaria)
         # exibindo a mensagem ao usuário
         st.success('Solicitação realizada com sucesso!') 
         time.sleep(3)

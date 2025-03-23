@@ -11,6 +11,8 @@ import time
 
 st.header('Registro de devolução')
 
+responsavel = st.text_input('Responsável pela devolução')
+
 # carregando os clientes ativos
 clientes = ControllerCliente.gerar_dicionario_clientes_ativos()
 
@@ -62,7 +64,7 @@ if botao_registrar_devolucao and cliente and frasco:
         destinatario = ControllerCliente.obter_email_cliente_pelo_id(clientes[cliente])
         # obtendo o saldo dos frascos em posso do cliente
         lista_saldo = ControllerCliente.obter_frascos_cliente(clientes[cliente])
-        send_email(cliente, destinatario, DetalheMovimentacaoEnum.DEVOLUCAO, registro_salvo, detalhes_frascos, lista_saldo)
+        send_email(cliente, destinatario, DetalheMovimentacaoEnum.DEVOLUCAO, responsavel, detalhes_frascos, lista_saldo)
         st.success('Registro salvo com sucesso!')
         time.sleep(2)
         st.rerun()
