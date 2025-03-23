@@ -2,7 +2,7 @@ import streamlit as st
 from src.controllers.controller_cliente import ControllerCliente
 from src.controllers.controller_estoque_cliente import ControllerEstoqueCliente
 from src.controllers.controller_movimentacao_estoque import ControllerMovimentacaoEstoque
-
+from src.controllers.controller_frasco import ControllerFrasco
 from src.models.movimentacao import DetalheMovimentacaoEnum, TipoMovimentacaoEnum
 
 from src.services.enviar_email import send_email
@@ -21,7 +21,7 @@ cliente = st.selectbox('Selecione o cliente', options=clientes)
 
 # carregando os frascos com o cliente
 if clientes:
-    frascos = ControllerCliente.gerar_dicionario_frascos_pelo_id_cliente(clientes[cliente])
+    frascos = ControllerFrasco.gerar_dicionario_frascos_ativos()
 
 # selecionando os frascos
 if not 'tipo_frascos' in st.session_state:

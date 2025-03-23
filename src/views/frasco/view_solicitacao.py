@@ -1,5 +1,7 @@
 import streamlit as st
 from src.controllers.controller_frasco import ControllerFrasco
+from src.controllers.controller_movimentacao_estoque import ControllerMovimentacaoEstoque, DetalheMovimentacaoEnum, TipoMovimentacaoEnum
+import time
 
 # carregando os dados dos frascos ativos
 frascos = ControllerFrasco.gerar_dicionario_frascos_ativos()
@@ -39,4 +41,22 @@ for i in range(st.session_state.botoes):
 btn_solicitar = st.button('Solicitar frascos')
 
 if btn_solicitar:
-  pass
+    dados_frascos = []
+    detalhes_frascos = []
+    for i in range(st.session_state.botoes):
+        dados_frascos.append((frascos[st.session_state[f'frasco_{i}']], int(st.session_state[f'quantidade_frasco_{i}'])))
+        detalhes_frascos.append((st.session_state[f'frasco_{i}'], int(st.session_state[f'quantidade_frasco_{i}'])))
+    movimentacao = ControllerMovimentacaoEstoque.criar_movimentacao_com_itens(id_usuario=1,
+                                                             responsavel=None,
+                                                             tipo=TipoMovimentacaoEnum.INTERNO,
+                                                             detalhe_movimentacao=DetalheMovimentacaoEnum.SOLICITACAO,
+                                                               id_cliente=None,
+                                                                 dados_frascos=dados_frascos,
+                                                                 assinatura=None)
+    if movimentacao:
+        # exibindo a mensagem ao usuário
+        st.success('Solicitação realizada com sucesso!') 
+        time.sleep(3)
+        st.rerun()# recarregando a página
+    elif movimentacao == False:
+        st.error('Erro ao salvar movimentação')

@@ -40,12 +40,17 @@ class ControllerMovimentacaoEstoque:
                 # dados do estoque da empresa
                 estoque_empresa = DaoEstoqueEmpresa.obter_estoque_empresa_pelo_id_frasco(session, id_frasco)
                 if estoque_empresa:
-                    estoque_real = estoque_empresa.estoque_real
+                    etq_antes_emp = estoque_empresa.estoque_real # definindo o estoque que será registrado na função
 
                 # dados do estoque do cliente
                 estoque_cliente = DaoEstoqueCliente.obter_estoque_cliente_frasco_pelo_id(session, id_cliente, id_frasco)
+                
                 if estoque_cliente:
-                    estoque_cliente.quantidade
+                    etq_antes_cliente = estoque_cliente.quantidade
+                else:
+                    etq_antes_cliente = None
+                    etq_depois_cliente = None
+                
                 
                 # Definindo se será somado ou diminuido
                 # tipo empréstimo
@@ -56,29 +61,32 @@ class ControllerMovimentacaoEstoque:
                     else:
                         etq_antes_cliente = estoque_cliente.quantidade
                     etq_depois_cliente = etq_antes_cliente + quantidade
-
                 # tipo devolução
                 elif detalhe_movimentacao == DetalheMovimentacaoEnum.DEVOLUCAO:
-                    etq_antes_cliente = estoque_cliente.quantidade
+                    if not estoque_cliente:
+                        etq_antes_cliente = 0
                     etq_depois_cliente = etq_antes_cliente - quantidade
                     if etq_depois_cliente < 0:
                         etq_depois_cliente = 0
-    
                 
-                etq_antes_emp = estoque_real
-                etq_depois_emp = estoque_real               
+                # tipo solicitação
+                elif detalhe_movimentacao == DetalheMovimentacaoEnum.SOLICITACAO:
+                    etq_depois_emp = etq_antes_emp - quantidade
+                
+                if detalhe_movimentacao != DetalheMovimentacaoEnum.SOLICITACAO:
+                    etq_depois_emp = etq_antes_emp         
+                
                 
                 # gerar histórico da movimentação
                 historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session, item_frasco.id, etq_antes_emp, etq_depois_emp, etq_antes_cliente, etq_depois_cliente)
-                session.flush()
-                  
+                session.flush()                  
 
                 # ajustando os novos valores do estoque_empresa
                 DaoEstoqueEmpresa.editar_estoque_real(session, id_frasco, etq_depois_emp)
                 
-                print(etq_depois_cliente)
-                # ajustando os novos valores do estoque_cliente
-                DaoEstoqueCliente.atualizar_estoque_cliente(session, id_frasco, id_cliente, etq_depois_cliente)                
+                if etq_depois_cliente or etq_depois_cliente == 0:
+                    # ajustando os novos valores do estoque_cliente
+                    DaoEstoqueCliente.atualizar_estoque_cliente(session, id_frasco, id_cliente, etq_depois_cliente)                
 
                 # efetivando as atualizações
                 session.flush()

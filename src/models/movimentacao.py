@@ -19,6 +19,7 @@ class DetalheMovimentacaoEnum(str, enum.Enum):
     EMPRESTIMO = 'Empréstimo'
     DEVOLUCAO = 'Devolução'
     # tipo interno
+    SOLICITACAO = 'Solicitação'
     AJUSTE = 'Ajuste'
     CANCELAMENTO = 'Cancelamento'
     COMPRA = 'Compra'
@@ -37,6 +38,6 @@ class Movimentacao(Base):
     tipo = Column(Enum(TipoMovimentacaoEnum), default=TipoMovimentacaoEnum.EXTERNO, nullable=False)
     detalhe_movimentacao = Column(Enum(DetalheMovimentacaoEnum), nullable=False)
     descricao = Column(String(255), nullable=True)
-    status = Column(Enum(StatusEnum), default=StatusEnum.PENDENTE, nullable=False)
+    status = Column(Enum(StatusEnum), default=StatusEnum.CONCLUIDO, nullable=False)
 
     cliente = relationship('Cliente', back_populates='movimentacoes')
