@@ -35,8 +35,28 @@ from src.controllers.controller_historico_estoque import ControllerHistoricoEsto
 # Gerar relatório com todos os clintes que possuem frascos
 # Gerar visualização da movimentaão
 
-# string_final = separador.join(lista_de_elementos)
-# Onde:
+import streamlit as st
+from PIL import Image
+import time
 
-# separador é o caractere que será utilizado para separar os elementos da lista na string final;
-# lista_de_elementos é a lista que contém os elementos que serão unidos.
+# lista de e-mails permitidos
+allowed_users = ["waldemberg.pereirac@gmail.com"]
+
+# Função para verificar o login
+def check_user():
+    if not st.experimental_user.is_logged_in:
+        with st.form('Logar'):
+            col1, col2, col3 = st.columns(3)
+            with col2:
+                st.image('img\pos.jpg')
+            if st.form_submit_button('Logar', use_container_width=True):
+                st.login()
+    else:
+        user_email = st.experimental_user.email  # Obtendo o e-mail do usuário
+        if user_email not in allowed_users:
+            st.error("Acesso negado. Seu e-mail não está autorizado.")
+            time.sleep(3)
+            st.logout()
+    return st.experimental_user.is_logged_in
+
+check_user()
