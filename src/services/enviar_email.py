@@ -8,6 +8,12 @@ import os
 # carregando as variáveis de ambiente
 load_dotenv(r'.venv\.env')
 
+# Função para formatar a lista de frascos com indentação correta
+def formatar_lista_frascos(lista_frasco):
+    if not lista_frasco:
+        return "    Nenhum frasco listado."
+    return "\n    - " + "\n    - ".join(f"{frasco}: {quantidade} unidade(s)" for frasco, quantidade in lista_frasco)
+
 # corpo dos emails
 def obter_corpo_email(detalhe_movimentacao: DetalheMovimentacaoEnum, cliente: str, responsavel_movimentacao: str, lista_frascos: str, saldo_frascos: str):
     if detalhe_movimentacao == DetalheMovimentacaoEnum.EMPRESTIMO:
@@ -19,6 +25,7 @@ Data e hora da retirada: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
 Responsável pela retirada: {responsavel_movimentacao}
 Frascaria retirada:
     {lista_frascos}
+
 Saldo atualizado:
     {saldo_frascos}
 '''
@@ -32,6 +39,7 @@ Data e hora da devolução: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
 Responsável pela devolução: {responsavel_movimentacao}
 Frascaria devolvida:
 {lista_frascos}
+
 Saldo atualizado:
 {saldo_frascos}
 '''
@@ -54,8 +62,8 @@ def send_email(cliente: str, destinatario: str, detalhe_movimentacao: DetalheMov
     assunto = obter_assunto_email(detalhe_movimentacao, cliente)
     # Corpo da mensagem
     # frascaria movimentada
-    frascaria = "\n".join(f"-- {frasco}: {quantidade} unidade(s)" for frasco, quantidade in lista_frasco)
-    saldo_frascaria = '\n'.join(f'-- {frasco}: {quantidade} unidade(s)' for frasco, quantidade in lista_saldo_frascaria)
+    frascaria = formatar_lista_frascos(lista_frasco)
+    saldo_frascaria = formatar_lista_frascos(lista_saldo_frascaria)
     # saldo da frascaria
     corpo = obter_corpo_email(detalhe_movimentacao, cliente, responsavel_movimentacao, frascaria, saldo_frascaria)
 
@@ -63,7 +71,12 @@ def send_email(cliente: str, destinatario: str, detalhe_movimentacao: DetalheMov
     msg['Subject'] = assunto
     msg['From'] = remetente
     msg['To'] = destinatario
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
-       smtp_server.login(remetente, senha)
-       smtp_server.sendmail(remetente, destinatario, msg.as_string())
-    return True
+
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
+            smtp_server.login(remetente, senha)
+            smtp_server.sendmail(remetente, destinatario, msg.as_string())
+        return True
+    except Exception as e:
+        print(f'Erro ao enviar email: {e}')
+        return False

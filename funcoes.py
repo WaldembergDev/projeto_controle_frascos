@@ -40,4 +40,3 @@ from src.controllers.controller_historico_estoque import ControllerHistoricoEsto
 
 # separador é o caractere que será utilizado para separar os elementos da lista na string final;
 # lista_de_elementos é a lista que contém os elementos que serão unidos.
-
