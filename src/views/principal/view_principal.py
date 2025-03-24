@@ -19,7 +19,6 @@ class ViewPrincipal:
         view_solicitacao = st.Page(r'src\views\frasco\view_solicitacao.py', title='Solicitação de Frascos')
 
         pagina = st.navigation({
-            'Menu Principal': [view_dashboard],
             'Cliente': [view_clientes],
             'Frasco': [view_frascos, view_liberacao_frascos, view_devolucao, view_solicitacao, view_estoque_frascos],
             'Relatórios': [view_relatorios]
