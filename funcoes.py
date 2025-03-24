@@ -34,3 +34,10 @@ from src.controllers.controller_historico_estoque import ControllerHistoricoEsto
 # Pendências
 # Gerar relatório com todos os clintes que possuem frascos
 # Gerar visualização da movimentaão
+
+# string_final = separador.join(lista_de_elementos)
+# Onde:
+
+# separador é o caractere que será utilizado para separar os elementos da lista na string final;
+# lista_de_elementos é a lista que contém os elementos que serão unidos.
+

@@ -31,9 +31,9 @@ Confirmamos a devolução dos frascos. Seguem os detalhes:
 Data e hora da devolução: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
 Responsável pela devolução: {responsavel_movimentacao}
 Frascaria devolvida:
-    {lista_frascos}
+{lista_frascos}
 Saldo atualizado:
-    {saldo_frascos}
+{saldo_frascos}
 '''
     return corpo
 
@@ -54,8 +54,8 @@ def send_email(cliente: str, destinatario: str, detalhe_movimentacao: DetalheMov
     assunto = obter_assunto_email(detalhe_movimentacao, cliente)
     # Corpo da mensagem
     # frascaria movimentada
-    frascaria = "\n".join(f" - {frasco}: {quantidade} unidade(s)" for frasco, quantidade in lista_frasco)
-    saldo_frascaria = '\n'.join(f' - {frasco}: {quantidade} unidade(s)' for frasco, quantidade in lista_saldo_frascaria)
+    frascaria = "\n".join(f"-- {frasco}: {quantidade} unidade(s)" for frasco, quantidade in lista_frasco)
+    saldo_frascaria = '\n'.join(f'-- {frasco}: {quantidade} unidade(s)' for frasco, quantidade in lista_saldo_frascaria)
     # saldo da frascaria
     corpo = obter_corpo_email(detalhe_movimentacao, cliente, responsavel_movimentacao, frascaria, saldo_frascaria)
 

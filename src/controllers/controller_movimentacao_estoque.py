@@ -41,9 +41,10 @@ class ControllerMovimentacaoEstoque:
                 estoque_empresa = DaoEstoqueEmpresa.obter_estoque_empresa_pelo_id_frasco(session, id_frasco)
                 if estoque_empresa:
                     etq_antes_emp = estoque_empresa.estoque_real # definindo o estoque que será registrado na função
+                    etq_depois_emp = etq_antes_emp
 
                 # dados do estoque do cliente
-                estoque_cliente = DaoEstoqueCliente.obter_estoque_cliente_frasco_pelo_id(session, id_cliente, id_frasco)
+                estoque_cliente = DaoEstoqueCliente.obter_estoque_cliente_frasco_pelo_id(session, id_cliente, id_frasco)           
                 
                 if estoque_cliente:
                     etq_antes_cliente = estoque_cliente.quantidade
@@ -68,18 +69,18 @@ class ControllerMovimentacaoEstoque:
                     etq_depois_cliente = etq_antes_cliente - quantidade
                     if etq_depois_cliente < 0:
                         etq_depois_cliente = 0
-                
                 # tipo solicitação
                 elif detalhe_movimentacao == DetalheMovimentacaoEnum.SOLICITACAO:
                     etq_depois_emp = etq_antes_emp - quantidade
-                
-                if detalhe_movimentacao != DetalheMovimentacaoEnum.SOLICITACAO:
-                    etq_depois_emp = etq_antes_emp         
+                # tipo ajuste
+                elif detalhe_movimentacao == DetalheMovimentacaoEnum.AJUSTE:
+                    etq_depois_emp = quantidade                       
                 
                 
                 # gerar histórico da movimentação
                 historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session, item_frasco.id, etq_antes_emp, etq_depois_emp, etq_antes_cliente, etq_depois_cliente)
-                session.flush()                  
+                session.flush()
+                             
 
                 # ajustando os novos valores do estoque_empresa
                 DaoEstoqueEmpresa.editar_estoque_real(session, id_frasco, etq_depois_emp)

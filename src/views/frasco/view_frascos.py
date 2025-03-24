@@ -1,5 +1,6 @@
 import streamlit as st
 from src.controllers.controller_frasco import ControllerFrasco
+from src.controllers.controller_movimentacao_estoque import ControllerMovimentacaoEstoque, TipoMovimentacaoEnum, DetalheMovimentacaoEnum
 from src.models.frasco import StatusEnum
 import time
 
@@ -56,14 +57,22 @@ def editar_frasco(dados_frasco):
 
 # editar quantidade de frasco
 @st.dialog(title='Editar quantidade de frasco')
-def editar_quantidade(dados_frasco):
+def editar_estoque_real(dados_frasco):
     id = int(dados_frasco['id'])
-    quantidade = st.number_input('Digite o valor real da quantidade de frascos: ', step=1, value=dados_frasco['estoque'])
+    quantidade = st.number_input('Digite o novo valor real da quantidade de frascos: ', step=1, value=dados_frasco['estoque_real'])
     justificativa = st.text_input('Justifique a mudança da alteração: ')
-    bota_atualizar = st.button('Atualizar quantidade')
-    if not justificativa and bota_atualizar:
+    btn_atualizar = st.button('Atualizar quantidade')
+    if not justificativa and btn_atualizar:
         st.error('Preencha a justificativa')
-    if bota_atualizar and justificativa:
+    if btn_atualizar and justificativa:
+        ControllerMovimentacaoEstoque.criar_movimentacao_com_itens(responsavel=None,
+                                                                    id_usuario=1,
+                                                                      tipo = TipoMovimentacaoEnum.INTERNO,
+                                                                        detalhe_movimentacao=DetalheMovimentacaoEnum.AJUSTE,
+                                                                          dados_frascos=[(id, quantidade)],
+                                                                            assinatura=None,
+                                                                              id_cliente=None,
+                                                                                descricao=justificativa)
         st.success('Frascos atualizados com sucesso!')
         time.sleep(3)
         st.rerun()
@@ -89,6 +98,7 @@ with col2:
     # verificando se uma linha foi selecionada
     if len(linhas_selecionadas)==1:
         btn_editar_frasco = st.button('Editar Frasco')
+        btn_editar_estoque_real = st.button('Editar estoque real')
         dados_frasco = {
             'id': linhas_selecionadas.iloc[0,1],
             'identificacao': linhas_selecionadas.iloc[0,2],
@@ -100,3 +110,7 @@ with col2:
         }
         if btn_editar_frasco:
             editar_frasco(dados_frasco)
+        
+        if btn_editar_estoque_real:
+            editar_estoque_real(dados_frasco)
+        
