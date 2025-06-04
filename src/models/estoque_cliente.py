@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from src.database.db import Base
 
 class EstoqueCliente(Base):
-    __tablename__ = 'estoques_clientes'
+    __tablename__ = 'estoque_cliente'
 
     id = Column(Integer, primary_key=True)
     id_cliente = Column(Integer, ForeignKey('clientes.id'), nullable=False)

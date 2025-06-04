@@ -3,6 +3,10 @@ from sqlalchemy.orm import relationship
 from src.database.db import Base
 import enum
 
+class StatusEnum(str, enum.Enum):
+    ATIVO = 'ativo'
+    INATIVO = 'inativo'
+
 class PermissaoEnum(str, enum.Enum):
     ADMINISTRADOR = 'administrador'
     OPERADOR_ADMINISTRADOR = 'operador_administrador'
@@ -17,3 +21,4 @@ class Usuario(Base):
     senha = Column(String(255), nullable=False)
     nome = Column(String(255), nullable=False)
     permissao = Column(Enum(PermissaoEnum), default=PermissaoEnum.OPERADOR_ADMINISTRADOR)
+    status = Column(Enum(StatusEnum), default=StatusEnum.ATIVO)

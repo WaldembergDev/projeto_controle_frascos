@@ -1,58 +1,44 @@
-from src.database.db import create_session
-from src.models.historico_estoque import HistoricoEstoque, TipoTransacao
+from src.models.historico_estoque import HistoricoEstoque
+from src.models.item_frasco import ItemFrasco
+from src.models.movimentacao import Movimentacao
 from src.models.frasco import Frasco
+from src.models.estoque_empresa import EstoqueEmpresa
 from src.models.cliente import Cliente
 from src.models.usuario import Usuario
-from src.models.solicitacao import Solicitacao
-from src.models.estoque_movimentacao import EstoqueMovimentacao
-from sqlalchemy.sql import func
+
+from src.database.db import create_session
 
 class DaoHistoricoEstoque:
-    @classmethod
-    def criar_historico_estoque(cls, session, id_frasco, id_cliente, id_usuario, quantidade, tipo_transacao, descricao, id_solicitacao):
-        historico_estoque = HistoricoEstoque(id_frasco = id_frasco,
-                                              id_cliente = id_cliente,
-                                                id_usuario=id_usuario,
-                                                  quantidade=quantidade,
-                                                    tipo_transacao=tipo_transacao,
-                                                      descricao=descricao,
-                                                        id_solicitacao=id_solicitacao)
-        session.add(historico_estoque)
-        return historico_estoque
-    
-    @classmethod
-    def obter_todo_historico(cls, session):
-        historico = session.query(HistoricoEstoque).all()
-        return historico
-
-    @classmethod
-    def obter_historico_movimentacao(cls, session):
-        resultados = session.query(HistoricoEstoque.id,
-                                    HistoricoEstoque.data_movimentacao,
-                                      Frasco.identificacao,
-                                        Cliente.nome,
-                                          Usuario.login,
-                                              HistoricoEstoque.quantidade,
-                                                HistoricoEstoque.tipo_transacao,
-                                                  HistoricoEstoque.descricao, Solicitacao.id,
-                                                    EstoqueMovimentacao.estoque_antes_empresa,
-                                                      EstoqueMovimentacao.estoque_depois_empresa,
-                                                        EstoqueMovimentacao.estoque_antes_cliente,
-                                                          EstoqueMovimentacao.estoque_depois_cliente)\
-          .join(Frasco, isouter=True)\
-            .join(Cliente, isouter=True)\
-              .join(Usuario, isouter=True)\
-                .join(Solicitacao, HistoricoEstoque.id_solicitacao == Solicitacao.id, isouter=True)\
-                  .join(EstoqueMovimentacao, HistoricoEstoque.id == EstoqueMovimentacao.id_historico_estoque, isouter=True)\
+  @classmethod
+  def criar_historico_estoque(cls, session, id_item_frasco, estoque_antes_empresa,estoque_depois_empresa, estoque_antes_cliente, estoque_depois_cliente):
+    historico_estoque = HistoricoEstoque(id_item_frasco = id_item_frasco,
+                                         estoque_antes_empresa=estoque_antes_empresa,
+                                         estoque_depois_empresa=estoque_depois_empresa,
+                                         estoque_antes_cliente=estoque_antes_cliente,
+                                         estoque_depois_cliente=estoque_depois_cliente)
+    session.add(historico_estoque)
+    return historico_estoque
+  
+  @classmethod
+  def obter_lista_historico_estoque(cls, session):
+    resultado = session\
+      .query(HistoricoEstoque.id,
+              Movimentacao.data,
+              Frasco.identificacao,
+              Cliente.nome,
+              Usuario.nome,
+              ItemFrasco.quantidade,
+              Movimentacao.detalhe_movimentacao,
+              Movimentacao.descricao,
+              Movimentacao.id,
+              HistoricoEstoque.estoque_antes_empresa,
+              HistoricoEstoque.estoque_depois_empresa,
+              HistoricoEstoque.estoque_antes_cliente,
+              HistoricoEstoque.estoque_depois_cliente)\
+        .join(ItemFrasco, HistoricoEstoque.id_item_frasco == ItemFrasco.id, isouter=True)\
+            .join(Movimentacao, Movimentacao.id == ItemFrasco.id_movimentacao, isouter=True)\
+              .join(Frasco, ItemFrasco.id_frasco == Frasco.id, isouter=True)\
+                .join(Cliente, Movimentacao.id_cliente == Cliente.id, isouter=True)\
+                  .join(Usuario, Movimentacao.id_usuario == Usuario.id, isouter=True)\
                     .all()
-        return resultados
-    
-    @classmethod
-    def obter_tipo_transacoes(cls, session):
-        tipos_transacoes = session.query(HistoricoEstoque.tipo_transacao).distinct().all()
-        return tipos_transacoes
-    
-    @classmethod
-    def obter_devolucao_mais_recente_id_cliente(cls, session, id_cliente):
-      devolucao_mais_recente = session.query(HistoricoEstoque).filter(HistoricoEstoque.id_cliente == id_cliente).filter(HistoricoEstoque.tipo_transacao==TipoTransacao.DEVOLUCAO).order_by(HistoricoEstoque.data_movimentacao.desc()).first()
-      return devolucao_mais_recente
+    return resultado

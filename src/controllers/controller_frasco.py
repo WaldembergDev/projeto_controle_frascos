@@ -1,39 +1,54 @@
-from src.dao.dao_frasco import DaoFrasco
-from src.dao.dao_historico_estoque import DaoHistoricoEstoque
-from src.dao.dao_estoque_movimentacao import DaoEstoqueMovimentacao
+from src.models.movimentacao import Movimentacao, TipoMovimentacaoEnum, DetalheMovimentacaoEnum
 
+from src.dao.dao_frasco import DaoFrasco
+from src.dao.dao_item_frasco import DaoItemFrasco
+from src.dao.dao_movimentacao import DaoMovimentacao
+from src.dao.dao_historico_estoque import DaoHistoricoEstoque
+from src.dao.dao_estoque_empresa import DaoEstoqueEmpresa
 from src.models.frasco import Frasco
-from src.models.historico_estoque import TipoTransacao
 from src.database.db import create_session
 import pandas as pd
 
 class ControllerFrasco:
     @classmethod
-    def criar_frasco(cls, id_usuario, identificacao, capacidade, estoque, estoque_minimo, descricao):
+    def criar_frasco(cls, id_usuario, identificacao, capacidade, estoque_real, estoque_minimo, descricao):
         # 1 - Criar o frasco - Feito
         # 2 - Gerar o histórico referente e a quantidade criada - Feito
         # 3 - Gerar a movimentação do estoque - Feito 
         session = create_session()
         try:
-            frasco = DaoFrasco.criar_frasco(session, identificacao, capacidade, estoque, estoque_minimo, descricao)
+            # criando o frasco
+            frasco = DaoFrasco.criar_frasco(session, identificacao, capacidade, descricao)
             session.flush()
             # cria um histórico da movimentação no banco de dados
-            historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session=session,
-                                                         id_frasco=frasco.id,
-                                                           id_cliente=None,
-                                                             id_usuario=id_usuario,
-                                                               quantidade=estoque,
-                                                                 tipo_transacao=TipoTransacao.REPOSICAO,
-                                                                   descricao="Reposição de Frascos",
-                                                                     id_solicitacao=None)
+            movimentacao = DaoMovimentacao\
+                .criar_movimentacao(session = session,
+                                    responsavel=None,
+                                    id_usuario=id_usuario,
+                                    tipo=TipoMovimentacaoEnum.INTERNO.value,
+                                    detalhe_movimentacao=DetalheMovimentacaoEnum.COMPRA.value,
+                                    id_cliente=None,
+                                    descricao='Compra de novos frascos',
+                                    assinatura=None)
+            session.flush()
+            # gerando o item_frasco
+            item_frasco = DaoItemFrasco.criar_item_frasco(session,
+                                            quantidade=estoque_real,
+                                            id_frasco=frasco.id,
+                                            id_movimentacao=movimentacao.id)
             session.flush()
             # gera a movimentação no estoque
-            DaoEstoqueMovimentacao.criar_movimentacao_estoque(session=session,
-                                                              id_historico_estoque=historico_estoque.id,
-                                                              estoque_antes_empresa=0,
-                                                              estoque_depois_empresa=estoque,
-                                                              estoque_antes_cliente=None,
-                                                              estoque_depois_cliente=None)
+            DaoHistoricoEstoque.criar_historico_estoque(session=session,
+                                                        id_item_frasco=item_frasco.id,
+                                                        estoque_antes_empresa=0,
+                                                        estoque_depois_empresa=estoque_real,
+                                                        estoque_antes_cliente=None,
+                                                        estoque_depois_cliente=None)
+            # Gerando os dados referente ao estoque do frasco
+            DaoEstoqueEmpresa.criar_estoque_empresa(session,
+                                                    frasco.id,
+                                                    estoque_real=estoque_real,
+                                                    estoque_minimo=estoque_minimo)
             session.commit()
             return True
         except Exception as e:
@@ -75,6 +90,19 @@ class ControllerFrasco:
             session.close()
     
     @classmethod
+    def obter_frascos_com_estoque(cls):
+        session = create_session()
+        try:
+            resultados = DaoFrasco.obter_frasco_com_estoque(session)
+            return resultados
+        except Exception as e:
+            print(f'Erro: {e}')
+            return []
+        finally:
+            session.close()
+        
+    
+    @classmethod
     def obter_frascos_ativos(cls):
         session = create_session()
         try:
@@ -93,10 +121,18 @@ class ControllerFrasco:
         return dicionario_frascos_ativos
     
     @classmethod
-    def editar_frasco_pelo_id(cls, id_frasco, nova_identificacao, nova_capacidade, novo_estoque_minimo, nova_descricao, novo_status):
+    def editar_frasco_estoque_pelo_id(cls, id_frasco, nova_identificacao, nova_capacidade, novo_estoque_minimo, nova_descricao, novo_status):
         session = create_session()
         try:
-            DaoFrasco.editar_frasco_pelo_id(session, id_frasco, nova_identificacao, nova_capacidade, novo_estoque_minimo, nova_descricao, novo_status)
+            DaoFrasco.editar_frasco_pelo_id(session,
+                                            id_frasco,
+                                            nova_identificacao,
+                                            nova_capacidade,
+                                            nova_descricao,
+                                            novo_status)
+            DaoEstoqueEmpresa.editar_estoque_minimo(session,
+                                                    id_frasco,
+                                                    novo_estoque_minimo)
             session.commit()
             return True
         except Exception as e:
@@ -128,22 +164,46 @@ class ControllerFrasco:
     
     @classmethod
     def carregar_dataframe_frascos(cls):
-        frascos = cls.listar_frascos()
-        dataframe = pd.DataFrame(frascos, columns=['Id', 'identificacao', 'Capacidade', 'Estoque', 'Estoque Mínimo', 'Descrição', 'status'])
-        dataframe['Selecionado'] = False
-        dataframe = dataframe.reindex(['Selecionado', 'Id', 'identificacao', 'Capacidade', 'Estoque', 'Estoque Mínimo', 'Descrição', 'status'], axis=1)
+        # obtendo todos os frascos com seus respectivos estoques
+        frascos = cls.obter_frascos_com_estoque()
+        # gerando o dataframe e nomeando as colunas
+        dataframe = pd.DataFrame(frascos, columns=['Id',
+                                                   'Identificação',
+                                                   'Capacidade',
+                                                   'Descrição',
+                                                   'Estoque real',
+                                                   'Estoque mínimo',
+                                                   'Status'])
+        # criando uma coluna chamada seleção
+        dataframe['Seleção'] = False
+        # reorganizando as colunas do dataframe
+        dataframe = dataframe.reindex(['Seleção',
+                                       'Id',
+                                       'Identificação',
+                                       'Capacidade',
+                                       'Descrição',
+                                       'Estoque real',
+                                       'Estoque mínimo',
+                                       'Status'],
+                                      axis=1)
         return dataframe
     
-    # # @classmethod
-    # def atualizar_estoque_id_frasco(cls, id_usuario: int, id_frasco: int, nova_quantidade: int, justificativa: int):
-    #     session = create_session()
-    #     try:
-    #         historico_estoque = DaoHistoricoEstoque.criar_historico_estoque(session=session,
-    #                                                                         id_frasco=id_frasco,
-    #                                                                         id_cliente=None,
-    #                                                                         id_usuario=id_usuario,
-    #                                                                         quantidade=nova_quantidade,
-    #                                                                         )
-    #         frasco = DaoFrasco.atualizar_quantidade_frascos(session, id_frasco, nova_quantidade)
-            
-            
+    @classmethod
+    def obter_estoque_baixo_empresa(cls):
+        session = create_session()
+        try:
+            frasco_estoque = DaoEstoqueEmpresa.obter_estoque_baixo_frascos(session)
+            if not frasco_estoque:
+                return []
+            return frasco_estoque
+        except Exception as e:
+            print(f'Erro: {e}')
+        finally:
+            session.close()
+    
+    @classmethod
+    def gerar_dataframe_estoque_baixo_empresa(cls):
+        frascos = cls.obter_estoque_baixo_empresa()
+        dataframe = pd.DataFrame(frascos)
+        return dataframe
+    

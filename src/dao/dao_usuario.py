@@ -2,8 +2,8 @@ from src.models.usuario import Usuario
 
 class DaoUsuario:
     @classmethod
-    def criar_usuario(cls, session, login, senha, nome):
-        usuario = Usuario(login = login, senha=senha, nome=nome)
+    def criar_usuario(cls, session, login, senha, nome, permissao):
+        usuario = Usuario(login = login, senha=senha, nome=nome, permissao=permissao)
         session.add(usuario)
         return usuario
     

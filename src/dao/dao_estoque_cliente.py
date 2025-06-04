@@ -24,9 +24,9 @@ class DaoEstoqueCliente:
         return estoque_cliente
     
     @classmethod
-    def atualizar_estoque_cliente(cls, session, id_frasco, id_cliente, valor):
+    def atualizar_estoque_cliente(cls, session, id_frasco, id_cliente, nova_quantidade):
         estoque_cliente = session.query(EstoqueCliente).filter(EstoqueCliente.id_frasco == id_frasco).filter(EstoqueCliente.id_cliente == id_cliente).first()
-        estoque_cliente.quantidade += valor
+        estoque_cliente.quantidade = nova_quantidade
         return estoque_cliente
 
     @classmethod
@@ -36,8 +36,18 @@ class DaoEstoqueCliente:
         return estoque_cliente
     
     @classmethod
-    def obter_estoque_cliente_pelo_id(cls, session, id_cliente, id_frasco):
-        estoque = session.query(EstoqueCliente).filter(EstoqueCliente.id_cliente == id_cliente).filter(EstoqueCliente.id_frasco == id_frasco).first()
+    def obter_estoque_cliente_pelo_id(cls, session, id_cliente):
+        estoque = session.query(EstoqueCliente)\
+            .filter(EstoqueCliente.id_cliente == id_cliente)\
+                .first()
+        return estoque
+    
+    @classmethod
+    def obter_estoque_cliente_frasco_pelo_id(cls, session, id_cliente, id_frasco):
+        estoque = session.query(EstoqueCliente)\
+            .filter(EstoqueCliente.id_cliente == id_cliente)\
+                .filter(EstoqueCliente.id_frasco == id_frasco)\
+                .first()
         return estoque
     
 
