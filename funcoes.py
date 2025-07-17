@@ -40,3 +40,4 @@ from src.controllers.controller_historico_estoque import ControllerHistoricoEsto
 # Cadastrar usuários
 # Ajustar horário do banco de dados
 
+from src.controllers.controller_usuario import ControllerUsuario

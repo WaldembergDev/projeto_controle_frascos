@@ -38,9 +38,10 @@ class ViewPrincipal:
             senha = st.text_input('Senha', type='password')
             btn_logar = st.form_submit_button('Logar')
             if btn_logar:
-                print(ControllerUsuario.verificar_login(login, senha))
-                if ControllerUsuario.verificar_login(login, senha):
+                usuario = ControllerUsuario.verificar_login(login, senha)
+                if usuario:
                     st.session_state['login'] = login
+                    st.session_state['id'] = usuario.id
                     st.rerun()
                 else:
                     st.error('Login ou senha inválidos!')

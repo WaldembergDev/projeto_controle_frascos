@@ -35,7 +35,7 @@ class ControllerUsuario:
 
         if bcrypt.checkpw(senha.encode('utf-8'), hash_armazenado):
             print("Senha correta!")
-            return True
+            return usuario
         else:
             print("Senha incorreta.")
             return False
@@ -45,5 +45,5 @@ class ControllerUsuario:
         return False
 
     finally:
-        session.close()  
+        session.close()
   

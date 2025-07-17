@@ -8,10 +8,7 @@ from src.models.movimentacao import Movimentacao
 from src.models.usuario import Usuario
 from src.database.db import create_tables
 from src.views.principal.view_principal import ViewPrincipal
-
 import streamlit as st
-
-import time
 
 # configurações de login e barra de navegação
 if not 'login' in st.session_state:

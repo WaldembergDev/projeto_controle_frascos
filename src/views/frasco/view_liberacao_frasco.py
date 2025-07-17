@@ -89,7 +89,7 @@ if botao_salvar_dados:
     for i in range(st.session_state.botoes):
         dados_frascos.append((frascos[st.session_state[f'frasco_{i}']], int(st.session_state[f'quantidade_frasco_{i}'])))
         detalhes_frascos.append((st.session_state[f'frasco_{i}'], int(st.session_state[f'quantidade_frasco_{i}'])))
-    movimentacao = ControllerMovimentacaoEstoque.criar_movimentacao_com_itens(id_usuario=1,
+    movimentacao = ControllerMovimentacaoEstoque.criar_movimentacao_com_itens(id_usuario=st.session_state.get('id'),
                                                              responsavel=responsavel,
                                                              tipo=TipoMovimentacaoEnum.EXTERNO,
                                                              detalhe_movimentacao=DetalheMovimentacaoEnum.EMPRESTIMO,
