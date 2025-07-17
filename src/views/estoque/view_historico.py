@@ -59,7 +59,7 @@ dataframe_filtrado = dataframe[(dataframe['Data']>=data_inicial) \
 # Ajustando a visualização da coluna de data
 dataframe_filtrado['Data'] = dataframe_filtrado['Data'].dt.strftime('%d/%m/%Y %H:%M:%S')
 # Visualização do dataframe
-linhas = st.data_editor(dataframe_filtrado)
+linhas = st.data_editor(dataframe_filtrado, hide_index=True)
 
 # Obtendo apenas as linhas filtradas
 linha_selecionadas = linhas[linhas['Selecionado'] == True]
