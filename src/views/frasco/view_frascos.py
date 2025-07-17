@@ -83,11 +83,11 @@ st.header('Lista de Frascos', divider=True)
 ### nova tela
 dataframe = ControllerFrasco.carregar_dataframe_frascos()
 
-col1, col2 = st.columns(2)
+col1, col2 = st.columns([0.8, 0.2])
 
 with col1:
     # Exibindo o dataframe
-    linhas = st.data_editor(dataframe)
+    linhas = st.data_editor(dataframe, hide_index=True)
     
     # Obtendo os indíces das linhas selecionadas
     linhas_selecionadas = linhas[linhas['Seleção'] == True]
