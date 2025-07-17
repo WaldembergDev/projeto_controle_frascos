@@ -1,4 +1,5 @@
 import streamlit as st
+from src.controllers.controller_usuario import ControllerUsuario
 
 class ViewPrincipal:
     @classmethod
@@ -29,3 +30,18 @@ class ViewPrincipal:
                 st.logout()
 
         pagina.run()
+    
+    @classmethod
+    def tela_login(cls):
+        with st.form('form_logar'):
+            login = st.text_input('Login')
+            senha = st.text_input('Senha', type='password')
+            btn_logar = st.form_submit_button('Logar')
+            if btn_logar:
+                print(ControllerUsuario.verificar_login(login, senha))
+                if ControllerUsuario.verificar_login(login, senha):
+                    st.session_state['login'] = login
+                    st.rerun()
+                else:
+                    st.error('Login ou senha inválidos!')
+    
