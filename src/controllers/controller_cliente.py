@@ -5,7 +5,7 @@ import pandas as pd
 
 class ControllerCliente:
     @classmethod
-    def validar_campos_cliente(cls, nome, identificacao, telefone, email):
+    def validar_campos_cliente(cls, nome, identificacao, telefone, email, comercial):
         if not nome:
             return 'Nome não pode estar vazio!'
         if not identificacao:
@@ -14,12 +14,14 @@ class ControllerCliente:
             return 'Telefone não pode estar vazio!'
         if not email:
             return 'Email não pode estar vazio!'
+        if not comercial:
+            return 'O comercial não pode estar vazio!'
         return True
 
     @classmethod
-    def cadastrar_cliente(cls, nome, identificacao, telefone, email):
+    def cadastrar_cliente(cls, nome, identificacao, telefone, email, comercial):
         # validando os campos
-        campos_validados = cls.validar_campos_cliente(nome, identificacao, telefone, email)
+        campos_validados = cls.validar_campos_cliente(nome, identificacao, telefone, email, comercial)
         if campos_validados != True:
             return campos_validados
         
@@ -30,7 +32,8 @@ class ControllerCliente:
                                                 identificacao=identificacao,
                                                 nome=nome,
                                                 telefone=telefone,
-                                                email=email)
+                                                email=email,
+                                                comercial=comercial)
             session.commit()
             return True
         except Exception as e:

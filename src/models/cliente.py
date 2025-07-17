@@ -22,6 +22,7 @@ class Cliente(Base):
     nome = Column(String(254), nullable=False, unique=True)
     telefone = Column(String(11), nullable=True)
     email = Column(String(254), nullable=True)
+    comercial = Column(Enum(ComercialEnum), nullable=True)
     status = Column(Enum(StatusEnum), default=StatusEnum.ATIVO)
 
     def to_dict(self):

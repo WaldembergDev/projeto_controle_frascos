@@ -3,6 +3,7 @@ from src.controllers.controller_cliente import ControllerCliente
 from src.controllers.controller_movimentacao_estoque import ControllerMovimentacaoEstoque
 import pandas as pd
 import time
+from src.models.cliente import ComercialEnum
 
 # carregando o dataframe no cache
 @st.cache_data
@@ -43,7 +44,7 @@ def criar_cliente():
     identificacao = st.text_input('CPF/CNPJ')
     telefone = st.text_input('Telefone')
     email = st.text_input('Email')
-    comerciais = ['Comercial 1', 'Comercial 2', 'Comercial 4', 'Comercial 7']
+    comerciais = [comercial.value for comercial in ComercialEnum]
     comercial = st.selectbox('Comercial Responsável', options=comerciais)
     botao_cadastrar_cliente = st.button('Cadastrar Cliente', key='')
 
@@ -51,7 +52,8 @@ def criar_cliente():
         cliente_salvo = ControllerCliente.cadastrar_cliente(nome=nome,
                                                             identificacao=identificacao,
                                                             telefone=telefone,
-                                                            email=email)
+                                                            email=email,
+                                                            comercial=comercial)
         if cliente_salvo == True:
             st.success('Cliente cadastrado com sucesso!')
             carregar_dataframe.clear() # limpando os dados do cache para recarregar os dados
