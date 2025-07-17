@@ -7,6 +7,13 @@ class StatusEnum(str, enum.Enum):
     ATIVO = 'ativo'
     INATIVO = 'inativo'
 
+class ComercialEnum(str, enum.Enum):
+    COMERCIAL_1 = 'Comercial 1'
+    COMERCIAL_2 = 'Comercial 2'
+    COMERCIAL_4 = 'Comercial 4'
+    COMERCIAL_7 = 'Comercial 7'
+    
+
 class Cliente(Base):
     __tablename__ = 'clientes'
 
