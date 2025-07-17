@@ -43,6 +43,8 @@ def criar_cliente():
     identificacao = st.text_input('CPF/CNPJ')
     telefone = st.text_input('Telefone')
     email = st.text_input('Email')
+    comerciais = ['Comercial 1', 'Comercial 2', 'Comercial 4', 'Comercial 7']
+    comercial = st.selectbox('Comercial Responsável', options=comerciais)
     botao_cadastrar_cliente = st.button('Cadastrar Cliente', key='')
 
     if botao_cadastrar_cliente:
@@ -84,11 +86,11 @@ def consultar_frascos(id_cliente):
 
 # função que cria uma interface e carrega o dataframe de acordo com a aba selecionada
 def renderizar_tela(dataframe, tipo):
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([0.8, 0.2])
 
     with col1:
         # exibe a tabela de clientes
-        linhas = st.data_editor(dataframe, use_container_width=True, key=f'data_editor_{tipo}')
+        linhas = st.data_editor(dataframe, use_container_width=True, key=f'data_editor_{tipo}', hide_index=True)
 
         # Obtendo o índices das linhas selecionadas
         linhas_selecionadas = linhas[linhas["Selecionado"] == True]

@@ -55,7 +55,7 @@ def obter_assunto_email(detalhe_movimentacao: DetalheMovimentacaoEnum, cliente: 
 
 # criando uma função que envia um e-mail
 def send_email(cliente: str, destinatario: str, detalhe_movimentacao: DetalheMovimentacaoEnum, responsavel_movimentacao: str, lista_frasco: list, lista_saldo_frascaria: list):
-    # carregando os dados de autenticação
+    # carregando os dados de autenticação e configuração de email
     remetente = os.getenv('SENDER')
     senha = os.getenv('PASSWORD')
     # Assunto da mensagem

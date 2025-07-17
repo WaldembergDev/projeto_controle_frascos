@@ -20,9 +20,9 @@ st.set_page_config(page_title="Controle de Frascos", layout="wide")
 # Gerando a tela de login
 if not st.experimental_user.is_logged_in:
         with st.form('Logar'):
-            # col1, col2, col3 = st.columns(3)
-            # with col2:
-            #     st.image('img\logo.jpg')
+            col1, col2, col3 = st.columns(3)
+            with col2:
+                st.image(r'img\logo.png')
             if st.form_submit_button('Logar', use_container_width=True):
                 st.login()
 else:
