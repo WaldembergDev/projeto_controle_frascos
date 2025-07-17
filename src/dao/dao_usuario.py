@@ -11,4 +11,9 @@ class DaoUsuario:
     def obter_usuario_pelo_id(cls, session, id_usuario):
         usuario = session.query(Usuario).filter(Usuario.id == id_usuario).first()
         return usuario
+    
+    @classmethod
+    def obter_usuario_pelo_login(cls, session, login):
+        usuario = session.query(Usuario).filter(Usuario.login == login).first()
+        return usuario
         

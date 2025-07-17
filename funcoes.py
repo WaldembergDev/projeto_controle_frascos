@@ -39,3 +39,4 @@ from src.controllers.controller_historico_estoque import ControllerHistoricoEsto
 # Mostrar uma tela de confirmação ao liberar, devolver e solicitar frascos
 # Cadastrar usuários
 # Ajustar horário do banco de dados
+
