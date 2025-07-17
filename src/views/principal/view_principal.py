@@ -1,6 +1,13 @@
 import streamlit as st
 from src.controllers.controller_usuario import ControllerUsuario
 
+st.set_page_config(
+   page_title="Ex-stream-ly Cool App",
+   page_icon="🧊",
+   layout="wide",
+   initial_sidebar_state="expanded",
+)
+
 class ViewPrincipal:
     @classmethod
     def menu_principal(cls):
@@ -34,6 +41,9 @@ class ViewPrincipal:
     @classmethod
     def tela_login(cls):
         with st.form('form_logar'):
+            colunas = st.columns(3)
+            with colunas[1]:
+                st.image(r'img\logo.png')
             login = st.text_input('Login')
             senha = st.text_input('Senha', type='password')
             btn_logar = st.form_submit_button('Logar')
@@ -45,4 +55,3 @@ class ViewPrincipal:
                     st.rerun()
                 else:
                     st.error('Login ou senha inválidos!')
-    

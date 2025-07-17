@@ -248,3 +248,14 @@ class ControllerCliente:
             return False
         finally:
             session.close()
+    
+    # @classmethod
+    # def atualizar_estoque_cliente(cls, id_cliente, id_frasco, nova_quantidade):
+    #     session = create_session()
+    #     try:
+    #         cliente = DaoCliente.obter_cliente_pelo_id(session, id_cliente)
+    #         estoque_frasco = cliente.estoque_cliente.filter(id = id_frasco).first()
+    #         estoque_frasco = nova_quantidade
+            
+    #     except:
+    #         pass
