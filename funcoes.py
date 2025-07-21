@@ -41,3 +41,4 @@ from src.controllers.controller_historico_estoque import ControllerHistoricoEsto
 # Ajustar horário do banco de dados
 
 from src.controllers.controller_usuario import ControllerUsuario
+# criando uma função que reseta a senha
