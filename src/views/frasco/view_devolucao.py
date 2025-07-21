@@ -58,13 +58,13 @@ if botao_registrar_devolucao and cliente and frasco:
     # criando uma lista de tuplas com os dados dos frascos a serem devolvidos
     dados_frascos = [(frascos[st.session_state[f'frasco_{i}']], st.session_state[f'quantidade_{i}']) for i in range(st.session_state.tipo_frascos)]
     detalhes_frascos = [(st.session_state[f'frasco_{i}'], st.session_state[f'quantidade_{i}']) for i in range(st.session_state.tipo_frascos)]
-    registro_salvo = ControllerMovimentacaoEstoque.criar_movimentacao_com_itens(None, 1, TipoMovimentacaoEnum.EXTERNO, DetalheMovimentacaoEnum.DEVOLUCAO, dados_frascos, None, clientes[cliente])
+    registro_salvo = ControllerMovimentacaoEstoque.criar_movimentacao_com_itens(None, st.session_state.get('id'), TipoMovimentacaoEnum.EXTERNO, DetalheMovimentacaoEnum.DEVOLUCAO, dados_frascos, None, clientes[cliente])
     if registro_salvo:
         # obtendo o email do cliente
         destinatario = ControllerCliente.obter_email_cliente_pelo_id(clientes[cliente])
         # obtendo o saldo dos frascos em posso do cliente
         lista_saldo = ControllerCliente.obter_frascos_cliente(clientes[cliente])
-        send_email(cliente, destinatario, DetalheMovimentacaoEnum.DEVOLUCAO, responsavel, detalhes_frascos, lista_saldo)
+        # send_email(cliente, destinatario, DetalheMovimentacaoEnum.DEVOLUCAO, responsavel, detalhes_frascos, lista_saldo)
         st.success('Registro salvo com sucesso!')
         time.sleep(2)
         st.rerun()
@@ -73,5 +73,3 @@ if botao_registrar_devolucao and cliente and frasco:
 
 elif botao_registrar_devolucao and (not cliente or not frasco):
     st.error('Preencha todos os campos!')
-
-

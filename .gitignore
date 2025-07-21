@@ -1,1 +1,5 @@
 .streamlit
+*.sqlite3
+*.sqlite
+*.db
+*.db-journal

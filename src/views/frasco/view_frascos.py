@@ -4,6 +4,8 @@ from src.controllers.controller_movimentacao_estoque import ControllerMovimentac
 from src.models.frasco import StatusEnum
 import time
 
+# Initialization
+
 # caixas de diálogo
 # cadastrar frasco
 @st.dialog(title='Cadastrar frasco')
@@ -17,7 +19,7 @@ def cadastrar_frasco():
     botao_cadastrar = st.button('Cadastrar frasco')
     
     if botao_cadastrar:
-        frasco_cadastrado = ControllerFrasco.criar_frasco(1,
+        frasco_cadastrado = ControllerFrasco.criar_frasco(st.session_state.get('id'),
                                                           identificacao,
                                                           capacidade,
                                                           estoque_real,
@@ -83,11 +85,11 @@ st.header('Lista de Frascos', divider=True)
 ### nova tela
 dataframe = ControllerFrasco.carregar_dataframe_frascos()
 
-col1, col2 = st.columns(2)
+col1, col2 = st.columns([0.8, 0.2])
 
 with col1:
     # Exibindo o dataframe
-    linhas = st.data_editor(dataframe)
+    linhas = st.data_editor(dataframe, hide_index=True)
     
     # Obtendo os indíces das linhas selecionadas
     linhas_selecionadas = linhas[linhas['Seleção'] == True]

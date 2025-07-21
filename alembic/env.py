@@ -18,9 +18,18 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from src.database.db import Base  # Importe o Base do seu models.py
+from src.database.db import Base
+from src.models.cliente import Cliente
+from src.models.estoque_cliente import EstoqueCliente
+from src.models.estoque_empresa import EstoqueEmpresa
+from src.models.frasco import Frasco
+from src.models.historico_estoque import HistoricoEstoque
+from src.models.item_frasco import ItemFrasco
+from src.models.lembrete import Lembrete
+from src.models.movimentacao import Movimentacao
+from src.models.usuario import Usuario
+
 target_metadata = Base.metadata
-# target_metadata = None
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -53,6 +62,7 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
+    from src.database.db import Base
     """Run migrations in 'online' mode.
 
     In this scenario we need to create an Engine
@@ -67,7 +77,7 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection, target_metadata=Base.metadata
         )
 
         with context.begin_transaction():

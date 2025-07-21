@@ -9,8 +9,8 @@ from datetime import datetime, timedelta
 class DaoCliente:
   
   @classmethod
-  def criar_cliente(cls, session, identificacao, nome, telefone, email):
-    cliente = Cliente(identificacao = identificacao, nome = nome, telefone = telefone, email = email)
+  def criar_cliente(cls, session, identificacao, nome, telefone, email, comercial):
+    cliente = Cliente(identificacao = identificacao, nome = nome, telefone = telefone, email = email, comercial = comercial)
     session.add(cliente)
     return cliente
   

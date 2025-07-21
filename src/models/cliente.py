@@ -7,6 +7,13 @@ class StatusEnum(str, enum.Enum):
     ATIVO = 'ativo'
     INATIVO = 'inativo'
 
+class ComercialEnum(str, enum.Enum):
+    COMERCIAL_1 = 'Comercial 1'
+    COMERCIAL_2 = 'Comercial 2'
+    COMERCIAL_4 = 'Comercial 4'
+    COMERCIAL_7 = 'Comercial 7'
+    
+
 class Cliente(Base):
     __tablename__ = 'clientes'
 
@@ -15,6 +22,7 @@ class Cliente(Base):
     nome = Column(String(254), nullable=False, unique=True)
     telefone = Column(String(11), nullable=True)
     email = Column(String(254), nullable=True)
+    comercial = Column(Enum(ComercialEnum), nullable=True)
     status = Column(Enum(StatusEnum), default=StatusEnum.ATIVO)
 
     def to_dict(self):
